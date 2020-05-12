@@ -3,7 +3,7 @@
 Gra posiadałaby menu, w którym do wyboru będą następujące opcje:
 
 Play:
-      tryb offline - gracze grają na jednej klawiaturze, na zmianę tryb
+      tryb offline - gracze grają na jednej klawiaturze na zmianę
       multiplayer - gracze łączą się do serwera, gdy gra wykryje 2 graczy rozpoczyna się rozgrywka
       
 Settings:
