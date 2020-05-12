@@ -3,14 +3,24 @@
 Gra posiadałaby menu, w którym do wyboru będą następujące opcje:
 
 Play:
+
       tryb offline - gracze grają na jednej klawiaturze na zmianę
+      
       multiplayer - gracze łączą się do serwera, gdy gra wykryje 2 graczy rozpoczyna się rozgrywka
       
+      
 Settings:
+
       włącz/wyłącz dźwięk
+      
       tryb pełnoekranowy/okienko
+      
       włącz/wyłącz licznik FPS
+      
+      sterowanie wsad / strzłki
+      
 Quit:
+
       zamyka grę
       
 W menu będzie można poruszać się zarówno myszką jak i klawiaturą, dodatkowo będzie towarzyszyła nam przyjemna muzyczka, która rozbudzi w nas ducha walki i chęć wygrania z przeciwnikiem.
