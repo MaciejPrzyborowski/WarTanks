@@ -1,90 +1,196 @@
-#include "menu.h"
+#include "Menu.h"
 
-menu::menu()
-{
+Menu::Menu()
+{   
     Font.loadFromFile("game_font.ttf");
-
-    MenuOption[0].setFont(Font);
-    MenuOption[0].setColor(sf::Color::White);
-    MenuOption[0].setString("Graj");
-    MenuOption[0].setPosition(sf::Vector2f(WindowWidth/10, WindowHeight * 0.2));
-
-    MenuOption[1].setFont(Font);
-    MenuOption[1].setColor(sf::Color::White);
-    MenuOption[1].setString("Ustawienia");
-    MenuOption[1].setPosition(sf::Vector2f(WindowWidth/10, WindowHeight * 0.3));
-
-    MenuOption[2].setFont(Font);
-    MenuOption[2].setColor(sf::Color::White);
-    MenuOption[2].setString("Wyjdz");
-    MenuOption[2].setPosition(sf::Vector2f(WindowWidth/10, WindowHeight * 0.4));
-
-    OptionSelected = 0;
 }
 
-void menu::ShowMenu(sf::RenderWindow &Window, int x)
+void Menu::MainMenu()
+{
+    vector<string> Names = {"Graj", "Ustawienia", "Wyjscie"};
+    sf::Text Option;
+    float pos = 0.2;
+    for(size_t i = 0; i < Names.size(); i++)
+    {
+        pos += 0.1;
+        Option.setFont(Font);
+        Option.setString(Names[i]);
+        Option.setFillColor(sf::Color::White);
+        Option.setOutlineThickness(5);
+        Option.setOutlineColor(sf::Color::Black);
+        Option.setPosition(WindowWidth/20, WindowHeight * pos);
+        Option.setCharacterSize(WindowHeight * 0.1);
+        MainMenu_.emplace_back(Option);
+    }
+    MainMenu_[OptionSelected_].setFillColor(sf::Color(150,150,150));
+}
+
+void Menu::Settings()
 {
 
-    if(isActive)
-    {
-        sf::Texture MenuBackground;
-        MenuBackground.loadFromFile("menu_gackground.jpg");
-        sf::Sprite Sprite;
-        Sprite.setTexture(MenuBackground);
-        sf::Vector2u TextureSize = MenuBackground.getSize();
-        sf::Vector2u WindowSize = Window.getSize();
-        float scaleX = (float)WindowSize.x/TextureSize.x;
-        float scaleY = (float)WindowSize.y/TextureSize.y;
-        Sprite.setScale(scaleX, scaleY);
-        Window.draw(Sprite);
+    vector<string> Names = {"Licznik FPS", "Muzyka", "Dzwiek", "Sterowanie", "Wroc"};
+    sf::Text Option;
+    float pos = 0.1;
 
-        for(size_t i = 0; i < NUMBERS_OF_MENU_OPTIONS; i++)
+
+    sf::RectangleShape RectBg;
+    for(size_t i = 0; i < Names.size(); i++)
+    {
+        pos += 0.1;
+        Option.setFont(Font);
+        Option.setString(Names[i]);
+        Option.setFillColor(sf::Color::White);
+        Option.setOutlineThickness(5);
+        Option.setOutlineColor(sf::Color::Black);
+        Option.setPosition(WindowWidth/20, WindowHeight * pos);
+        Option.setCharacterSize(WindowHeight * 0.07);
+        Settings_.emplace_back(Option);
+        RectBg.setPosition(WindowWidth/25, WindowHeight * pos);
+        RectBg.setFillColor(sf::Color(222,222,222,50));
+        RectBg.setSize(sf::Vector2f(WindowWidth*0.9, WindowHeight*0.09));
+        OptionBackground.emplace_back(RectBg);
+    }
+    Settings_[OptionSelected_].setFillColor(sf::Color(150,150,150));
+}
+
+void Menu::PlaySettings()
+{
+    vector<string> Names = {"Tryb offline", "Multiplayer", "Wroc"};
+    sf::Text Option;
+    float pos = 0.2;
+
+    for(size_t i = 0; i < Names.size(); i++)
+    {
+        pos += 0.1;
+        Option.setFont(Font);
+        Option.setString(Names[i]);
+        Option.setFillColor(sf::Color::White);
+        Option.setOutlineThickness(5);
+        Option.setOutlineColor(sf::Color::Black);
+        Option.setPosition(WindowWidth/20, WindowHeight * pos);
+        Option.setCharacterSize(WindowHeight * 0.1);
+        PlaySettings_.emplace_back(Option);
+    }
+    PlaySettings_[OptionSelected_].setFillColor(sf::Color(150,150,150));
+}
+
+void Menu::ChoiceByMouse(sf::RenderWindow &Window, sf::Event &Event, sf::Sound &SelectSound)
+{
+    if(Event.type == sf::Event::MouseMoved)
+    {
+        IsMouseActive_ = true;
+        sf::Vector2i MousePosition = sf::Mouse::getPosition(Window);
+        if(MainMenuActive_)
         {
-            MenuOption[i].setOutlineThickness(5);
-            MenuOption[i].setOutlineColor(sf::Color::Black);
-            MenuOption[i].setCharacterSize(x*0.05);
-            Window.draw(MenuOption[i]);
+            for(size_t i = 0; i < MainMenu_.size(); i++)
+            {
+                MainMenu_[i].setFillColor(sf::Color::White);
+                if(MainMenu_[i].getGlobalBounds().contains(Window.mapPixelToCoords(MousePosition)))
+                {
+                    if(OptionSelected_ != i) SelectSound.play();
+                    OptionSelected_ = i;
+                }
+            }
+            MainMenu_[OptionSelected_].setFillColor(sf::Color(150, 150, 150));
+        }
+        else if(SettingsActive_)
+        {
+            for(size_t i = 0; i < Settings_.size(); i++)
+            {
+                Settings_[i].setFillColor(sf::Color::White);
+                if(Settings_[i].getGlobalBounds().contains(Window.mapPixelToCoords(MousePosition)))
+                {
+                    if(OptionSelected_ != i) SelectSound.play();
+                    OptionSelected_ = i;
+                }
+            }
+            Settings_[OptionSelected_].setFillColor(sf::Color(150, 150, 150));
+        }
+        else if(PlaySettingsActive_)
+        {
+            for(size_t i = 0; i < PlaySettings_.size(); i++)
+            {
+                PlaySettings_[i].setFillColor(sf::Color::White);
+                if(PlaySettings_[i].getGlobalBounds().contains(Window.mapPixelToCoords(MousePosition)))
+                {
+                    if(OptionSelected_ != i) SelectSound.play();
+                    OptionSelected_ = i;
+                }
+            }
+            PlaySettings_[OptionSelected_].setFillColor(sf::Color(150, 150, 150));
         }
     }
+    IsMouseActive_ = false;
 }
 
-void menu::ShowMenuSettings(sf::RenderWindow &Window, int x)
+void Menu::MoveUp(sf::Sound &SelectSound)
 {
-
-}
-
-void menu::HideMenu()
-{
-    isActive = false;
-}
-
-void menu::MoveUp()
-{
-    if(isActive && OptionSelected - 1 >= 0)
+    if(MainMenuActive_ && OptionSelected_ != 0)
     {
-        MenuOption[OptionSelected].setColor(sf::Color::White);
-        OptionSelected--;
-        MenuOption[OptionSelected].setColor(sf::Color(150,150,150));
+        MainMenu_[OptionSelected_].setFillColor(sf::Color::White);
+        OptionSelected_--;
+        SelectSound.play();
+        MainMenu_[OptionSelected_].setFillColor(sf::Color(150,150,150));
+    }
+    else if(SettingsActive_ && OptionSelected_ != 0)
+    {
+        Settings_[OptionSelected_].setFillColor(sf::Color::White);
+        OptionSelected_--;
+        SelectSound.play();
+        Settings_[OptionSelected_].setFillColor(sf::Color(150,150,150));
+    }
+    else if(PlaySettingsActive_ && OptionSelected_ != 0)
+    {
+        PlaySettings_[OptionSelected_].setFillColor(sf::Color::White);
+        OptionSelected_--;
+        SelectSound.play();
+        PlaySettings_[OptionSelected_].setFillColor(sf::Color(150,150,150));
     }
 }
 
-void menu::MoveDown()
+void Menu::MoveDown(sf::Sound &SelectSound)
 {
-    if(isActive && OptionSelected +1 < NUMBERS_OF_MENU_OPTIONS)
+    if(PlaySettingsActive_ && OptionSelected_ != PlaySettings_.size() - 1)
     {
-        MenuOption[OptionSelected].setColor(sf::Color::White);
-        OptionSelected++;
-        MenuOption[OptionSelected].setColor(sf::Color(150,150,150));
+        PlaySettings_[OptionSelected_].setFillColor(sf::Color::White);
+        OptionSelected_++;
+        SelectSound.play();
+        PlaySettings_[OptionSelected_].setFillColor(sf::Color(150,150,150));
+    }
+    else if(MainMenuActive_ && OptionSelected_ != MainMenu_.size() - 1)
+    {
+        MainMenu_[OptionSelected_].setFillColor(sf::Color::White);
+        OptionSelected_++;
+        SelectSound.play();
+        MainMenu_[OptionSelected_].setFillColor(sf::Color(150,150,150));
+    }
+    else if(SettingsActive_ && OptionSelected_ != Settings_.size() - 1)
+    {
+        Settings_[OptionSelected_].setFillColor(sf::Color::White);
+        OptionSelected_++;
+        SelectSound.play();
+        Settings_[OptionSelected_].setFillColor(sf::Color(150,150,150));
     }
 }
 
-void menu::PlayOption()
+void Menu::ShowMenu(sf::RenderWindow &Window)
 {
-    isActive = false;
-
+    for(auto &el: MainMenu_)
+        Window.draw(el);
 }
 
-int menu::ReturnIndex()
+void Menu::ShowSettings(sf::RenderWindow &Window)
 {
-    return OptionSelected;
+    Window.draw(OptionBackground[OptionSelected_]);
+    for(auto &el: Settings_)
+        Window.draw(el);
 }
+
+void Menu::ShowPlaySettings(sf::RenderWindow &Window)
+{
+    for(auto &el: PlaySettings_)
+        Window.draw(el);
+}
+
+
+

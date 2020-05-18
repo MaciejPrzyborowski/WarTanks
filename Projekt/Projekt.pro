@@ -16,11 +16,11 @@ SOURCES += \
         Perlin.cpp \
         Tank.cpp \
         main.cpp \
-        menu.cpp
+        Menu.cpp
 
 HEADERS += \
     Globals.h \
     Land.h \
     Perlin.h \
     Tank.h \
-    menu.h
+    Menu.h

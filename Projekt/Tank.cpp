@@ -2,33 +2,29 @@
 
 Tank::Tank()
 {
-    TankTexture.loadFromFile("tank.png");
-    TurretTexture.loadFromFile("turret.png");
-    for(int i = 0; i < 160; i++)
-    {
-        TankSprite[i].setTexture(TankTexture);
-    }
-    TurretSprite.setTexture(TurretTexture);
+    TankTexture.loadFromFile(TankTextureSrc);
+    CannonTexture.loadFromFile(BarrelTextureSrc);
+    CannonSprite.setTexture(CannonTexture);
+    TankSprite.setTexture(TankTexture);
+    CannonSprite.setOrigin(0, CannonSprite.getLocalBounds().height / 2);
 }
 
 void Tank::Reset()
 {
-    for(int i = 0; i < 160; i++)
-    {
-        TankSprite[i].setPosition(i*5, 5);
-        TankSprite[i].setOrigin(TankSprite[i].getLocalBounds().width / 2, TankSprite[i].getLocalBounds().height);
-    }
+    TankSprite.setPosition(rand()%150+50, 5);
+    TankSprite.setOrigin(TankSprite.getLocalBounds().width / 2, TankSprite.getLocalBounds().height);
 }
 
 void Tank::Draw(sf::RenderTarget &window, Land &Land)
 {
-    for(int i = 0; i < 160; i++)
-    {
-        float x = TankSprite[i].getPosition().x;
-        float y = Land.GetLandHeight(x);
-        float ang = Land.GetLandAngle(x, y);
-        TankSprite[i].setRotation(fmod(90 - TO_DEG(ang), 360));
-        TankSprite[i].setPosition(x, y);
-        window.draw(TankSprite[i]);
-    }
+    float x = TankSprite.getPosition().x;
+    float y = Land.GetLandHeight(x);
+    float ang = Land.GetLandAngle(x, y);
+    TankSprite.setRotation(fmod(90 - TO_DEG(ang), 360));
+    TankSprite.setPosition(x, y);
+    CannonSprite.setRotation(-45);
+    CannonSprite.setPosition(sf::Vector2f(x, y) - sf::Vector2f(0, TankSprite.getLocalBounds().height/2));
+
+    window.draw(TankSprite);
+    window.draw(CannonSprite);
 }

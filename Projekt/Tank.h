@@ -12,9 +12,9 @@ public:
     void setPosition(const sf::Vector2f& pos);
 
 private:
+    sf::Texture CannonTexture;
     sf::Texture TankTexture;
-    sf::Texture TurretTexture;
-
-    sf::Sprite TankSprite[160];
-    sf::Sprite TurretSprite;
+    sf::Sprite CannonSprite;
+    sf::Sprite TankSprite;
+    bool FreeFall;
 };

@@ -54,7 +54,7 @@ float Perlin::OctaveNoise(const float x, const float y)
         amplitude *= persistence_;
         frequency *= 2;
     }
-    return (total / maxAmplitude) * (WindowHeight) / 2 + (WindowHeight) / 2;
+    return (total / maxAmplitude) * (WindowHeight) / 3 + (WindowHeight) / 3;
 }
 
 /**
