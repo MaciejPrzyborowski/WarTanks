@@ -38,10 +38,12 @@ Gra zostanie zakończona w momencie, gdy jeden z czołgów zostanie zniszczony. 
 Do całej gry zostanie dołączony również czat tekstowy, który będzie umożliwiał komunikację się graczy w trybie multiplayer.
 
 # Klasy:
-#### Perlin.h
-#### Land.h
-#### Tank.h
-#### Player.h
-#### Game.h
-#### Menu.h
-#### Chat.h
+```
+Perlin.h
+Land.h
+Tank.h
+Player.h
+Game.h
+Menu.h
+Chat.h
+```
