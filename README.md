@@ -38,27 +38,10 @@ Gra zostanie zakończona w momencie, gdy jeden z czołgów zostanie zniszczony. 
 Do całej gry zostanie dołączony również czat tekstowy, który będzie umożliwiał komunikację się graczy w trybie multiplayer.
 
 # Klasy:
-#### Perlin
-```
-float OctaveNoise(const float x, const float y);
-float RawNoise(const float x, const float y);
-float GetCornerValue(const float x, const float y, const int GradientIndex);
-float MatrixDot(const int* Matrix, const float x, const float y);
-int FastFloor(const float x);
-int Hash(const int i);
-```
-
-#### Land (dziedziczy z Perlin)
-```
-void Generate();
-void Draw(sf::RenderTarget &target);
-bool IsSolidPixel(int x, int y);
-float GetLandAngle(int x, int y);
-int GetLandHeight(const int x);
-```
-#### Tank
-```
-void Draw(sf::RenderTarget &window, Land &Land);
-void Reset();
-void setPosition(const sf::Vector2f& pos);
-```
+#### Perlin.h
+#### Land.h
+#### Tank.h
+#### Player.h
+#### Game.h
+#### Menu.h
+#### Chat.h
