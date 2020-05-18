@@ -13,7 +13,7 @@ Settings:
 
       włącz/wyłącz dźwięk
       
-      tryb pełnoekranowy/okienko
+      włącz/wyłącz muzyke
       
       włącz/wyłącz licznik FPS
       
