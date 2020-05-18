@@ -1,4 +1,4 @@
-# Tytuł: WarTanks
+# WarTanks
 
 Gra posiadałaby menu, w którym do wyboru będą następujące opcje:
 
