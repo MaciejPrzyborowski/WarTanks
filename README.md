@@ -36,3 +36,9 @@ W przypadku zderzenia się z ziemią pocisk będzie niszczył teren w kształt o
 Gra zostanie zakończona w momencie, gdy jeden z czołgów zostanie zniszczony. W tym momencie zostaje wyłoniony zwycięzca i jest możliwy powrót do menu.
 
 Do całej gry zostanie dołączony również czat tekstowy, który będzie umożliwiał komunikację się graczy w trybie multiplayer.
+
+# Klasy:
+###### Klasa 1
+###### Klasa 2
+###### Klasa 3
+###### Klasa 4
