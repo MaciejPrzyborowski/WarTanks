@@ -38,7 +38,19 @@ Gra zostanie zakończona w momencie, gdy jeden z czołgów zostanie zniszczony. 
 Do całej gry zostanie dołączony również czat tekstowy, który będzie umożliwiał komunikację się graczy w trybie multiplayer.
 
 # Klasy:
-###### Klasa 1
-###### Klasa 2
-###### Klasa 3
-###### Klasa 4
+#### Klasa 1
+```
+funkcje
+```
+#### Klasa 2
+```
+funkcje
+```
+#### Klasa 3
+```
+funkcje
+```
+#### Klasa 4
+```
+funkcje
+```
