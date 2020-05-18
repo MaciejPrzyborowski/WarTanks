@@ -46,5 +46,5 @@ Player.h
 Game.h
 Menu.h
 Chat.h
-Settings.h
+Globals.h
 ```
