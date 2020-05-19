@@ -14,7 +14,7 @@ int main()
     Tank Tank2(2, TankTextureSrc2);
 
     sf::Texture GameBackground;
-    GameBackground.loadFromFile("game_background.jpg");
+    GameBackground.loadFromFile("game_background.png");
     sf::Sprite GameSprite;
     GameSprite.setTexture(GameBackground);
 
