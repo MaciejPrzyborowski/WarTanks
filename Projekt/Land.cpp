@@ -23,7 +23,7 @@ void Land::Generate()
         for(int y = WindowHeight - height_[x]; y < WindowHeight ; y++)
         {
             image_.setPixel(x, y, Gradient(float(WindowHeight - y) / height_[x],
-                                              sf::Color(0, 75, 0), sf::Color(0, 150, 0)));
+                                              sf::Color(0, 35, 0), sf::Color(0, 200, 0)));
         }
     }
 }
