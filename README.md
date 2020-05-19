@@ -48,4 +48,7 @@ Menu.h
 Chat.h
 Globals.h
 ``` 
-![GitHub Logo](/graj.png)
+![menu](/menu.png)
+![ustawienia](/ustawienia.png)
+![graj](/graj.png)
+![gra](/gra.png)
