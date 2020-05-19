@@ -51,4 +51,5 @@ Globals.h
 ![menu](/menu.png)
 ![ustawienia](/ustawienia.png)
 ![graj](/graj.png)
+![gra](/gra2.png)
 ![gra](/gra.png)
