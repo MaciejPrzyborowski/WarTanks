@@ -25,7 +25,7 @@ Quit:
       
 W menu będzie można poruszać się zarówno myszką jak i klawiaturą, dodatkowo będzie towarzyszyła nam przyjemna muzyczka, która rozbudzi w nas ducha walki i chęć wygrania z przeciwnikiem.
 
-Mapa za każdym razem będzie generowała się losowo po rozpoczęciu się gry. Do generowania mapy wykorzystamy szum Perlina. W grze będą czołgi, którymi gracze będą mogli poruszać się tylko przez pierwsze 10 sekund po rozpoczęciu się rundy, później mają 20 sekund na oddanie strzału (w tym czasie ustawiają kąt nachylenia lufy czołgu oraz siłę strzału).
+Mapa za każdym razem będzie generowała się losowo po rozpoczęciu się gry. Do generowania mapy wykorzystamy szum Perlina. W grze będą czołgi, którymi gracze będą mogli poruszać się tylko przez pierwsze 5 sekund po rozpoczęciu się rundy, później mają 10 sekund na oddanie strzału (w tym czasie ustawiają kąt nachylenia lufy czołgu oraz siłę strzału).
 
 Poruszanie nie będzie możliwe dla dużych wzniesień, ze względu na dużą masę czołgu (kąt pod który maksymalnie wjedzie czołg to 75 stopni).
 
