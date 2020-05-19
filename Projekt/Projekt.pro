@@ -12,10 +12,10 @@ CONFIG(debug, debug|release){
 }
 
 SOURCES += \
+        main.cpp \
         Land.cpp \
         Perlin.cpp \
         Tank.cpp \
-        main.cpp \
         Menu.cpp
 
 HEADERS += \
