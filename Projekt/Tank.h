@@ -6,10 +6,11 @@
 class Tank
 {
 public:
-    Tank();
-    void Draw(sf::RenderTarget &window, Land &Land);
-    void Reset();
-    void setPosition(const sf::Vector2f& pos);
+    Tank(const int PlayerID, const string &texture);
+    void draw(sf::RenderTarget &window);
+    void Reset(Land &Land);
+    void setPosition(const sf::Vector2f &position);
+    void move(Land &Land);
 
 private:
     sf::Texture CannonTexture;
@@ -17,4 +18,5 @@ private:
     sf::Sprite CannonSprite;
     sf::Sprite TankSprite;
     bool FreeFall;
+    int playerID_;
 };

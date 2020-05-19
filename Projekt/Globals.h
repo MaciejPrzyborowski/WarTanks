@@ -7,12 +7,15 @@
 #include <iostream>
 #include <cmath>
 
-#define WindowHeight 600
 #define WindowWidth 800
-#define TankTextureSrc "tank.png"
-#define BarrelTextureSrc "turret.png"
+#define WindowHeight 600
 #define NazwaGry "WarTanks"
+
+#define TankTextureSrc1 "tank1.png"
+#define TankTextureSrc2 "tank2.png"
+#define BarrelTextureSrc "barrel.png"
+
 #define LERP(t, a, b) (a + t * (b - a))
-#define TO_DEG(x) (x * 180.0 / M_PI)
+#define RadianToDegree(radians) (radians * (180.0 / M_PI))
 
 using namespace std;

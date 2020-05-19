@@ -10,7 +10,8 @@ int main()
     Menu Menu;
 
     Land Land(4, 0.2);
-    Tank Tank;
+    Tank Tank1(1, TankTextureSrc1);
+    Tank Tank2(2, TankTextureSrc2);
 
     sf::Texture GameBackground;
     GameBackground.loadFromFile("game_background.jpg");
@@ -22,7 +23,7 @@ int main()
     float scaleY2 = (float)WindowHeight/TextureSize2.y;
     GameSprite.setScale(scaleX2, scaleY2);
 
-    sf::Clock Clock;
+    sf::Clock clock;
 
     while(Window.isOpen())
     {
@@ -39,24 +40,27 @@ int main()
                 if(Event.key.code == sf::Keyboard::Return)
                 {
                     Land.Generate();
-                    Tank.Reset();
+                    Tank1.Reset(Land);
+                    Tank2.Reset(Land);
                 }
             }
             Menu.ShowSwitch(Event, Window);
+            Tank1.move(Land);
         }
 
         Window.clear();
+        clock.restart();
         if(Menu.IsActiveMenu())
         {
-            Menu.ShowMenu(Window, Clock);
+            Menu.ShowMenu(Window, clock);
         }
         else
         {
             Window.draw(GameSprite);
-            Land.Draw(Window);
-            Tank.Draw(Window, Land);
+            Land.draw(Window);
+            Tank1.draw(Window);
+            Tank2.draw(Window);
         }
-        Clock.restart();
         Window.display();
     }
     return 0;

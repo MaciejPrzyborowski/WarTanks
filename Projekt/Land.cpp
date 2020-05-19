@@ -68,6 +68,7 @@ float Land::GetLandAngle(int x, int y)
             {
                 avgX += x0;
                 avgY += y0;
+                cout << "x: " << x0 << " | y: " << y0 << "(" << avgX << ", " << avgY << ")" << endl;
             }
         }
     }
@@ -85,7 +86,7 @@ int Land::GetLandHeight(const int x)
 /**
  * Aktualizuje i wyświetla teren
  */
-void Land::Draw(sf::RenderTarget &window)
+void Land::draw(sf::RenderTarget &window)
 {
     if(modified_)
     {
