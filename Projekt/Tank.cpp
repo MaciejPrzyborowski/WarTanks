@@ -9,7 +9,6 @@ Tank::Tank(const int PlayerID, const string &texture) : playerID_(PlayerID)
 
     TankSprite.setOrigin(TankSprite.getLocalBounds().width / 2, TankSprite.getLocalBounds().height);
     CannonSprite.setOrigin(0, CannonSprite.getLocalBounds().height / 2);
-    CannonSprite.setRotation(-90);
 }
 
 void Tank::Reset(Land &Land)
@@ -26,6 +25,7 @@ void Tank::Reset(Land &Land)
     float y = Land.GetLandHeight(x);
     float ang = Land.GetLandAngle(x, y);
     TankSprite.setRotation(fmod(90 - RadianToDegree(ang), 360));
+    CannonSprite.setRotation(-90);
     setPosition(sf::Vector2f(x, y));
 }
 

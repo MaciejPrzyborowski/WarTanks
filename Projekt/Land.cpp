@@ -68,7 +68,6 @@ float Land::GetLandAngle(int x, int y)
             {
                 avgX += x0;
                 avgY += y0;
-                cout << "x: " << x0 << " | y: " << y0 << "(" << avgX << ", " << avgY << ")" << endl;
             }
         }
     }
