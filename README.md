@@ -48,3 +48,6 @@ Menu.h
 Chat.h
 Globals.h
 ```
+<img src="gra.png"
+     alt="Markdown Monster icon"
+     style="float: left; margin-right: 10px;" />
