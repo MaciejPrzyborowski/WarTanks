@@ -47,4 +47,8 @@ Game.h
 Menu.h
 Chat.h
 Globals.h
-```
+``` 
+![menu](/menu.png)
+![ustawienia](/ustawienia.png)
+![graj](/graj.png)
+![gra](/gra.png)
