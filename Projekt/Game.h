@@ -20,4 +20,7 @@ private:
     unique_ptr<Land> land_;
     unique_ptr<Tank> player1_;
     unique_ptr<Tank> player2_;
+
+    sf::Texture GameBackground;
+    sf::Sprite GameSprite;
 };

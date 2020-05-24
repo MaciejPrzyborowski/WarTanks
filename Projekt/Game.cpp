@@ -18,20 +18,14 @@ void Game::Initialize()
     land_ = make_unique<Land>(4, 0.2);
     player1_ = make_unique<Tank>(1, true, TankTextureSrc1, *land_);
     player2_ = make_unique<Tank>(2, false, TankTextureSrc2, *land_);
+
+    GameBackground.loadFromFile(GameBackgroundTextureSrc);
+    GameSprite.setTexture(GameBackground);
+    GameSprite.setScale((float)WindowWidth/GameBackground.getSize().x, (float)WindowHeight/GameBackground.getSize().y);
 }
 
 void Game::Update()
 {
-    sf::Texture GameBackground;
-    GameBackground.loadFromFile("game_background.png");
-    sf::Sprite GameSprite;
-    GameSprite.setTexture(GameBackground);
-
-    sf::Vector2u TextureSize2 = GameBackground.getSize();
-    float scaleX2 = (float)WindowWidth/TextureSize2.x;
-    float scaleY2 = (float)WindowHeight/TextureSize2.y;
-    GameSprite.setScale(scaleX2, scaleY2);
-
     sf::Clock clock;
     while(window_->isOpen())
     {
@@ -52,28 +46,16 @@ void Game::Update()
                     player1_->Reset();
                     player2_->Reset();
                 }
-                if(Event.key.code == sf::Keyboard::Space)
-                {
-                    if(player1_->getStatus())
-                    {
-                        player1_->setStatus(false);
-                        player2_->setStatus(true);
-                    }
-                    else
-                    {
-                        player1_->setStatus(true);
-                        player2_->setStatus(false);
-                    }
-                }
-
             }
+            player1_->passEvent(Event);
+            player2_->passEvent(Event);
             menu_->ShowSwitch(Event, *window_);
         }
-        if(player1_->getStatus())
+        if(player1_->isMoving())
         {
             player1_->move(elapsed.asSeconds());
         }
-        if(player2_->getStatus())
+        if(player2_->isMoving())
         {
             player2_->move(elapsed.asSeconds());
         }

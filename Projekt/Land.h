@@ -8,7 +8,7 @@ class Land : Perlin
 public:
     Land(const float octaves, const float persistence);
     void Generate();
-    void draw(sf::RenderTarget &target);
+    void draw(sf::RenderTarget &window);
 
     bool IsSolidPixel(int x, int y);
     float GetAngleRadian(int x, int y);

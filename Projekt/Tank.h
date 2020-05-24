@@ -6,31 +6,34 @@
 class Tank
 {
 public:
-    Tank(const int PlayerID, bool status, const string &texture, Land &land);
-    ////////////////////////////////////////////////
+    Tank(const int playerID, const bool active, const string &texture, Land &land_);
+    void Reset();
+    void move(const float elapsed);
+    void passEvent(sf::Event &event);
     void draw(sf::RenderTarget &window);
+
+    bool getStatus();
+    bool isMoving();
+
+private:
+    Land *land;
+
+    bool active_;
+
+    int playerID_;
+    int moveDirection_ = 0;
+
+    float speed_ = 50.0;
+    float maxAngle_ = 72.5;
+
+    sf::Sprite TankSprite;
+    sf::Sprite CannonSprite;
+    sf::Texture TankTexture;
+    sf::Texture CannonTexture;
+
+    bool canMove(const sf::Vector2f &velocity);
+
     void movePosition(const sf::Vector2f &velocity);
     void setPosition(const sf::Vector2f &position);
     void setRotation(const sf::Vector2f &position);
-    void setStatus(const bool status);
-
-    bool canMove(const sf::Vector2f &velocity);
-    bool getStatus();
-    ////////////////////////////////////////////////
-    void Reset();
-    void move(float dt);
-    float elapsedtime = 0.0;
-
-private:
-    sf::Texture CannonTexture;
-    sf::Texture TankTexture;
-    sf::Sprite CannonSprite;
-    sf::Sprite TankSprite;
-
-    //////////////////////////////////////////////////
-    float maxAngle_ = 72.5;
-    float speed_ = 50.0;
-    int playerID_;
-    bool active_;
-    Land *land;
 };

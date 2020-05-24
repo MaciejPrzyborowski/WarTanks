@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-Tank::Tank(const int PlayerID, bool status, const string &texture, Land &land) : playerID_(PlayerID), active_(status), land(&land)
+Tank::Tank(const int playerID, const bool active, const string &texture, Land &land_) : land(&land_), active_(active), playerID_(playerID)
 {
     TankTexture.loadFromFile(texture);
     CannonTexture.loadFromFile(BarrelTextureSrc);
@@ -28,23 +28,16 @@ void Tank::Reset()
     CannonSprite.setRotation(-90);
 }
 
-void Tank::move(float elapsed)
+/**
+ * Oblicza prędkość przemieszczenia czołgu
+ */
+void Tank::move(const float elapsed)
 {
-    int direction = 0;
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-        direction = -1.0;
-    }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-        direction = 1.0;
-    }
-    if(direction)
+    if(isMoving())
     {
         sf::Vector2f velocity(0.0, 0.0);
-        velocity.x = (speed_ * cos(DegreeToRadian(TankSprite.getRotation()))) * direction * elapsed;
+        velocity.x = (speed_ * cos(DegreeToRadian(TankSprite.getRotation()))) * moveDirection_ * elapsed;
         velocity.y = land->GetLandHeight(TankSprite.getPosition().x + velocity.x) - TankSprite.getPosition().y;
-        cout << velocity.y << endl;
         if(canMove(velocity))
         {
             movePosition(velocity);
@@ -82,27 +75,6 @@ void Tank::setRotation(const sf::Vector2f &position)
 }
 
 /**
- * Ustawia status czołgu
- *
- * @param status
- * true - może wykonać wszystkie czynności
- * false - nie może wykonywać żadnych czynności
- */
-void Tank::setStatus(const bool status)
-{
-    active_ = status;
-}
-
-/**
- * Wyświetla czołg z jego lufą
- */
-void Tank::draw(sf::RenderTarget &window)
-{
-    window.draw(CannonSprite);
-    window.draw(TankSprite);
-}
-
-/**
  * Sprawdza czy czołg może przemieścić się o wektor [x, y]
  */
 bool Tank::canMove(const sf::Vector2f &velocity)
@@ -119,9 +91,72 @@ bool Tank::canMove(const sf::Vector2f &velocity)
  */
 bool Tank::getStatus()
 {
-    if(active_)
+    return active_;
+}
+
+/**
+ * Sprawdza czy czołg się przemieszcza
+ */
+bool Tank::isMoving()
+{
+    if(getStatus())
     {
-        return true;
+        if(moveDirection_)
+        {
+            return true;
+        }
+    }
+    else if(moveDirection_)
+    {
+        moveDirection_ = 0;
     }
     return false;
+}
+
+/**
+ * Obsługa zdarzeń wykonanych przez gracza
+ */
+void Tank::passEvent(sf::Event &event)
+{
+    if(event.type == sf::Event::KeyReleased)
+    {
+        if(event.key.code == sf::Keyboard::Space)
+        {
+            active_ = !active_;
+        }
+        if(event.key.code == sf::Keyboard::Left)
+        {
+            if(moveDirection_ == -1)
+            {
+                moveDirection_ = 0;
+            }
+        }
+        else if(event.key.code == sf::Keyboard::Right)
+        {
+            if(moveDirection_ == 1)
+            {
+                moveDirection_ = 0;
+            }
+        }
+    }
+    if(event.type == sf::Event::KeyPressed)
+    {
+        if(event.key.code == sf::Keyboard::Left)
+        {
+            moveDirection_ = -1;
+        }
+        if(event.key.code == sf::Keyboard::Right)
+        {
+            moveDirection_ = 1;
+        }
+    }
+}
+
+/**
+ * Wyświetla czołg z jego lufą
+ */
+void Tank::draw(sf::RenderTarget &window)
+{
+    window.draw(CannonSprite);
+    window.draw(TankSprite);
 }
