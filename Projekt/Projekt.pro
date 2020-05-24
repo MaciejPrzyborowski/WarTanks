@@ -1,5 +1,5 @@
 TEMPLATE = app
-CONFIG += console c++11
+CONFIG += console c++17
 CONFIG -= app_bundle
 CONFIG -= qt
 
@@ -12,6 +12,7 @@ CONFIG(debug, debug|release){
 }
 
 SOURCES += \
+        Game.cpp \
         main.cpp \
         Land.cpp \
         Perlin.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
         Menu.cpp
 
 HEADERS += \
+    Game.h \
     Globals.h \
     Land.h \
     Perlin.h \

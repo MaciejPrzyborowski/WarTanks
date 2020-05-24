@@ -55,8 +55,9 @@ bool Land::IsSolidPixel(int x, int y)
 
 /**
  * Zwraca kąt nachylenia powierzchni w punkcie (x,y)
+ * Kąt jest wyrażony w radianach
  */
-float Land::GetLandAngle(int x, int y)
+float Land::GetAngleRadian(int x, int y)
 {
     int d = 3;
     float avgX = 0, avgY = 0;
@@ -71,7 +72,16 @@ float Land::GetLandAngle(int x, int y)
             }
         }
     }
-    return avgX ? atan2(avgY, -avgX) : M_PI_2;
+    return avgX ? (M_PI_2 - atan2(avgY, -avgX)) : 0;
+}
+
+/**
+ * Zwraca kąt nachylenia powierzchni w punkcie (x,y)
+ * Kąt jest wyrażony w stopniach
+ */
+float Land::GetAngleDegree(int x, int y)
+{
+    return fmod(RadianToDegree(GetAngleRadian(x, y)), 360.0);
 }
 
 /**

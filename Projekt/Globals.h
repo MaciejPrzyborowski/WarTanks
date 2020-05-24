@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cmath>
 
+#define WindowFPS 120
 #define WindowWidth 800
 #define WindowHeight 600
 #define NazwaGry "WarTanks"
@@ -17,5 +18,6 @@
 
 #define LERP(t, a, b) (a + t * (b - a))
 #define RadianToDegree(radians) (radians * (180.0 / M_PI))
+#define DegreeToRadian(degree) (degree * (M_PI / 180.0))
 
 using namespace std;

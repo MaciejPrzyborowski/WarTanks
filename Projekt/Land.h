@@ -11,8 +11,10 @@ public:
     void draw(sf::RenderTarget &target);
 
     bool IsSolidPixel(int x, int y);
-    float GetLandAngle(int x, int y);
+    float GetAngleRadian(int x, int y);
+    float GetAngleDegree(int x, int y);
     int GetLandHeight(const int x);
+    std::vector<int> height_;
 
 private:
     bool modified_;
@@ -21,7 +23,6 @@ private:
     sf::Image image_;
     sf::Sprite sprite_;
     sf::Texture texture_;
-    std::vector<int> height_;
 
     sf::Color Gradient(float t, sf::Color a, sf::Color b);
 };
