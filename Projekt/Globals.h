@@ -15,6 +15,7 @@
 #define TankTextureSrc1 "tank1.png"
 #define TankTextureSrc2 "tank2.png"
 #define BarrelTextureSrc "barrel.png"
+#define CrosshairTextureSrc "crosshair.png"
 #define GameBackgroundTextureSrc "game_background.png"
 
 #define LERP(t, a, b) (a + t * (b - a))

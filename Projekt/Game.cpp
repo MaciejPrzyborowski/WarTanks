@@ -47,17 +47,17 @@ void Game::Update()
                     player2_->Reset();
                 }
             }
-            player1_->passEvent(Event);
-            player2_->passEvent(Event);
+            player1_->passEvent(Event, *window_);
+            player2_->passEvent(Event, *window_);
             menu_->ShowSwitch(Event, *window_);
         }
-        if(player1_->isMoving())
+        if(player1_->isTankMoving())
         {
-            player1_->move(elapsed.asSeconds());
+            player1_->moveTank(elapsed.asSeconds());
         }
-        if(player2_->isMoving())
+        if(player2_->isTankMoving())
         {
-            player2_->move(elapsed.asSeconds());
+            player2_->moveTank(elapsed.asSeconds());
         }
         window_->clear();
         if(menu_->IsActiveMenu())
@@ -71,6 +71,8 @@ void Game::Update()
             player1_->draw(*window_);
             player2_->draw(*window_);
         }
+        player1_->moveCannon(*window_);
+        player2_->moveCannon(*window_);
         window_->display();
     }
 }
