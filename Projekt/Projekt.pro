@@ -12,6 +12,7 @@ CONFIG(debug, debug|release){
 }
 
 SOURCES += \
+        Bullet.cpp \
         Game.cpp \
         main.cpp \
         Land.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
         Menu.cpp
 
 HEADERS += \
+    Bullet.h \
     Game.h \
     Globals.h \
     Land.h \

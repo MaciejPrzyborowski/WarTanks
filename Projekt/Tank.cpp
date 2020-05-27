@@ -40,6 +40,20 @@ void Tank::Reset()
     CannonSprite.setRotation(-90);
 }
 
+void Tank::Fire()
+{
+    if(!shootActive_)
+    {
+        float BulletVelocity = (float)shootPower_ * 5.0;
+        float CannonRotation = DegreeToRadian(CannonSprite.getRotation());
+        sf::Vector2f BulletRotation(cos(CannonRotation), sin(CannonRotation));
+        bullet_ = make_unique<Bullet>(sf::Vector2f(CannonSprite.getPosition().x + CannonSprite.getLocalBounds().width * BulletRotation.x,
+                                                   CannonSprite.getPosition().y + CannonSprite.getLocalBounds().width * BulletRotation.y));
+        bullet_->setVelocity(sf::Vector2f(BulletVelocity * BulletRotation.x, BulletVelocity * BulletRotation.y));
+        shootActive_ = true;
+    }
+}
+
 /**
  * Zmienia siłę wystrzału pocisku
  */
@@ -86,7 +100,6 @@ void Tank::moveCannon(sf::RenderWindow &window)
         CrosshairSprite.setPosition(cannonPosition);
         CrosshairSprite.move(cos(angle) * 100, sin(angle) * 100);
         CannonSprite.setRotation(RadianToDegree(angle));
-        window.draw(CrosshairSprite);
     }
 }
 
@@ -209,6 +222,10 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
     {
         if(event.type == sf::Event::KeyPressed)
         {
+            if(event.key.code == sf::Keyboard::Space)
+            {
+                Fire();
+            }
             if(event.key.code == sf::Keyboard::Up)
             {
                 changeShootPower(1);
@@ -235,9 +252,21 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 }
 
 /**
+ * Aktualizuje dane gracza
+ */
+void Tank::update(const float elapsed, sf::RenderWindow &window)
+{
+    if(active_)
+    {
+        moveTank(elapsed);
+        moveCannon(window);
+    }
+}
+
+/**
  * Wyświetla czołg z jego lufą
  */
-void Tank::draw(sf::RenderTarget &window)
+void Tank::draw(const float elapsed, sf::RenderTarget &window)
 {
     window.draw(CannonSprite);
     window.draw(TankSprite);
@@ -245,5 +274,22 @@ void Tank::draw(sf::RenderTarget &window)
     {
         window.draw(shootPowerBox);
         window.draw(shootPowerFill);
+        if(shootActive_)
+        {
+            if(bullet_->destructed == false)
+            {
+                bullet_->draw(window);
+                bullet_->move(elapsed);
+            }
+            else
+            {
+                bullet_.reset();
+                shootActive_ = false;
+            }
+        }
+        if(isCannonMoving())
+        {
+            window.draw(CrosshairSprite);
+        }
     }
 }

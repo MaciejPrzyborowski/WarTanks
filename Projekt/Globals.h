@@ -23,3 +23,5 @@
 #define DegreeToRadian(degree) (degree * (M_PI / 180.0))
 
 using namespace std;
+
+const int Gravity = 180;

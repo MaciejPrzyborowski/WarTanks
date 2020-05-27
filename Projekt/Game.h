@@ -13,6 +13,7 @@ public:
 
     void Initialize();
     void Update();
+    static bool ChangePlayer;
 
 private:
     unique_ptr<sf::RenderWindow> window_;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Globals.h"
+#include "Bullet.h"
 #include "Land.h"
 
 class Tank
@@ -8,11 +9,13 @@ class Tank
 public:
     Tank(const int playerID, const bool active, const string &texture, Land &land_);
     void Reset();
+    void Fire();
     void moveTank(const float elapsed);
     void moveCannon(sf::RenderWindow &window);
     void changeShootPower(const int direction);
     void passEvent(sf::Event &event, sf::RenderWindow &window);
-    void draw(sf::RenderTarget &window);
+    void update(const float elapsed, sf::RenderWindow &window);
+    void draw(const float elapsed, sf::RenderTarget &window);
 
     bool getStatus();
     bool getCrosshairStatus();
@@ -20,9 +23,12 @@ public:
     bool isCannonMoving();
 
 private:
+    unique_ptr<Bullet> bullet_;
+
     Land *land;
 
     bool active_;
+    bool shootActive_ = false;
     bool crosshairActive_ = false;
 
     int playerID_;
