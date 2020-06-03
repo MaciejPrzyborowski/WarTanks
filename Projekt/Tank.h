@@ -17,18 +17,18 @@ public:
     void update(const float elapsed, sf::RenderWindow &window);
     void draw(const float elapsed, sf::RenderTarget &window);
 
+    void switchStatus();
     bool getStatus();
     bool getCrosshairStatus();
     bool isTankMoving();
     bool isCannonMoving();
+    int shootActive_ = 0;
 
 private:
+    Land *land;
     unique_ptr<Bullet> bullet_;
 
-    Land *land;
-
     bool active_;
-    bool shootActive_ = false;
     bool crosshairActive_ = false;
 
     int playerID_;

@@ -3,9 +3,10 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <cmath>
+#include <list>
 
 #define WindowFPS 120
 #define WindowWidth 800

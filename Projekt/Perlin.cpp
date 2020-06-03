@@ -33,8 +33,8 @@ const int Perlin::GradientsCube[12][3] =
 Perlin::Perlin(const float octaves, const float persistence)
     : octaves_(octaves), persistence_(persistence)
 {
-    Factor[0] = 0.5 * (sqrtf(3.0) - 1.0); // Skewing Factor (~0.366025)
-    Factor[1] = (3.0 - sqrtf(3.0)) / 6.0; // Unskewing Factor (~0.211325)
+    factor_[0] = 0.5 * (sqrtf(3.0) - 1.0); // Skewing Factor (~0.366025)
+    factor_[1] = (3.0 - sqrtf(3.0)) / 6.0; // Unskewing Factor (~0.211325)
 }
 
 /**
@@ -49,7 +49,7 @@ float Perlin::OctaveNoise(const float x, const float y)
     float maxAmplitude = 0;
     for(int i = 0; i < octaves_; i++)
     {
-        total += RawNoise(x * frequency, y * frequency) * amplitude;
+        total += rawNoise(x * frequency, y * frequency) * amplitude;
         maxAmplitude += amplitude;
         amplitude *= persistence_;
         frequency *= 2;
@@ -61,17 +61,17 @@ float Perlin::OctaveNoise(const float x, const float y)
  * Obliczanie wartości szumu
  * Zwraca wartości z przedziału: [-1, 1]
 */
-float Perlin::RawNoise(const float x, const float y)
+float Perlin::rawNoise(const float x, const float y)
 {
     float Noise[3];
 
     int SimplexCell[2][3];
-    float SkewedCell = (x + y) * Factor[0];
-    SimplexCell[0][0] = FastFloor(x + SkewedCell);
-    SimplexCell[1][0] = FastFloor(y + SkewedCell);
+    float SkewedCell = (x + y) * factor_[0];
+    SimplexCell[0][0] = fastFloor(x + SkewedCell);
+    SimplexCell[1][0] = fastFloor(y + SkewedCell);
 
     float CellOrigin[2][3];
-    float UnSkewedCell = (SimplexCell[0][0] + SimplexCell[1][0]) * Factor[1];
+    float UnSkewedCell = (SimplexCell[0][0] + SimplexCell[1][0]) * factor_[1];
     CellOrigin[0][0] = x - SimplexCell[0][0] + UnSkewedCell;
     CellOrigin[1][0] = y - SimplexCell[1][0] + UnSkewedCell;
     if(CellOrigin[0][0] > CellOrigin[1][0])
@@ -84,45 +84,45 @@ float Perlin::RawNoise(const float x, const float y)
         SimplexCell[0][1] = 0;
         SimplexCell[1][1] = 1;
     }
-    CellOrigin[0][1] = CellOrigin[0][0] - SimplexCell[0][1] + Factor[1];
-    CellOrigin[1][1] = CellOrigin[1][0] - SimplexCell[1][1] + Factor[1];
-    CellOrigin[0][2] = CellOrigin[0][0] - 1.0 + 2.0 * Factor[1];
-    CellOrigin[1][2] = CellOrigin[1][0] - 1.0 + 2.0 * Factor[1];
+    CellOrigin[0][1] = CellOrigin[0][0] - SimplexCell[0][1] + factor_[1];
+    CellOrigin[1][1] = CellOrigin[1][0] - SimplexCell[1][1] + factor_[1];
+    CellOrigin[0][2] = CellOrigin[0][0] - 1.0 + 2.0 * factor_[1];
+    CellOrigin[1][2] = CellOrigin[1][0] - 1.0 + 2.0 * factor_[1];
     SimplexCell[0][2] = SimplexCell[0][0] & 255;
     SimplexCell[1][2] = SimplexCell[1][0] & 255;
 
     int GradientIndex[3];
-    GradientIndex[0] = Hash(SimplexCell[0][2] + Hash(SimplexCell[1][2])) % 12;
-    GradientIndex[1] = Hash(SimplexCell[0][2] + SimplexCell[0][1] + Hash(SimplexCell[1][2] + SimplexCell[1][1])) % 12;
-    GradientIndex[2] = Hash(SimplexCell[0][2] + 1 + Hash(SimplexCell[1][2] + 1)) % 12;
+    GradientIndex[0] = hash(SimplexCell[0][2] + hash(SimplexCell[1][2])) % 12;
+    GradientIndex[1] = hash(SimplexCell[0][2] + SimplexCell[0][1] + hash(SimplexCell[1][2] + SimplexCell[1][1])) % 12;
+    GradientIndex[2] = hash(SimplexCell[0][2] + 1 + hash(SimplexCell[1][2] + 1)) % 12;
     for(int i = 0; i < 3; i++)
     {
-        Noise[i] = GetCornerValue(CellOrigin[0][i], CellOrigin[1][i], GradientIndex[i]);
+        Noise[i] = getCornerValue(CellOrigin[0][i], CellOrigin[1][i], GradientIndex[i]);
     }
     return 70.0 * (Noise[0] + Noise[1] + Noise[2]);
 }
 
-float Perlin::GetCornerValue(const float x, const float y, const int GradientIndex)
+float Perlin::getCornerValue(const float x, const float y, const int GradientIndex)
 {
     float CornerValue = 0.5 - powf(x, 2) - powf(y, 2);
     if(CornerValue < 0)
     {
         return 0.0;
     }
-    return (powf(CornerValue, 4) * MatrixDot(GradientsCube[GradientIndex], x, y));
+    return (powf(CornerValue, 4) * matrixDot(GradientsCube[GradientIndex], x, y));
 }
 
-float Perlin::MatrixDot(const int* Matrix, const float x, const float y)
+float Perlin::matrixDot(const int* Matrix, const float x, const float y)
 {
     return Matrix[0] * x + Matrix[1] * y;
 }
 
-int Perlin::FastFloor(const float x)
+int Perlin::fastFloor(const float x)
 {
     return (x > 0.0) ? (int)x : (int)(x - 1.0);
 }
 
-int Perlin::Hash(const int i)
+int Perlin::hash(const int i)
 {
     return Permutation[i & 255];
 }

@@ -1,19 +1,23 @@
 #pragma once
 
 #include "Globals.h"
+#include "Land.h"
 
 class Bullet
 {
 public:
-    Bullet(const sf::Vector2f &position);
+    Bullet(const sf::Vector2f &position, Land &land_);
     void move(const float elapsed);
-    void setVelocity(const sf::Vector2f &velocity);
     void setAcceleration(const sf::Vector2f &velocity);
+    void setVelocity(const sf::Vector2f &velocity);
     void draw(sf::RenderTarget &window);
-    bool destructed;
+
+    bool isActive();
 
 private:
-    void explode();
+    Land *land;
+    bool active_;
+
     sf::CircleShape bullet_;
     sf::Vector2f velocity_;
     sf::Vector2f acceleration_;

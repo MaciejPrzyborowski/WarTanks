@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Land.h"
 #include "Tank.h"
 #include "Menu.h"
 #include "Globals.h"
@@ -13,7 +12,6 @@ public:
 
     void Initialize();
     void Update();
-    static bool ChangePlayer;
 
 private:
     unique_ptr<sf::RenderWindow> window_;
@@ -22,6 +20,6 @@ private:
     unique_ptr<Tank> player1_;
     unique_ptr<Tank> player2_;
 
-    sf::Texture GameBackground;
-    sf::Sprite GameSprite;
+    sf::Texture backgroundTexture_;
+    sf::Sprite backgroundSprite_;
 };

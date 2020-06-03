@@ -9,17 +9,16 @@ public:
     float OctaveNoise(const float x, const float y);
 
 private:
-    float Factor[2];
-
+    float factor_[2];
     const float octaves_;
     const float persistence_;
 
     static const int Permutation[256];
     static const int GradientsCube[12][3];
 
-    float RawNoise(const float x, const float y);
-    float GetCornerValue(const float x, const float y, const int GradientIndex);
-    float MatrixDot(const int* Matrix, const float x, const float y);
-    int FastFloor(const float x);
-    int Hash(const int i);
+    float rawNoise(const float x, const float y);
+    float getCornerValue(const float x, const float y, const int GradientIndex);
+    float matrixDot(const int* Matrix, const float x, const float y);
+    int fastFloor(const float x);
+    int hash(const int i);
 };

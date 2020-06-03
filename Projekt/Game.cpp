@@ -19,9 +19,9 @@ void Game::Initialize()
     player1_ = make_unique<Tank>(1, true, TankTextureSrc1, *land_);
     player2_ = make_unique<Tank>(2, false, TankTextureSrc2, *land_);
 
-    GameBackground.loadFromFile(GameBackgroundTextureSrc);
-    GameSprite.setTexture(GameBackground);
-    GameSprite.setScale((float)WindowWidth/GameBackground.getSize().x, (float)WindowHeight/GameBackground.getSize().y);
+    backgroundTexture_.loadFromFile(GameBackgroundTextureSrc);
+    backgroundSprite_.setTexture(backgroundTexture_);
+    backgroundSprite_.setScale((float)WindowWidth/backgroundTexture_.getSize().x, (float)WindowHeight/backgroundTexture_.getSize().y);
 }
 
 void Game::Update()
@@ -58,12 +58,18 @@ void Game::Update()
         }
         else
         {
-            window_->draw(GameSprite);
+            window_->draw(backgroundSprite_);
+            land_->step(elapsed.asSeconds());
             land_->draw(*window_);
             player1_->update(elapsed.asSeconds(), *window_);
             player2_->update(elapsed.asSeconds(), *window_);
             player1_->draw(elapsed.asSeconds(), *window_);
             player2_->draw(elapsed.asSeconds(), *window_);
+            if(player1_ -> shootActive_ == 2 || player2_ -> shootActive_ == 2)
+            {
+                player1_ -> switchStatus();
+                player2_ -> switchStatus();
+            }
         }
         window_->display();
     }
