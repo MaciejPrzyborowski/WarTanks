@@ -29,7 +29,6 @@ public:
 private:
     bool modified_;
     float size_;
-    bool raz = false;
 
     sf::Image image_;
     sf::Sprite sprite_;
