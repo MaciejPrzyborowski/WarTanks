@@ -1,11 +1,13 @@
 #include "Land.h"
 
-Land::Land(const float octaves, const float persistence) : Perlin(octaves, persistence)
+Land::Land(const float octaves, const float persistence) :
+    Perlin(octaves, persistence),
+    modified_(false),
+    size_(WindowWidth / 2.0),
+    height_(WindowWidth),
+    steps_()
 {
-    size_ = WindowWidth / 2.0;
-    height_.resize(WindowWidth);
     image_.create(WindowWidth, WindowHeight, sf::Color::Transparent);
-    modified_ = false;
 }
 
 /**
@@ -13,7 +15,6 @@ Land::Land(const float octaves, const float persistence) : Perlin(octaves, persi
  */
 void Land::Generate()
 {
-    modified_ = true;
     image_.create(image_.getSize().x, image_.getSize().y, sf::Color::Transparent);
     float offsetx = rand()%1000;
     float offsety = rand()%1000;
@@ -22,10 +23,10 @@ void Land::Generate()
         height_[x] = OctaveNoise((x + offsetx) / size_, offsety / size_);
         for(int y = WindowHeight - height_[x]; y < WindowHeight ; y++)
         {
-            image_.setPixel(x, y, Gradient(float(WindowHeight - y) / height_[x],
-                                              sf::Color(0, 35, 0), sf::Color(0, 200, 0)));
+            image_.setPixel(x, y, Gradient(float(WindowHeight - y) / height_[x], sf::Color(0, 35, 0), sf::Color(0, 200, 0)));
         }
     }
+    modified_ = true;
 }
 
 /**
@@ -46,32 +47,36 @@ void Land::destroyCircle(const int x, const int y, const int r)
  */
 void Land::destroyColumn(const int x, int top, int bottom)
 {
-    if(bottom > getLandHeight(x))
+    if(x >= 0 && x <= (int)image_.getSize().x)
     {
         if(top < 0)
         {
             top = 0;
         }
-        if(bottom > WindowHeight)
+        if(bottom > WindowHeight - 1)
         {
-            bottom = WindowHeight;
+            bottom = WindowHeight - 1;
         }
-        for(int y = top; y <= bottom; y++)
+        if(bottom > getLandHeight(x))
         {
-            if(isSolidPixel(x, y))
+            for(int y = top; y <= bottom; y++)
             {
-                image_.setPixel(x, y, sf::Color::Transparent);
+                if(isSolidPixel(x, y))
+                {
+                    image_.setPixel(x, y, sf::Color::Transparent);
+                }
             }
+            if(top > getLandHeight(x))
+            {
+                steps_[x] = StepLand{top, bottom, Gravity, true};
+            }
+            else
+            {
+                height_[x] = WindowHeight - bottom;
+
+            }
+            modified_ = true;
         }
-        if(top > getLandHeight(x))
-        {
-            steps_[x] = StepLand{top, bottom, Gravity, true};
-        }
-        else
-        {
-            height_[x] = WindowHeight - bottom;
-        }
-        modified_ = true;
     }
 }
 
@@ -80,7 +85,7 @@ void Land::destroyColumn(const int x, int top, int bottom)
  */
 bool Land::isSolidPixel(const int x, const int y)
 {
-    if((x >= 0 && x <= (int)image_.getSize().x) && (y >= 0 && y <= (int)image_.getSize().y))
+    if((x >= 0 && x < (int)image_.getSize().x) && (y >= 0 && y < (int)image_.getSize().y))
     {
         return image_.getPixel(x, y) != sf::Color::Transparent;
     }
@@ -180,7 +185,7 @@ void Land::step(const float elapsed)
                     {
                         height_[x] = 0;
                     }
-                    for(int y0 = stepList.top_ ; y0 >= y; y0--)
+                    for(int y0 = stepList.top_; y0 >= y; y0--)
                     {
                         if(y0 - velocity >= 0)
                         {

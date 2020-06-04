@@ -1,6 +1,17 @@
 #include "Tank.h"
 
-Tank::Tank(const int playerID, const bool active, const string &texture, Land &land_) : land(&land_), active_(active), playerID_(playerID)
+Tank::Tank(const int playerID, const bool active, const string &texture, Land &land_) :
+    shootActive_(0),
+    land(&land_),
+    active_(active),
+    freefall_(false),
+    crosshairActive_(false),
+    playerID_(playerID),
+    moveDirection_(0),
+    shootPower_(50),
+    speed_(50.0),
+    maxAngle_(75),
+    velocityFreefall({0.0, 0.0})
 {
     TankTexture.loadFromFile(texture);
     CannonTexture.loadFromFile(BarrelTextureSrc);
@@ -256,6 +267,7 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
  */
 void Tank::update(const float elapsed, sf::RenderWindow &window)
 {
+    step(elapsed);
     if(active_)
     {
         moveTank(elapsed);
@@ -294,8 +306,33 @@ void Tank::draw(const float elapsed, sf::RenderTarget &window)
     }
 }
 
+/**
+ * Obsługuje grawitacje
+ */
+void Tank::step(const float elapsed)
+{
+    int h = land->getLandHeight(TankSprite.getPosition().x);
+    if(TankSprite.getPosition().y < h)
+    {
+        freefall_ = true;
+        velocityFreefall.y += Gravity * elapsed;
+        sf::Vector2f velocity;
+        velocity.y = velocityFreefall.y * elapsed;
+        if(TankSprite.getPosition().y + velocity.y >= h)
+        {
+            velocity.y = h - TankSprite.getPosition().y + 1;
+            setTankRotation(sf::Vector2f(TankSprite.getPosition().x, TankSprite.getPosition().y + velocity.y));
+            velocityFreefall.y = 0.0;
+            freefall_ = false;
+        }
+        TankSprite.move(velocity);
+        CannonSprite.move(velocity);
+    }
+}
+
 void Tank::switchStatus()
 {
     active_ = !active_;
+    setTankRotation(sf::Vector2f(TankSprite.getPosition().x, TankSprite.getPosition().y));
     shootActive_ = 0;
 }

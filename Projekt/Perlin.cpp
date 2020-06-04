@@ -30,8 +30,9 @@ const int Perlin::GradientsCube[12][3] =
     {0, 1, 1}, {0, -1, 1}, {0, 1, -1}, {0, -1, -1}
 };
 
-Perlin::Perlin(const float octaves, const float persistence)
-    : octaves_(octaves), persistence_(persistence)
+Perlin::Perlin(const float octaves, const float persistence) :
+    octaves_(octaves),
+    persistence_(persistence)
 {
     factor_[0] = 0.5 * (sqrtf(3.0) - 1.0); // Skewing Factor (~0.366025)
     factor_[1] = (3.0 - sqrtf(3.0)) / 6.0; // Unskewing Factor (~0.211325)

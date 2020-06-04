@@ -16,26 +16,29 @@ public:
     void passEvent(sf::Event &event, sf::RenderWindow &window);
     void update(const float elapsed, sf::RenderWindow &window);
     void draw(const float elapsed, sf::RenderTarget &window);
+    void step(const float elapsed);
 
     void switchStatus();
     bool getStatus();
     bool getCrosshairStatus();
     bool isTankMoving();
     bool isCannonMoving();
-    int shootActive_ = 0;
+    int shootActive_;
 
 private:
     Land *land;
     unique_ptr<Bullet> bullet_;
 
     bool active_;
-    bool crosshairActive_ = false;
+    bool freefall_;
+    bool crosshairActive_;
 
     int playerID_;
-    int moveDirection_ = 0;
-    int shootPower_ = 50;
-    float speed_ = 50.0;
-    float maxAngle_ = 72.5;
+    int moveDirection_;
+    int shootPower_;
+    float speed_;
+    float maxAngle_;
+    sf::Vector2f velocityFreefall;
 
     sf::Sprite TankSprite;
     sf::Sprite CannonSprite;

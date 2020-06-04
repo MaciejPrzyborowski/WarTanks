@@ -1,9 +1,12 @@
 #include "Bullet.h"
 
-Bullet::Bullet(const sf::Vector2f &position, Land &land_) : land(&land_), velocity_(0, 0), acceleration_(0, Gravity)
+Bullet::Bullet(const sf::Vector2f &position, Land &land_) :
+    land(&land_),
+    active_(true),
+    velocity_(0, 0),
+    acceleration_(0, Gravity)
 {
-    active_ = true;
-    bullet_.setRadius(3.0);
+    bullet_.setRadius(4.0);
     bullet_.setFillColor(sf::Color::Red);
     bullet_.setPosition(position);
 }
@@ -16,7 +19,7 @@ void Bullet::move(const float elapsed)
     {
         active_ = false;
     }
-    if(bullet_.getPosition().y >= land->getLandHeight(bullet_.getPosition().x))
+    else if(bullet_.getPosition().y + bullet_.getRadius() >= land->getLandHeight(bullet_.getPosition().x))
     {
         active_ = false;
         land->destroyCircle(bullet_.getPosition().x, bullet_.getPosition().y, 30);

@@ -16,9 +16,11 @@ public:
 
 private:
     Land *land;
+
     bool active_;
 
-    sf::CircleShape bullet_;
     sf::Vector2f velocity_;
     sf::Vector2f acceleration_;
+
+    sf::CircleShape bullet_;
 };
