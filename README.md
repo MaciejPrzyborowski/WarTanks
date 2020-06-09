@@ -17,7 +17,6 @@ Settings:
       
       włącz/wyłącz licznik FPS
       
-      sterowanie wsad / strzłki
       
 Quit:
 
