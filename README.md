@@ -44,6 +44,7 @@ Tank.h
 Game.h
 Menu.h
 Chat.h
+Bullet.h
 Globals.h
 Animation.h
 ``` 
