@@ -73,7 +73,6 @@ void Land::destroyColumn(const int x, int top, int bottom)
             else
             {
                 height_[x] = WindowHeight - bottom;
-
             }
             modified_ = true;
         }

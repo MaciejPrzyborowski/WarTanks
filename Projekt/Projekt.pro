@@ -12,6 +12,7 @@ CONFIG(debug, debug|release){
 }
 
 SOURCES += \
+        Animation.cpp \
         Bullet.cpp \
         Game.cpp \
         main.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
         Menu.cpp
 
 HEADERS += \
+    Animation.h \
     Bullet.h \
     Game.h \
     Globals.h \

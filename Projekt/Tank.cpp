@@ -1,17 +1,17 @@
 #include "Tank.h"
 
 Tank::Tank(const int playerID, const bool active, const string &texture, Land &land_) :
-    shootActive_(0),
     land(&land_),
-    active_(active),
     freefall_(false),
     crosshairActive_(false),
+    status_(active),
     playerID_(playerID),
     moveDirection_(0),
     shootPower_(50),
+    health_(100),
     speed_(50.0),
     maxAngle_(75),
-    velocityFreefall({0.0, 0.0})
+    velocityFreefall_(0.0)
 {
     TankTexture.loadFromFile(texture);
     CannonTexture.loadFromFile(BarrelTextureSrc);
@@ -51,29 +51,20 @@ void Tank::Reset()
     CannonSprite.setRotation(-90);
 }
 
-void Tank::Fire()
+/**
+ * Tworzy pocisk w miejscu aktualnej pozycji celownika
+ */
+void Tank::shoot()
 {
-    if(!shootActive_ && !crosshairActive_)
+    if(!moveDirection_ && !crosshairActive_ && bullet_ == nullptr)
     {
         float BulletVelocity = (float)shootPower_ * 5.0;
         float CannonRotation = DegreeToRadian(CannonSprite.getRotation());
         sf::Vector2f BulletRotation(cos(CannonRotation), sin(CannonRotation));
         bullet_ = make_unique<Bullet>(sf::Vector2f(CannonSprite.getPosition().x + CannonSprite.getLocalBounds().width * BulletRotation.x,
-                                                   CannonSprite.getPosition().y + CannonSprite.getLocalBounds().width * BulletRotation.y), *land);
+                                                   CannonSprite.getPosition().y + CannonSprite.getLocalBounds().width * BulletRotation.y),
+                                      getTankShape(TankSprite), getTankShape(enemy->TankSprite), *land);
         bullet_->setVelocity(sf::Vector2f(BulletVelocity * BulletRotation.x, BulletVelocity * BulletRotation.y));
-        shootActive_ = 1;
-    }
-}
-
-/**
- * Zmienia siłę wystrzału pocisku
- */
-void Tank::changeShootPower(const int direction)
-{
-    if(!((shootPower_ == 0 && direction < 0) || (shootPower_ == 100 && direction > 0)))
-    {
-        shootPower_ += direction;
-        shootPowerFill.setSize(sf::Vector2f(shootPower_, 20));
     }
 }
 
@@ -82,15 +73,12 @@ void Tank::changeShootPower(const int direction)
  */
 void Tank::moveTank(const float elapsed)
 {
-    if(isTankMoving())
+    if(moveDirection_)
     {
         sf::Vector2f velocity(0.0, 0.0);
         velocity.x = (speed_ * cos(DegreeToRadian(TankSprite.getRotation()))) * moveDirection_ * elapsed;
         velocity.y = land->getLandHeight(TankSprite.getPosition().x + velocity.x) - TankSprite.getPosition().y;
-        if(canTankMove(velocity))
-        {
-            moveTankPosition(velocity);
-        }
+        moveTankPosition(velocity);
     }
 }
 
@@ -99,7 +87,7 @@ void Tank::moveTank(const float elapsed)
  */
 void Tank::moveCannon(sf::RenderWindow &window)
 {
-    if(isCannonMoving())
+    if(crosshairActive_)
     {
         sf::Vector2i rotatePosition;
         sf::Vector2f cannonPosition = CannonSprite.getPosition();
@@ -115,135 +103,55 @@ void Tank::moveCannon(sf::RenderWindow &window)
 }
 
 /**
- * Przesuwa pozycję czołgu oraz jego lufy
+ * Obsługuje zmianę siły wytrzału
  */
-void Tank::moveTankPosition(const sf::Vector2f &velocity)
+void Tank::moveShootPower(const int direction)
 {
-    TankSprite.move(velocity);
-    CannonSprite.move(velocity);
-    setTankRotation(sf::Vector2f(TankSprite.getPosition().x, TankSprite.getPosition().y));
-}
-
-/**
- * Ustawia pozycję czołgu oraz jego lufy
- */
-void Tank::setTankPosition(const sf::Vector2f &position)
-{
-    TankSprite.setPosition(position);
-    CannonSprite.setPosition(position - sf::Vector2f(0, TankSprite.getLocalBounds().height/2));
-    setTankRotation(sf::Vector2f(position));
-}
-
-/**
- * Ustawia kąt nachylenia czołgu
- */
-void Tank::setTankRotation(const sf::Vector2f &position)
-{
-    float landAngle = land->getAngleDegree(position.x, position.y);
-    TankSprite.setRotation(landAngle);
-}
-
-/**
- * Sprawdza czy czołg może przemieścić się o wektor [x, y]
- */
-bool Tank::canTankMove(const sf::Vector2f &velocity)
-{
-    if(getStatus() && (velocity.y >= 0 || fabs(TankSprite.getRotation()) <= maxAngle_ || fabs(TankSprite.getRotation()) >= 360.0 - maxAngle_))
+    if(!((shootPower_ == 0 && direction < 0) || (shootPower_ == 100 && direction > 0)))
     {
-        return true;
+        shootPower_ += direction;
+        shootPowerFill.setSize(sf::Vector2f(shootPower_, shootPowerFill.getSize().y));
     }
-    return false;
 }
 
-/**
- * Sprawdza czy czołg może wykonać jakąś czynność
- */
-bool Tank::getStatus()
-{
-    return active_;
-}
 
 /**
- * Sprawdza czy czołg może wykonać jakąś czynność
- */
-bool Tank::getCrosshairStatus()
-{
-    return crosshairActive_;
-}
-
-/**
- * Sprawdza czy czołg się przemieszcza
- */
-bool Tank::isTankMoving()
-{
-    if(active_ && !crosshairActive_ && !shootActive_)
-    {
-        if(moveDirection_)
-        {
-            return true;
-        }
-    }
-    else if(moveDirection_)
-    {
-        moveDirection_ = 0;
-    }
-    return false;
-}
-
-/**
- * Sprawdza czy lufa się przemieszcza
- */
-bool Tank::isCannonMoving()
-{
-    if(getStatus() && crosshairActive_)
-    {
-        return true;
-    }
-    return false;
-}
-
-/**
- * Obsługa zdarzeń wykonanych przez gracza
+ * Obsługuje zdarzenia wykonane przez gracza
  */
 void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 {
-    if(event.type == sf::Event::KeyReleased)
+    if(status_ == 1)
     {
-        if(event.key.code == sf::Keyboard::Q)
+        if(event.type == sf::Event::KeyReleased)
         {
-            active_ = !active_;
-            crosshairActive_ = false;
-        }
-        if(event.key.code == sf::Keyboard::Left)
-        {
-            if(moveDirection_ == -1)
+            if(event.key.code == sf::Keyboard::Left)
             {
-                moveDirection_ = 0;
+                if(moveDirection_ == -1)
+                {
+                    moveDirection_ = 0;
+                }
+            }
+            if(event.key.code == sf::Keyboard::Right)
+            {
+                if(moveDirection_ == 1)
+                {
+                    moveDirection_ = 0;
+                }
             }
         }
-        if(event.key.code == sf::Keyboard::Right)
-        {
-            if(moveDirection_ == 1)
-            {
-                moveDirection_ = 0;
-            }
-        }
-    }
-    if(active_)
-    {
         if(event.type == sf::Event::KeyPressed)
         {
             if(event.key.code == sf::Keyboard::Space)
             {
-                Fire();
+                shoot();
             }
             if(event.key.code == sf::Keyboard::Up)
             {
-                changeShootPower(1);
+                moveShootPower(1);
             }
             if(event.key.code == sf::Keyboard::Down)
             {
-                changeShootPower(-1);
+                moveShootPower(-1);
             }
             if(event.key.code == sf::Keyboard::Left)
             {
@@ -256,8 +164,11 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
         }
         if(event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
         {
-            crosshairActive_ = !crosshairActive_;
-            window.setMouseCursorVisible(!crosshairActive_);
+            if(canCannonMove())
+            {
+                crosshairActive_ = !crosshairActive_;
+                window.setMouseCursorVisible(!crosshairActive_);
+            }
         }
     }
 }
@@ -268,41 +179,51 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 void Tank::update(const float elapsed, sf::RenderWindow &window)
 {
     step(elapsed);
-    if(active_)
+    if(status_ == 1)
     {
         moveTank(elapsed);
         moveCannon(window);
     }
+    draw(elapsed, window);
 }
 
 /**
- * Wyświetla czołg z jego lufą
+ * Wyświetla czołg i jego parametry
  */
 void Tank::draw(const float elapsed, sf::RenderTarget &window)
 {
     window.draw(CannonSprite);
     window.draw(TankSprite);
-    if(active_)
+    if(status_ == 1)
     {
         window.draw(shootPowerBox);
         window.draw(shootPowerFill);
-        if(shootActive_ == 1)
+        if(bullet_)
         {
-            if(bullet_->isActive())
+            if(bullet_->getStatus())
             {
-                bullet_->draw(window);
                 bullet_->move(elapsed);
+                bullet_->draw(window);
             }
             else
             {
+                if(bullet_->getStatusExplosion(0))
+                {
+                    health_ -= 10;
+                }
+                if(bullet_->getStatusExplosion(1))
+                {
+                    enemy->health_ -= 10;
+                }
                 bullet_.reset();
-                shootActive_ = 2;
+                status_ = 2;
             }
         }
-        if(isCannonMoving())
+        else if(crosshairActive_)
         {
             window.draw(CrosshairSprite);
         }
+        cout << "HP: " << health_ << endl;
     }
 }
 
@@ -311,28 +232,153 @@ void Tank::draw(const float elapsed, sf::RenderTarget &window)
  */
 void Tank::step(const float elapsed)
 {
-    int h = land->getLandHeight(TankSprite.getPosition().x);
-    if(TankSprite.getPosition().y < h)
+    sf::Vector2f TankPosition = TankSprite.getPosition();
+    int landHeight = land->getLandHeight(TankSprite.getPosition().x);
+    if(TankPosition.y < landHeight)
     {
         freefall_ = true;
-        velocityFreefall.y += Gravity * elapsed;
-        sf::Vector2f velocity;
-        velocity.y = velocityFreefall.y * elapsed;
-        if(TankSprite.getPosition().y + velocity.y >= h)
+        velocityFreefall_ += Gravity * elapsed;
+
+        sf::Vector2f velocity(0.0, 0.0);
+        velocity.y = velocityFreefall_ * elapsed;
+        if(TankPosition.y + velocity.y >= landHeight)
         {
-            velocity.y = h - TankSprite.getPosition().y + 1;
-            setTankRotation(sf::Vector2f(TankSprite.getPosition().x, TankSprite.getPosition().y + velocity.y));
-            velocityFreefall.y = 0.0;
-            freefall_ = false;
+            velocity.y = landHeight - TankPosition.y + 1;
         }
         TankSprite.move(velocity);
         CannonSprite.move(velocity);
+        TankSprite.setRotation(getLandAngle());
+    }
+    else if(freefall_)
+    {
+        velocityFreefall_ = 0.0;
+        freefall_ = false;
     }
 }
 
-void Tank::switchStatus()
+/**
+ * Zwraca status gracza
+ */
+int Tank::getStatus()
 {
-    active_ = !active_;
-    setTankRotation(sf::Vector2f(TankSprite.getPosition().x, TankSprite.getPosition().y));
-    shootActive_ = 0;
+    return status_;
+}
+
+/**
+ * Zwraca obiekt gracza
+ */
+sf::Sprite & Tank::getTankSprite()
+{
+    return TankSprite;
+}
+
+/**
+ * Zmienia status gracza
+ */
+void Tank::switchStatus(sf::Sprite &tankSprite, sf::RenderWindow &window)
+{
+    if(status_ == 0)
+    {
+        status_ = 1;
+    }
+    else
+    {
+        status_ = 0;
+    }
+    if(bullet_)
+    {
+        bullet_.reset();
+    }
+    moveDirection_ = 0;
+    EnemySprite = tankSprite;
+    if(crosshairActive_)
+    {
+        crosshairActive_ = false;
+        window.setMouseCursorVisible(true);
+    }
+    setTankPosition(TankSprite.getPosition());
+}
+
+/**
+ * Sprawdza czy gracz może zmienić położenie lufy
+ */
+bool Tank::canCannonMove()
+{
+    if(status_ == 1 && !freefall_ && !moveDirection_ && bullet_ == nullptr)
+    {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Sprawdza czy czołg może przemieścić się o wektor [x, y]
+ */
+bool Tank::canTankMove(const sf::Vector2f &velocity)
+{
+    if(status_ == 1 && !freefall_ && !crosshairActive_ && bullet_ == nullptr && fabs(getLandAngle(velocity)) <= maxAngle_ && !getCollision(velocity))
+    {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Sprawdza czy czołg ma kolizję z przeciwnikiem po przemieszczeniu się o wektor [x, y]
+ */
+bool Tank::getCollision(const sf::Vector2f &velocity)
+{
+    if(!TankSprite.getGlobalBounds().intersects(EnemySprite.getGlobalBounds()))
+    {
+        sf::Sprite tempTankSprite = TankSprite;
+        tempTankSprite.move(velocity);
+        if(tempTankSprite.getGlobalBounds().intersects(EnemySprite.getGlobalBounds()))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Zwraca nachylenie terenu po przemieszczeniu się o wektor [x, y]
+ */
+float Tank::getLandAngle(const sf::Vector2f &velocity)
+{
+    sf::Sprite tempTankSprite = TankSprite;
+    tempTankSprite.move(velocity);
+    return land->getAngleDegree(tempTankSprite.getPosition().x, tempTankSprite.getPosition().y);
+}
+
+/**
+ * Przesuwa pozycję czołgu oraz jego lufy
+ */
+void Tank::moveTankPosition(const sf::Vector2f &velocity)
+{
+    if(canTankMove(velocity))
+    {
+        TankSprite.move(velocity);
+        CannonSprite.move(velocity);
+        TankSprite.setRotation(getLandAngle());
+    }
+}
+
+/**
+ * Ustawia pozycję czołgu oraz jego lufy
+ */
+void Tank::setTankPosition(const sf::Vector2f &position)
+{
+    TankSprite.setPosition(position);
+    CannonSprite.setPosition(position - sf::Vector2f(0, TankSprite.getLocalBounds().height/2));
+    TankSprite.setRotation(getLandAngle());
+}
+
+/**
+ * Zwraca prawidłową figurę czołgu
+ */
+sf::RectangleShape Tank::getTankShape(const sf::Sprite &Tank)
+{
+    sf::RectangleShape TankShape(sf::Vector2f(Tank.getLocalBounds().width, Tank.getLocalBounds().height));
+    TankShape.setPosition(Tank.getPosition().x, Tank.getPosition().y - Tank.getLocalBounds().height / 2);
+    return TankShape;
 }
