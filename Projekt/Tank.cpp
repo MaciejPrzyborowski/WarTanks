@@ -114,7 +114,6 @@ void Tank::moveShootPower(const int direction)
     }
 }
 
-
 /**
  * Obsługuje zdarzenia wykonane przez gracza
  */
@@ -207,23 +206,13 @@ void Tank::draw(const float elapsed, sf::RenderTarget &window)
             }
             else
             {
-                if(bullet_->getStatusExplosion(0))
-                {
-                    health_ -= 10;
-                }
-                if(bullet_->getStatusExplosion(1))
-                {
-                    enemy->health_ -= 10;
-                }
-                bullet_.reset();
-                status_ = 2;
+                shootReset();
             }
         }
         else if(crosshairActive_)
         {
             window.draw(CrosshairSprite);
         }
-        cout << "HP: " << health_ << endl;
     }
 }
 
@@ -265,17 +254,9 @@ int Tank::getStatus()
 }
 
 /**
- * Zwraca obiekt gracza
- */
-sf::Sprite & Tank::getTankSprite()
-{
-    return TankSprite;
-}
-
-/**
  * Zmienia status gracza
  */
-void Tank::switchStatus(sf::Sprite &tankSprite, sf::RenderWindow &window)
+void Tank::switchStatus(sf::RenderWindow &window)
 {
     if(status_ == 0)
     {
@@ -290,7 +271,6 @@ void Tank::switchStatus(sf::Sprite &tankSprite, sf::RenderWindow &window)
         bullet_.reset();
     }
     moveDirection_ = 0;
-    EnemySprite = tankSprite;
     if(crosshairActive_)
     {
         crosshairActive_ = false;
@@ -328,11 +308,11 @@ bool Tank::canTankMove(const sf::Vector2f &velocity)
  */
 bool Tank::getCollision(const sf::Vector2f &velocity)
 {
-    if(!TankSprite.getGlobalBounds().intersects(EnemySprite.getGlobalBounds()))
+    if(!TankSprite.getGlobalBounds().intersects(enemy->TankSprite.getGlobalBounds()))
     {
         sf::Sprite tempTankSprite = TankSprite;
         tempTankSprite.move(velocity);
-        if(tempTankSprite.getGlobalBounds().intersects(EnemySprite.getGlobalBounds()))
+        if(tempTankSprite.getGlobalBounds().intersects(enemy->TankSprite.getGlobalBounds()))
         {
             return true;
         }
@@ -371,6 +351,26 @@ void Tank::setTankPosition(const sf::Vector2f &position)
     TankSprite.setPosition(position);
     CannonSprite.setPosition(position - sf::Vector2f(0, TankSprite.getLocalBounds().height/2));
     TankSprite.setRotation(getLandAngle());
+}
+
+/**
+ * Usuwa pocisk i zadaje obrażenia trafionym graczom
+ */
+void Tank::shootReset()
+{
+    if(bullet_)
+    {
+        if(bullet_->getStatusExplosion(0))
+        {
+            health_ -= 10;
+        }
+        if(bullet_->getStatusExplosion(1))
+        {
+            enemy->health_ -= 10;
+        }
+        bullet_.reset();
+        status_ = 2;
+    }
 }
 
 /**

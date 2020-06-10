@@ -49,8 +49,8 @@ void Game::Update()
                 }
                 if(Event.key.code == sf::Keyboard::Q)
                 {
-                    player1_ -> switchStatus(player2_ -> getTankSprite(), *window_);
-                    player2_ -> switchStatus(player1_ -> getTankSprite(), *window_);
+                    player1_ -> switchStatus(*window_);
+                    player2_ -> switchStatus(*window_);
                 }
             }
             player1_->passEvent(Event, *window_);
@@ -71,8 +71,8 @@ void Game::Update()
             player2_ -> update(elapsed.asSeconds(), *window_);
             if(player1_ -> getStatus() == 2 || player2_ -> getStatus() == 2)
             {
-                player1_ -> switchStatus(player2_ -> getTankSprite(), *window_);
-                player2_ -> switchStatus(player1_ -> getTankSprite(), *window_);
+                player1_ -> switchStatus(*window_);
+                player2_ -> switchStatus(*window_);
             }
         }
         window_ -> display();

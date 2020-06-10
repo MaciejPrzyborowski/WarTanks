@@ -19,8 +19,7 @@ public:
     void step(const float elapsed);
 
     int getStatus();
-    sf::Sprite & getTankSprite();
-    void switchStatus(sf::Sprite &tankSprite, sf::RenderWindow &window);
+    void switchStatus(sf::RenderWindow &window);
 
     Tank *enemy;
 
@@ -41,7 +40,6 @@ private:
     float velocityFreefall_;
 
     sf::Sprite TankSprite;
-    sf::Sprite EnemySprite;
     sf::Sprite CannonSprite;
     sf::Sprite CrosshairSprite;
     sf::Texture TankTexture;
@@ -58,5 +56,6 @@ private:
 
     void moveTankPosition(const sf::Vector2f &velocity);
     void setTankPosition(const sf::Vector2f &position);
+    void shootReset();
     sf::RectangleShape getTankShape(const sf::Sprite &Tank);
 };

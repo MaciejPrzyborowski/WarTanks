@@ -39,8 +39,8 @@ void Bullet::draw(sf::RenderTarget &window)
     sf::Time elapsed = clock.restart();
     if(explode_)
     {
-        explode_->Explode(elapsed.asSeconds(), window);
-        if(explode_->isExplosionEnd)
+        explode_->draw(elapsed.asSeconds(), window);
+        if(explode_->getStatus() == false)
         {
             status_ = 0;
         }
@@ -66,7 +66,8 @@ void Bullet::explode()
         clientExploded_ = true;
     }
     land->destroyCircle(bullet_.getPosition().x, bullet_.getPosition().y, explodeSize_);
-    explode_ = make_unique<Animation>(bullet_.getPosition());
+    explode_ = make_unique<Animation>(ExplosionTextureSrc, sf::Vector2f(bullet_.getPosition().x - 30.0, bullet_.getPosition().y - 30.0),
+                                      sf::IntRect(0, 0, 60, 60), 60, 30);
 }
 
 void Bullet::setAcceleration(const sf::Vector2f &velocity)

@@ -1,17 +1,24 @@
 #pragma once
+
 #include "Globals.h"
 
 class Animation
 {
 public:
-    Animation(sf::Vector2f position);
-    void Explode(float elapsed, sf::RenderTarget &window);
-    bool isExplosionEnd = false;
+    Animation(const string &name, sf::Vector2f mapPosition, sf::IntRect texturePosition, int step, int radius);
+    void changeAnimation(const float elapsed);
+    void draw(const float elapsed, sf::RenderTarget &window);
+
+    bool getStatus();
 
 private:
-    std::string name = "explosion.png";
-    sf::Texture texture;
-    sf::CircleShape explosion;
-    float time = 0.0;
-    sf::IntRect coords = sf::IntRect(0, 0, 60, 60);
+    bool active_;
+
+    int stepPositionX_;
+    float timeElapsed_;
+    float changeAnimationTime_;
+
+    sf::IntRect texturePosition_;
+    sf::Texture AnimationTexture;
+    sf::CircleShape AnimationShape;
 };

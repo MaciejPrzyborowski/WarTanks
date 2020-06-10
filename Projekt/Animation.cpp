@@ -1,32 +1,43 @@
 #include "Animation.h"
 
-Animation::Animation(sf::Vector2f position)
+Animation::Animation(const string &name, sf::Vector2f mapPosition, sf::IntRect texturePosition, int step, int radius) :
+    active_(true),
+    stepPositionX_(step),
+    timeElapsed_(0.0),
+    changeAnimationTime_(0.1),
+    texturePosition_(texturePosition)
 {
-    texture.loadFromFile(name);
-    explosion.setRadius(30);
-    explosion.setOrigin(explosion.getOrigin().x + 30, explosion.getOrigin().y + 30);
-    explosion.setTexture(&texture);
-    explosion.setTextureRect(coords);
-    explosion.setPosition(position);
+    AnimationTexture.loadFromFile(name);
+    AnimationShape.setRadius(radius);
+    AnimationShape.setTexture(&AnimationTexture);
+    AnimationShape.setTextureRect(texturePosition_);
+    AnimationShape.setPosition(mapPosition);
 }
 
-void Animation::Explode(float elapsed, sf::RenderTarget &window)
+void Animation::changeAnimation(const float elapsed)
 {
-    if(!isExplosionEnd)
+    if((timeElapsed_ += elapsed) >= changeAnimationTime_)
     {
-        time += elapsed;
-
-        if(time >= 0.1f)
+        if(texturePosition_.left == (int)AnimationTexture.getSize().x)
         {
-            coords.left += 60;
-            time -= 0.1;
+            active_ = false;
         }
-        explosion.setTextureRect(coords);
-        if(coords.left == 480)
-        {
-            isExplosionEnd = true;
-            coords.left = 0;
-        }
-        window.draw(explosion);
+        timeElapsed_ -= changeAnimationTime_;
+        texturePosition_.left += stepPositionX_;
+        AnimationShape.setTextureRect(texturePosition_);
     }
+}
+
+void Animation::draw(const float elapsed, sf::RenderTarget &window)
+{
+    if(active_)
+    {
+        changeAnimation(elapsed);
+        window.draw(AnimationShape);
+    }
+}
+
+bool Animation::getStatus()
+{
+    return active_;
 }
