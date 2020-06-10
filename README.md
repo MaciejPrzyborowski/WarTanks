@@ -41,11 +41,12 @@ Do całej gry zostanie dołączony również czat tekstowy, który będzie umoż
 Perlin.h
 Land.h
 Tank.h
-Player.h
 Game.h
 Menu.h
 Chat.h
+Bullet.h
 Globals.h
+Animation.h
 ``` 
 ![menu](/menu.png)
 ![ustawienia](/ustawienia.png)
