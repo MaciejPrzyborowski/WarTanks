@@ -11,9 +11,11 @@ Play:
       
 Settings:
 
-      włącz/wyłącz dźwięk
+      włącz/wyłącz muzyke w menu
       
-      włącz/wyłącz muzyke
+      włącz/wyłącz muzyke w grze
+      
+      włącz/wyłącz dźwięki
       
       włącz/wyłącz licznik FPS
       
