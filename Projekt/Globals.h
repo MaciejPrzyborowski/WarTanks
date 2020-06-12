@@ -13,11 +13,15 @@
 #define WindowHeight 600
 #define NazwaGry "WarTanks"
 
+#define MenuMusicSrc "menu_music.wav"
+#define SelectMenuSoundSrc "select_sound.wav"
+
 #define TankTextureSrc1 "tank1.png"
 #define TankTextureSrc2 "tank2.png"
 #define BarrelTextureSrc "barrel.png"
 #define CrosshairTextureSrc "crosshair.png"
 #define ExplosionTextureSrc "explosion.png"
+#define MenuBackgroundTextureSrc "menu_background.jpg"
 #define GameBackgroundTextureSrc "game_background.png"
 
 #define LERP(t, a, b) (a + t * (b - a))

@@ -55,12 +55,12 @@ void Game::Update()
             }
             player1_->passEvent(Event, *window_);
             player2_->passEvent(Event, *window_);
-            menu_->ShowSwitch(Event, *window_);
+            menu_->passEvent(Event, *window_);
         }
         window_->clear();
-        if(menu_->IsActiveMenu())
+        if(menu_->getStatus())
         {
-            menu_->ShowMenu(*window_, clock);
+            menu_->draw(*window_);
         }
         else
         {

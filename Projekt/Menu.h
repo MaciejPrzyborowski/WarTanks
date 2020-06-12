@@ -2,68 +2,43 @@
 
 #include "Globals.h"
 
+enum MenuType
+{
+    MenuNone,
+    MenuMain,
+    MenuPlay,
+    MenuSettings
+};
+
 class Menu
 {
 public:
     Menu();
+    void passEvent(sf::Event &event, sf::RenderWindow &window);
+    void draw(sf::RenderTarget &window);
 
-    void MainMenu();
-    void Settings();
-    void PlaySettings();
-
-    void ShowSwitch(sf::Event &Event, sf::RenderWindow &Window);
-    void ShowMenu(sf::RenderWindow &Window, sf::Clock Clock);
-
-    void MoveUp();
-    void MoveDown();
-    void ChoiceByMouse(sf::RenderWindow &Window, sf::Event &Event);
-
-    void FUp(vector<sf::Text> &Menu);
-    void FDown(vector<sf::Text> &Menu);
-    void SelectMenu(vector<sf::Text> &Menu, sf::Vector2i MousePosition, sf::RenderWindow &Window);
-
-    void SetFPS();
-    void ShowFPS(sf::Clock Clock, sf::RenderWindow &Window);
-    void GameMusic();
-    void GameSound();
-    void GameControl();
-
-    inline bool IsActiveMenu() {if(MainMenuActive_ || SettingsActive_ || PlaySettingsActive_) return true; return false;}
-
-    inline void MainMenuActive() {MainMenuActive_ = true; SettingsActive_ = false; PlaySettingsActive_ = false; OptionSelected_ = 0;};
-    inline void SettingsActive() {SettingsActive_ = true; MainMenuActive_ = false; PlaySettingsActive_ = false; OptionSelected_ = 0;};
-    inline void PlaySettingsActive() {PlaySettingsActive_ = true; MainMenuActive_ = false; SettingsActive_ = false; OptionSelected_ = 0;};
-    inline void HideMenu() {MainMenuActive_ = false; SettingsActive_ = false; PlaySettingsActive_ = false;};
+    bool getStatus();
 
 private:
     sf::Font Font;
+    sf::Sound MenuMusic;
+    sf::Sound MenuSelectSound;
+    sf::Sprite BackgroundSprite;
+    sf::Texture BackgroundTexture;
+    sf::SoundBuffer MenuMusicBuffer;
+    sf::SoundBuffer MenuSelectSoundBuffer;
 
-    size_t OptionSelected_;
+    MenuType menuType_;
+    size_t menuSelected_;
+    bool isMouseActive_;
+    bool gameSettings_[4];
 
-    bool MainMenuActive_ = true;
-    bool SettingsActive_ = false;
-    bool PlaySettingsActive_ = false;
+    void move(int direction);
+    void setClientSetting(int setting);
+    void setMenu(MenuType type);
+    void getMenu(MenuType type);
 
-    bool IsMouseActive_ = false;
-
-    bool FPS = false;
-    bool GMusic = true;
-    bool GSound = true;
-    bool ArrowsControl = false;
-
-    sf::Sound BackgroundMusic;
-    sf::Sound SelectSound;
-
-    sf::Sprite Sprite;
-
-    sf::SoundBuffer Buffer;
-    sf::SoundBuffer Buffer2;
-
-    sf::Texture MenuBackground;
-
-    vector<sf::RectangleShape> OptionBackground;
-    vector<sf::Text> Settings_;
-    vector<sf::Text> MainMenu_;
-    vector<sf::Text> SettingsMenu_;
-    vector<sf::Text> PlaySettingsMenu_;
+    vector<sf::Text> menuOptions_;
+    vector<sf::Text> menuSelectOptions_;
+    vector<sf::RectangleShape> menuSelectBackground_;
 };
