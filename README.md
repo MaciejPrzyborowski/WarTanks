@@ -28,7 +28,7 @@ W menu będzie można poruszać się zarówno myszką jak i klawiaturą, dodatko
 
 Mapa za każdym razem będzie generowała się losowo po rozpoczęciu się gry. Do generowania mapy wykorzystamy szum Perlina. W grze będą czołgi, którymi gracze będą mogli sterować przez 15 sekund na zmiane, chyba, że szybciej oddadzą strzał. W tym czasie gracze mogą się poruszać, ustawić lufę i strzelić. Po nieoddanym strzale tura danego gracza przepada.
 
-Poruszanie nie będzie możliwe dla dużych wzniesień, ze względu na dużą masę czołgu (kąt pod który maksymalnie wjedzie czołg to 75 stopni).
+Poruszanie nie będzie możliwe dla dużych wzniesień, ze względu na dużą masę czołgu (kąt pod który maksymalnie wjedzie czołg to 75 stopni, czołg może zjechać gdy kąt jest mniejszy 75 stopni).
 
 Jeżeli czołg znajdzie się w promieniu wybuchu strzału to straci on 30 punktów życia.
 
@@ -44,6 +44,7 @@ Tank.h
 Game.h
 Menu.h
 Chat.h
+Interface.h
 Bullet.h
 Globals.h
 Animation.h
