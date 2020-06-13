@@ -43,7 +43,6 @@ Land.h
 Tank.h
 Game.h
 Menu.h
-Chat.h
 Interface.h
 Bullet.h
 Globals.h
