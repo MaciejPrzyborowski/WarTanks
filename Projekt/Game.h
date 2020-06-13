@@ -11,7 +11,6 @@ class Game
 public:
     Game();
     void Run();
-
     void Initialize();
     void Update();
     sf::Text gameTime(float time_);
