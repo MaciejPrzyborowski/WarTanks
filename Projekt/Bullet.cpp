@@ -15,6 +15,10 @@ Bullet::Bullet(const sf::Vector2f &position, const sf::RectangleShape &client, c
     bullet_.setFillColor(sf::Color::Red);
     bullet_.setOrigin(bullet_.getRadius(), bullet_.getRadius());
     bullet_.setPosition(position);
+
+    explodeBuffer_.loadFromFile(ExplodeSoundSrc);
+    explodeSound_.setBuffer(explodeBuffer_);
+    explodeSound_.setVolume(10);
 }
 
 void Bullet::move(const float elapsed)
@@ -36,7 +40,7 @@ void Bullet::move(const float elapsed)
 
 void Bullet::draw(sf::RenderTarget &window)
 {
-    sf::Time elapsed = clock.restart();
+    sf::Time elapsed = clock_.restart();
     if(explode_)
     {
         explode_->draw(elapsed.asSeconds(), sf::Vector2f(bullet_.getPosition().x - 30.0, bullet_.getPosition().y - 30.0), window);
@@ -65,8 +69,11 @@ void Bullet::explode()
     {
         clientExploded_ = true;
     }
+    if(explodeSound_.getStatus() != sf::Music::Playing)
+    {
+        explodeSound_.play();
+    }
     land->destroyCircle(bullet_.getPosition().x, bullet_.getPosition().y, explodeSize_);
-    //explode_ = make_unique<Animation>(ExplosionTextureSrc, sf::Vector2f(bullet_.getPosition().x - 30.0, bullet_.getPosition().y - 30.0), sf::IntRect(0, 0, 60, 60), 60, 30, false);
     explode_ = make_unique<Animation>(ExplosionTextureSrc, sf::IntRect(0, 0, 60, 60), 60, 30, false, 1.0);
 }
 

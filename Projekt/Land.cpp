@@ -13,17 +13,17 @@ Land::Land(const float octaves, const float persistence) :
 /**
  * Generuje teren mapy
  */
-void Land::Generate()
+void Land::generate()
 {
     image_.create(image_.getSize().x, image_.getSize().y, sf::Color::Transparent);
     float offsetx = rand()%1000;
     float offsety = rand()%1000;
     for(int x = 0; x < WindowWidth; x++)
     {
-        height_[x] = OctaveNoise((x + offsetx) / size_, offsety / size_);
+        height_[x] = octaveNoise((x + offsetx) / size_, offsety / size_);
         for(int y = WindowHeight - height_[x]; y < WindowHeight ; y++)
         {
-            image_.setPixel(x, y, Gradient(float(WindowHeight - y) / height_[x], sf::Color(0, 35, 0), sf::Color(0, 200, 0)));
+            image_.setPixel(x, y, gradient(float(WindowHeight - y) / height_[x], sf::Color(0, 35, 0), sf::Color(0, 200, 0)));
         }
     }
     modified_ = true;
@@ -137,7 +137,7 @@ int Land::getLandHeight(const int x)
 /**
  * Generuje gradient używając interpolacji liniowej
  */
-sf::Color Land::Gradient(const float t, const sf::Color a, const sf::Color b)
+sf::Color Land::gradient(const float t, const sf::Color a, const sf::Color b)
 {
     sf::Color Gradient;
     Gradient.r = LERP(t, a.r, b.r);

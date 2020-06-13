@@ -19,7 +19,7 @@ public:
 
 private:
     Land *land;
-    sf::Clock clock;
+    sf::Clock clock_;
     unique_ptr<Animation> explode_;
 
     bool clientExploded_;
@@ -33,7 +33,10 @@ private:
     sf::RectangleShape target_;
     sf::Vector2f acceleration_;
     sf::Vector2f velocity_;
-    sf::CircleShape explosionBullet;
+    sf::CircleShape explosionBullet_;
+
+    sf::Sound explodeSound_;
+    sf::SoundBuffer explodeBuffer_;
 
     bool intersects(sf::CircleShape bullet, sf::RectangleShape Tank);
 };

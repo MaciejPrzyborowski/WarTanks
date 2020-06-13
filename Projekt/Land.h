@@ -15,7 +15,7 @@ class Land : Perlin
 {
 public:
     Land(const float octaves, const float persistence);
-    void Generate();
+    void generate();
     void destroyCircle(const int x, const int y, const int radius);
     void destroyColumn(const int x, int top, int bottom);
     void draw(sf::RenderTarget &window);
@@ -36,5 +36,5 @@ private:
     std::vector<int> height_;
     std::map<int, StepLand> steps_;
 
-    sf::Color Gradient(const float t, const sf::Color a, const sf::Color b);
+    sf::Color gradient(const float t, const sf::Color a, const sf::Color b);
 };

@@ -9,11 +9,11 @@ Animation::Animation(const string &name, sf::IntRect texturePosition, int step, 
 {
     repeat_ = repeat;
     texturePosition_ = textureStartPosition_;
-    AnimationTexture.loadFromFile(name);
-    AnimationShape.setRadius(radius);
-    AnimationShape.setScale(scale, scale);
-    AnimationShape.setTexture(&AnimationTexture);
-    AnimationShape.setTextureRect(texturePosition_);
+    animationTexture_.loadFromFile(name);
+    animationShape_.setRadius(radius);
+    animationShape_.setScale(scale, scale);
+    animationShape_.setTexture(&animationTexture_);
+    animationShape_.setTextureRect(texturePosition_);
 }
 
 void Animation::changeAnimation(const float elapsed)
@@ -22,25 +22,25 @@ void Animation::changeAnimation(const float elapsed)
     {
         timeElapsed_ -= changeAnimationTime_;
         texturePosition_.left += stepPositionX_;
-        if(repeat_ && texturePosition_.left == (int)AnimationTexture.getSize().x)
+        if(repeat_ && texturePosition_.left == (int)animationTexture_.getSize().x)
         {
             texturePosition_.left = textureStartPosition_.left;
         }
-        else if(texturePosition_.left == (int)AnimationTexture.getSize().x)
+        else if(texturePosition_.left == (int)animationTexture_.getSize().x)
         {
             active_ = false;
         }
-        AnimationShape.setTextureRect(texturePosition_);
+        animationShape_.setTextureRect(texturePosition_);
     }
 }
 
 void Animation::draw(const float elapsed, sf::Vector2f mapPosition, sf::RenderTarget &window)
 {
-    AnimationShape.setPosition(mapPosition);
+    animationShape_.setPosition(mapPosition);
     if(active_)
     {
         changeAnimation(elapsed);
-        window.draw(AnimationShape);
+        window.draw(animationShape_);
     }
 }
 

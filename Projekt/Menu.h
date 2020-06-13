@@ -18,15 +18,14 @@ public:
     void draw(sf::RenderTarget &window);
 
     bool getStatus();
+    void setMenu(MenuType type);
 
 private:
-    sf::Font Font;
-    sf::Sound MenuMusic;
-    sf::Sound MenuSelectSound;
-    sf::Sprite BackgroundSprite;
-    sf::Texture BackgroundTexture;
-    sf::SoundBuffer MenuMusicBuffer;
-    sf::SoundBuffer MenuSelectSoundBuffer;
+    sf::Font font_;
+    sf::Sound menuMusic_;
+    sf::Sound menuSelectSound_;
+    sf::SoundBuffer menuMusicBuffer_;
+    sf::SoundBuffer menuSelectSoundBuffer_;
 
     MenuType menuType_;
     size_t menuSelected_;
@@ -35,7 +34,6 @@ private:
 
     void move(int direction);
     void setClientSetting(int setting);
-    void setMenu(MenuType type);
     void getMenu(MenuType type);
 
     vector<sf::Text> menuOptions_;

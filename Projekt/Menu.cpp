@@ -4,18 +4,14 @@ Menu::Menu() :
     isMouseActive_(false),
     gameSettings_{false, true, true, true}
 {
-    Font.loadFromFile(GameFont);
-    MenuSelectSoundBuffer.loadFromFile(SelectMenuSoundSrc);
-    MenuSelectSound.setBuffer(MenuSelectSoundBuffer);
-    MenuSelectSound.setVolume(1);
-    MenuMusicBuffer.loadFromFile(MenuMusicSrc);
-    MenuMusic.setBuffer(MenuMusicBuffer);
-    MenuMusic.setVolume(5);
-    MenuMusic.play();
-    BackgroundTexture.loadFromFile(MenuBackgroundTextureSrc);
-    BackgroundSprite.setTexture(BackgroundTexture);
-    BackgroundSprite.setScale((float)WindowWidth / BackgroundTexture.getSize().x, (float)WindowHeight / BackgroundTexture.getSize().y);
-    this->setMenu(MenuMain);
+    font_.loadFromFile(GameFontSrc);
+    menuSelectSoundBuffer_.loadFromFile(SelectMenuSoundSrc);
+    menuSelectSound_.setBuffer(menuSelectSoundBuffer_);
+    menuSelectSound_.setVolume(1);
+    menuMusicBuffer_.loadFromFile(MenuMusicSrc);
+    menuMusic_.setBuffer(menuMusicBuffer_);
+    menuMusic_.setVolume(5);
+    menuMusic_.play();
 }
 
 /**
@@ -28,7 +24,7 @@ void Menu::move(int direction)
         menuOptions_[menuSelected_].setFillColor(sf::Color::White);
         menuSelected_ += direction;
         menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
-        MenuSelectSound.play();
+        menuSelectSound_.play();
     }
 }
 
@@ -78,13 +74,13 @@ void Menu::passEvent(sf::Event &event, sf::RenderWindow &window)
                 case 0:
                 {
                     setMenu(MenuNone);
-                    MenuMusic.stop();
+                    menuMusic_.stop();
                     break;
                 }
                 case 1:
                 {
                     setMenu(MenuNone);
-                    MenuMusic.stop();
+                    menuMusic_.stop();
                     break;
                 }
                 case 2:
@@ -120,7 +116,7 @@ void Menu::passEvent(sf::Event &event, sf::RenderWindow &window)
             {
                 if(menuSelected_ != i)
                 {
-                    MenuSelectSound.play();
+                    menuSelectSound_.play();
                     menuOptions_[menuSelected_].setFillColor(sf::Color::White);
                     menuSelected_ = i;
                     menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
@@ -137,7 +133,6 @@ void Menu::passEvent(sf::Event &event, sf::RenderWindow &window)
  */
 void Menu::draw(sf::RenderTarget &window)
 {
-    window.draw(BackgroundSprite);
     if(menuOptions_.size() > 0)
     {
         for(auto &el: menuOptions_)
@@ -176,11 +171,11 @@ void Menu::setClientSetting(int setting)
     {
         if(setting == 2)
         {
-            MenuMusic.play();
+            menuMusic_.play();
         }
         else if(setting == 3)
         {
-            MenuSelectSound.setVolume(1);
+            menuSelectSound_.setVolume(1);
         }
         menuSelectOptions_[setting].setString("TAK");
         menuSelectOptions_[setting].setFillColor(sf::Color::Green);
@@ -189,11 +184,11 @@ void Menu::setClientSetting(int setting)
     {
         if(setting == 2)
         {
-            MenuMusic.stop();
+            menuMusic_.stop();
         }
         else if(setting == 3)
         {
-            MenuSelectSound.setVolume(0);
+            menuSelectSound_.setVolume(0);
         }
         menuSelectOptions_[setting].setString("NIE");
         menuSelectOptions_[setting].setFillColor(sf::Color::Red);
@@ -244,7 +239,7 @@ void Menu::setMenu(MenuType type)
                 menuSelectBackground.setSize(sf::Vector2f(WindowWidth, WindowHeight * 0.09));
                 menuSelectBackground_.emplace_back(menuSelectBackground);
 
-                menuSelectOptions.setFont(Font);
+                menuSelectOptions.setFont(font_);
                 menuSelectOptions.setString(gameSettings_[i] ? "TAK" : "NIE");
                 menuSelectOptions.setFillColor(i < sizeof(gameSettings_) ? gameSettings_[i] ? sf::Color::Green : sf::Color::Red : sf::Color::Transparent);
                 menuSelectOptions.setOutlineThickness(5);
@@ -258,7 +253,7 @@ void Menu::setMenu(MenuType type)
         {
             sf::Text menuOption;
 
-            menuOption.setFont(Font);
+            menuOption.setFont(font_);
             menuOption.setString(SettingNames[i]);
             menuOption.setFillColor(sf::Color::White);
             menuOption.setOutlineThickness(5);

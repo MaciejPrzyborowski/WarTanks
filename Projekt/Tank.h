@@ -9,7 +9,6 @@ class Tank
 {
 public:
     Tank(const int playerID, const bool active, const string &texture, Land &land_);
-    void Reset();
     void shoot();
     void moveTank(const float elapsed);
     void moveCannon(sf::RenderWindow &window);
@@ -25,9 +24,9 @@ public:
     Tank *enemy;
 
     inline int returnHp() {return health_;};
-    inline sf::Vector2f returnPosition() {return TankSprite.getPosition();};
+    inline sf::Vector2f returnPosition() {return tankSprite_.getPosition();};
     inline Interface returnTankInterface() { return tankInterface_; };
-
+    inline float returnTimeLeft() {return timeLeft_;};
 private:
     Land *land;
     Interface tankInterface_;
@@ -47,12 +46,12 @@ private:
     float timeLeft_;
     float velocityFreefall_;
 
-    sf::Sprite TankSprite;
-    sf::Sprite CannonSprite;
-    sf::Sprite CrosshairSprite;
-    sf::Texture TankTexture;
-    sf::Texture CannonTexture;
-    sf::Texture CrosshairTexture;
+    sf::Sprite tankSprite_;
+    sf::Sprite cannonSprite_;
+    sf::Sprite crosshairSprite_;
+    sf::Texture tankTexture_;
+    sf::Texture cannonTexture_;
+    sf::Texture crosshairTexture_;
 
     bool canCannonMove();
     bool canTankMove(const sf::Vector2f &velocity);
@@ -63,6 +62,9 @@ private:
     void moveTankPosition(const sf::Vector2f &velocity);
     void setTankPosition(const sf::Vector2f &position);
     void shootReset();
+
+    sf::Sound shootSound_;
+    sf::SoundBuffer shootBuffer_;
 
     sf::RectangleShape getTankShape(const sf::Sprite &Tank);
 };

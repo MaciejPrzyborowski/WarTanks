@@ -6,19 +6,23 @@
 #include "Interface.h"
 #include "Animation.h"
 
+enum GameState
+{
+    GameMenu,
+    GamePlay
+};
+
 class Game
 {
 public:
     Game();
-    void Run();
-    void Initialize();
-    void Update();
-    sf::Text gameTime(float time_);
+
+    void run();
+    void initialize(GameState gameState);
+    void passEvent(sf::Event &Event);
+    void update();
     void setTimer();
-    sf::Text gameEnd();
-    bool checkPlayersHp();
-    sf::Vector2f Winner();
-    sf::Vector2f Loser();
+    void updateAll(sf::Time elapsed);
 
 private:
     unique_ptr<Animation> fireworks_;
@@ -28,12 +32,15 @@ private:
     unique_ptr<Land> land_;
     unique_ptr<Tank> player1_;
     unique_ptr<Tank> player2_;
+    unique_ptr<Interface> GameInterface_;
+
+    GameState gameState_;
 
     int playerHp1_, playerHp2_;
     sf::Vector2f playerPos1_, playerPos2_;
 
-    sf::Texture backgroundTexture_;
-    sf::Sprite backgroundSprite_;
-
-    Interface GameInterface;
+    sf::Texture gameBackgroundTexture_;
+    sf::Sprite gameBackgroundSprite_;
+    sf::Texture menuBackgroundTexture_;
+    sf::Sprite menuBackgroundSprite_;
 };

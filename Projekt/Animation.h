@@ -5,7 +5,6 @@
 class Animation
 {
 public:
-   // Animation(const string &name, sf::Vector2f mapPosition, sf::IntRect texturePosition, int step, int radius, bool repeat);
     Animation(const string &name, sf::IntRect texturePosition, int step, int radius, bool repeat, float scale);
     void changeAnimation(const float elapsed);
     void draw(const float elapsed, sf::Vector2f mapPosition, sf::RenderTarget &window);
@@ -22,6 +21,6 @@ private:
 
     sf::IntRect texturePosition_;
     sf::IntRect textureStartPosition_;
-    sf::Texture AnimationTexture;
-    sf::CircleShape AnimationShape;
+    sf::Texture animationTexture_;
+    sf::CircleShape animationShape_;
 };

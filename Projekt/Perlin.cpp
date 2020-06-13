@@ -4,7 +4,7 @@
  * Tablica zdefiniowana przez Ken Perlin
  * Permutacja jest losowo ułożona z liczb od 0 do 255
  */
-const int Perlin::Permutation[256] =
+const int Perlin::permutation[256] =
 {
     151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142,
     8, 99, 37, 240, 21, 10, 23, 190, 6, 148, 247, 120, 234, 75, 0, 26, 197, 62, 94, 252, 219, 203, 117,
@@ -23,7 +23,7 @@ const int Perlin::Permutation[256] =
 /**
  * Wektory punktów środka sześcianu
  */
-const int Perlin::GradientsCube[12][3] =
+const int Perlin::gradientsCube[12][3] =
 {
     {1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0},
     {1, 0, 1}, {-1, 0, 1}, {1, 0, -1}, {-1, 0, -1},
@@ -42,7 +42,7 @@ Perlin::Perlin(const float octaves, const float persistence) :
  * Sumowanie szumu kolejnych oktaw
  * Do każdej oktawy zostanie dodana większa częstotliwość/mniejsza amplituda
  */
-float Perlin::OctaveNoise(const float x, const float y)
+float Perlin::octaveNoise(const float x, const float y)
 {
     float total = 0;
     float frequency = 1;
@@ -103,19 +103,19 @@ float Perlin::rawNoise(const float x, const float y)
     return 70.0 * (Noise[0] + Noise[1] + Noise[2]);
 }
 
-float Perlin::getCornerValue(const float x, const float y, const int GradientIndex)
+float Perlin::getCornerValue(const float x, const float y, const int gradientIndex)
 {
     float CornerValue = 0.5 - powf(x, 2) - powf(y, 2);
     if(CornerValue < 0)
     {
         return 0.0;
     }
-    return (powf(CornerValue, 4) * matrixDot(GradientsCube[GradientIndex], x, y));
+    return (powf(CornerValue, 4) * matrixDot(gradientsCube[gradientIndex], x, y));
 }
 
-float Perlin::matrixDot(const int* Matrix, const float x, const float y)
+float Perlin::matrixDot(const int * matrix, const float x, const float y)
 {
-    return Matrix[0] * x + Matrix[1] * y;
+    return matrix[0] * x + matrix[1] * y;
 }
 
 int Perlin::fastFloor(const float x)
@@ -125,5 +125,5 @@ int Perlin::fastFloor(const float x)
 
 int Perlin::hash(const int i)
 {
-    return Permutation[i & 255];
+    return permutation[i & 255];
 }
