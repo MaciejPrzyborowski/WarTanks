@@ -30,9 +30,9 @@ Mapa za każdym razem będzie generowała się losowo po rozpoczęciu się gry. 
 
 Poruszanie nie będzie możliwe dla dużych wzniesień, ze względu na dużą masę czołgu (kąt pod który maksymalnie wjedzie czołg to 75 stopni).
 
-Jeżeli czołg znajdzie się w promieniu wybuchu strzału to straci on punkty życia zależne od odległości między wybuchem a czołgiem.
+Jeżeli czołg znajdzie się w promieniu wybuchu strzału to straci on 30 punktów życia.
 
-W przypadku zderzenia się z ziemią pocisk będzie niszczył teren w kształt okręgu, ziemia nie będzie spadała.
+W przypadku zderzenia się z ziemią pocisk będzie niszczył teren w kształt okręgu, wisząca ziemia będzie spadała.
 
 Gra zostanie zakończona w momencie, gdy jeden z czołgów zostanie zniszczony. W tym momencie zostaje wyłoniony zwycięzca i jest możliwy powrót do menu.
 
