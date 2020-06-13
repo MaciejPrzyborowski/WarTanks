@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Bullet.h"
 #include "Land.h"
+#include "Interface.h"
 
 class Tank
 {
@@ -23,8 +24,13 @@ public:
 
     Tank *enemy;
 
+    inline int returnHp() {return health_;};
+    inline sf::Vector2f returnPosition() {return TankSprite.getPosition();};
+    inline Interface returnTankInterface() { return tankInterface_; };
+
 private:
     Land *land;
+    Interface tankInterface_;
     unique_ptr<Bullet> bullet_;
 
     bool freefall_;
@@ -35,8 +41,10 @@ private:
     int moveDirection_;
     int shootPower_;
     int health_;
+
     float speed_;
     float maxAngle_;
+    float timeLeft_;
     float velocityFreefall_;
 
     sf::Sprite TankSprite;
@@ -45,8 +53,6 @@ private:
     sf::Texture TankTexture;
     sf::Texture CannonTexture;
     sf::Texture CrosshairTexture;
-    sf::RectangleShape shootPowerBox;
-    sf::RectangleShape shootPowerFill;
 
     bool canCannonMove();
     bool canTankMove(const sf::Vector2f &velocity);
@@ -57,5 +63,6 @@ private:
     void moveTankPosition(const sf::Vector2f &velocity);
     void setTankPosition(const sf::Vector2f &position);
     void shootReset();
+
     sf::RectangleShape getTankShape(const sf::Sprite &Tank);
 };

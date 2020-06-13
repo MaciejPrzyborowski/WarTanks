@@ -4,7 +4,7 @@ Menu::Menu() :
     isMouseActive_(false),
     gameSettings_{false, true, true, true}
 {
-    Font.loadFromFile("game_font.ttf");
+    Font.loadFromFile(GameFont);
     MenuSelectSoundBuffer.loadFromFile(SelectMenuSoundSrc);
     MenuSelectSound.setBuffer(MenuSelectSoundBuffer);
     MenuSelectSound.setVolume(1);

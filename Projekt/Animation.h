@@ -5,20 +5,23 @@
 class Animation
 {
 public:
-    Animation(const string &name, sf::Vector2f mapPosition, sf::IntRect texturePosition, int step, int radius);
+   // Animation(const string &name, sf::Vector2f mapPosition, sf::IntRect texturePosition, int step, int radius, bool repeat);
+    Animation(const string &name, sf::IntRect texturePosition, int step, int radius, bool repeat, float scale);
     void changeAnimation(const float elapsed);
-    void draw(const float elapsed, sf::RenderTarget &window);
+    void draw(const float elapsed, sf::Vector2f mapPosition, sf::RenderTarget &window);
 
     bool getStatus();
 
 private:
     bool active_;
+    bool repeat_;
 
     int stepPositionX_;
     float timeElapsed_;
     float changeAnimationTime_;
 
     sf::IntRect texturePosition_;
+    sf::IntRect textureStartPosition_;
     sf::Texture AnimationTexture;
     sf::CircleShape AnimationShape;
 };

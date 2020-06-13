@@ -15,6 +15,7 @@ SOURCES += \
         Animation.cpp \
         Bullet.cpp \
         Game.cpp \
+        Interface.cpp \
         main.cpp \
         Land.cpp \
         Perlin.cpp \
@@ -29,4 +30,5 @@ HEADERS += \
     Land.h \
     Perlin.h \
     Tank.h \
-    Menu.h
+    Menu.h \
+    Interface.h

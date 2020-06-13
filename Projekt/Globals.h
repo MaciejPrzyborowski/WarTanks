@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
@@ -16,11 +15,14 @@
 #define MenuMusicSrc "menu_music.wav"
 #define SelectMenuSoundSrc "select_sound.wav"
 
+#define GameFont "game_font.ttf"
 #define TankTextureSrc1 "tank1.png"
 #define TankTextureSrc2 "tank2.png"
 #define BarrelTextureSrc "barrel.png"
 #define CrosshairTextureSrc "crosshair.png"
 #define ExplosionTextureSrc "explosion.png"
+#define FireworksEndGameAnimation "fireworks.png"
+#define FireEndGameAnimation "fire_animation.png"
 #define MenuBackgroundTextureSrc "menu_background.jpg"
 #define GameBackgroundTextureSrc "game_background.png"
 
