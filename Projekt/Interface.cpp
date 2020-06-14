@@ -1,87 +1,45 @@
 #include "Interface.h"
 
-Interface::Interface()
+Interface::Interface(): totalTime_(0.0), backToMenuTime(0.0), showEndAnimations_(true)
 {
     font_.loadFromFile(GameFontSrc);
+    gameTime_ = setTextStyle(20, 2, sf::Vector2f(340, 5), "");
+    gameEndText_ = setTextStyle(50, 3, sf::Vector2f(190,100), "Remis!");
+    backToMenu_ = setTextStyle(20, 3, sf::Vector2f(255, 570), "Kliknij enter aby wrocic do menu");
+    turn_ = setTextStyle(20, 3, sf::Vector2f(260, 570), "");
+    turnTimeLeft_ = setTextStyle(18, 2, sf::Vector2f(290, 550), "");
+    fps_ = setTextStyle(15, 1, sf::Vector2f(2, 2), "");
 
-    gameTime_.setFont(font_);
-    gameTime_.setCharacterSize(20);
-    gameTime_.setOutlineThickness(2);
-    gameTime_.setOutlineColor(sf::Color::Black);
-    gameTime_.setFillColor(sf::Color::White);
-    gameTime_.setPosition(340, 5);
-
-    gameEndText_.setFont(font_);
-    gameEndText_.setCharacterSize(50);
-    gameEndText_.setOutlineThickness(3);
-    gameEndText_.setFillColor(sf::Color::White);
-    gameEndText_.setPosition(190, 100);
-
-    backToMenu_.setFont(font_);
-    backToMenu_.setCharacterSize(20);
-    backToMenu_.setOutlineThickness(3);
-    backToMenu_.setOutlineColor(sf::Color::Black);
-    backToMenu_.setFillColor(sf::Color::White);
-    backToMenu_.setString("Kliknij enter aby wrocic do menu");
-    backToMenu_.setPosition(255, 570);
-
-    turn_.setFont(font_);
-    turn_.setCharacterSize(20);
-    turn_.setOutlineThickness(3);
-    turn_.setOutlineColor(sf::Color::Black);
-    turn_.setPosition(260, 570);
-
-    turnTimeLeft_.setFont(font_);
-    turnTimeLeft_.setCharacterSize(18);
-    turnTimeLeft_.setOutlineThickness(2);
-    turnTimeLeft_.setOutlineColor(sf::Color::Black);
-    turnTimeLeft_.setPosition(290, 550);
-    turnTimeLeft_.setFillColor(sf::Color::White);
+    gameBuffer_.loadFromFile(GameMusicSrc);
+    gameMusic_.setBuffer(gameBuffer_);
+    gameMusic_.setVolume(30);
 }
 
-Interface::Interface(int id)
+Interface::Interface(const int id): totalTime_(0.0), backToMenuTime(0.0), showEndAnimations_(true)
 {
     font_.loadFromFile(GameFontSrc);
 
-    shootPowerBorder_.setSize(sf::Vector2f(100, 20));
-    shootPowerBorder_.setPosition(350, 40);
-    shootPowerBorder_.setOutlineThickness(3);
-    shootPowerBorder_.setOutlineColor(sf::Color(50, 50, 50));
-    shootPowerBorder_.setFillColor(sf::Color(0, 0, 0, 0));
+    shootPowerBorder_ = setRectStyle(sf::Vector2f(100, 20), 3, sf::Vector2f(350, 40));
     shootPowerFill_.setPosition(350,40);
 
-    hpText_.setFont(font_);
-    hpText_.setString("HP");
-    hpText_.setOutlineThickness(1);
-    hpText_.setOutlineColor(sf::Color::Black);
-    hpText_.setCharacterSize(22);
-
-    healthPointBorder_.setSize(sf::Vector2f(100, 20));
-    healthPointBorder_.setOutlineThickness(3);
-    healthPointBorder_.setOutlineColor(sf::Color(50, 50, 50));
-    healthPointBorder_.setFillColor(sf::Color(0, 0, 0, 0));
+    hpText_ = setTextStyle(22, 1, sf::Vector2f(0, 0), "HP");
 
     if(id == 1)
     {
         hpText_.setFillColor(sf::Color::Red);
         hpText_.setPosition(60, 26);
-        healthPointBorder_.setPosition(20, 30);
+        healthPointBorder_ = setRectStyle(sf::Vector2f(100, 20), 3, sf::Vector2f(20, 30));
         healthPointFill_.setPosition(20, 30);
     }
     else if(id == 2)
     {
         hpText_.setFillColor(sf::Color(0, 100, 255));
         hpText_.setPosition(720, 26);
-        healthPointBorder_.setPosition(680, 30);
+        healthPointBorder_ = setRectStyle(sf::Vector2f(100, 20), 3, sf::Vector2f(680, 30));
         healthPointFill_.setPosition(680, 30);
     }
 
-    angle_.setFont(font_);
-    angle_.setCharacterSize(18);
-    angle_.setOutlineThickness(2);
-    angle_.setOutlineColor(sf::Color::Black);
-    angle_.setFillColor(sf::Color::White);
-    angle_.setPosition(350, 65);
+    angle_ = setTextStyle(18, 2, sf::Vector2f(350, 65), "");
 }
 
 void Interface::drawPower(sf::RenderTarget &Window, int shootPower)
@@ -105,13 +63,13 @@ void Interface::drawHp(sf::RenderTarget &Window, int health)
     Window.draw(hpText_);
 }
 
-sf::Text Interface::showAngle(float angle)
+sf::Text Interface::showAngle(const float angle)
 {
     angle_.setString("Kat lufy: " + to_string((int)(angle)));
     return angle_;
 }
 
-void Interface::turnRed(sf::RenderTarget &Window, float timeLeft)
+void Interface::turnRed(sf::RenderTarget &Window, const float timeLeft)
 {
     turn_.setString("Kolej gracza czerwonego");
     turn_.setFillColor(sf::Color::Red);
@@ -129,14 +87,39 @@ void Interface::turnBlue(sf::RenderTarget &Window, float timeLeft)
     Window.draw(turnTimeLeft_);
 }
 
-sf::Text Interface::gameTime(float time)
+sf::Text Interface::showFps(float elapsed)
+{
+    fps_.setString(std::to_string((int)(1/elapsed)) + " FPS");
+    return fps_;
+}
+
+void Interface::reset()
+{
+    totalTime_ = 0.0;
+    backToMenuTime = 0.0;
+    showEndAnimations_ = true;
+}
+
+void Interface::playGameMusic(bool isMusicOn)
+{
+    if(isMusicOn && gameMusic_.getStatus() != sf::Music::Playing)
+    {
+        gameMusic_.play();
+    }
+    else if(!isMusicOn)
+    {
+        gameMusic_.stop();
+    }
+}
+
+sf::Text Interface::gameTime(const float &time)
 {
     totalTime_ += time;
     gameTime_.setString("Czas: " + std::to_string((int)totalTime_) + " sekund");
     return gameTime_;
 }
 
-sf::Text Interface::gameEnd(int hp1, int hp2)
+sf::Text Interface::gameEnd(const int &hp1, const int &hp2)
 {
     if(hp1 <= 0 && hp2 > 0)
     {
@@ -151,8 +134,7 @@ sf::Text Interface::gameEnd(int hp1, int hp2)
     }
     else if(hp1 <= 0 && hp2 <= 0)
     {
-        gameEndText_.setOutlineColor(sf::Color::Black);
-        gameEndText_.setString("Remis!");
+        gameEndText_.setPosition(325, 100);
         showEndAnimations_ = false;
     }
     return gameEndText_;
@@ -167,50 +149,26 @@ void Interface::backToMenuText(sf::RenderTarget &Window, float elapsed)
     }
 }
 
-bool Interface::checkPlayersHp(int hp1, int hp2)
+sf::Text Interface::setTextStyle(const int size, const int thickness, const sf::Vector2f position, const std::string &contents, sf::Color fillColor, sf::Color borderColor)
 {
-    if(hp1 <= 0)
-    {
-        isGameEnd_ = true;
-    }
-    else if(hp2 <= 0)
-    {
-        isGameEnd_ = true;
-    }
-    return isGameEnd_;
+    sf::Text textToSet;
+    textToSet.setFont(font_);
+    textToSet.setCharacterSize(size);
+    textToSet.setOutlineThickness(thickness);
+    textToSet.setFillColor(fillColor);
+    textToSet.setOutlineColor(borderColor);
+    textToSet.setPosition(position);
+    textToSet.setString(contents);
+    return textToSet;
 }
 
-sf::Vector2f Interface::winner(int hp1, int hp2, sf::Vector2f TankPos1, sf::Vector2f TankPos2)
+sf::RectangleShape Interface::setRectStyle(const sf::Vector2f size, const int thickness, const sf::Vector2f position, sf::Color fillColor, sf::Color borderColor)
 {
-    if(showEndAnimations_)
-    {
-        if(hp1 <= 0)
-        {
-            return TankPos2;
-        }
-        else if(hp2 <= 0)
-        {
-            return TankPos1;
-        }
-    }
-    return sf::Vector2f(0.0, 0.0);
+    sf::RectangleShape rectToSet;
+    rectToSet.setSize(size);
+    rectToSet.setOutlineThickness(thickness);
+    rectToSet.setPosition(position);
+    rectToSet.setFillColor(fillColor);
+    rectToSet.setOutlineColor(borderColor);
+    return rectToSet;
 }
-
-sf::Vector2f Interface::loser(int hp1, int hp2, sf::Vector2f TankPos1, sf::Vector2f TankPos2)
-{
-    if(showEndAnimations_)
-    {
-        if(hp1 <= 0)
-        {
-            return TankPos1;
-        }
-        else if(hp2 <= 0)
-        {
-            return TankPos2;
-        }
-    }
-    return sf::Vector2f(0.0, 0.0);
-}
-
-
-

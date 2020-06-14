@@ -20,6 +20,9 @@ public:
     bool getStatus();
     void setMenu(MenuType type);
 
+    inline bool isFpsOn(){return gameSettings_[0];};
+    inline bool isGameMusicOn(){return gameSettings_[2];};
+
 private:
     sf::Font font_;
     sf::Sound menuMusic_;

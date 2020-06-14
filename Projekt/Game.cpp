@@ -17,7 +17,7 @@ void Game::run()
 {
     menu_ = make_unique<Menu>();
     land_ = make_unique<Land>(4, 0.2);
-
+    GameInterface_ = make_unique<Interface>();
     initialize(GameMenu);
     update();
 }
@@ -38,7 +38,9 @@ void Game::initialize(GameState gameState)
         player1_->enemy = player2_.get();
         player2_->enemy = player1_.get();
 
-        GameInterface_ = make_unique<Interface>();
+        //GameInterface_ = make_unique<Interface>();
+        GameInterface_->reset();
+
         fireworks_ = make_unique<Animation>(FireworksEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
         fire_ = make_unique<Animation>(FireEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
     }
@@ -83,6 +85,7 @@ void Game::updateAll(sf::Time elapsed)
     if(window_->isOpen())
     {
         window_->clear();
+
         if(gameState_ == GameMenu)
         {
             if(menu_->getStatus())
@@ -99,14 +102,21 @@ void Game::updateAll(sf::Time elapsed)
         {
             playerHp1_ = player1_->returnHp();
             playerHp2_ = player2_->returnHp();
+
             playerPos1_ = player1_->returnPosition();
             playerPos2_ = player2_->returnPosition();
+
+            loser_ = sf::Vector2f(GameInterface_->loser(player1_->returnHp(), player1_->returnPosition(), player2_->returnPosition()).x - 50, GameInterface_->loser(playerHp1_, playerPos1_, playerPos2_).y - 90);
+            winner_ = sf::Vector2f(GameInterface_->winner(player1_->returnHp(), player1_->returnPosition(), player2_->returnPosition()).x - 50, GameInterface_->winner(playerHp1_, playerPos1_, playerPos2_).y - 120);
+
             window_->clear();
             window_ -> draw(gameBackgroundSprite_);
             land_ -> step(elapsed.asSeconds());
             land_ -> draw(*window_);
             player1_ -> update(elapsed.asSeconds(), *window_);
             player2_ -> update(elapsed.asSeconds(), *window_);
+
+            GameInterface_->playGameMusic(menu_->isGameMusicOn());
 
             if(!GameInterface_->checkPlayersHp(playerHp1_, playerHp2_))
             {
@@ -130,15 +140,20 @@ void Game::updateAll(sf::Time elapsed)
             else
             {
                 window_->draw(GameInterface_->gameEnd(playerHp1_, playerHp2_));
-
+                GameInterface_->playGameMusic(false);
                 if(GameInterface_->showAnimations_())
                 {
-                    fireworks_->draw(elapsed.asSeconds(), sf::Vector2f(GameInterface_->winner(playerHp1_, playerHp2_, playerPos1_, playerPos2_).x - 50, GameInterface_->winner(playerHp1_, playerHp2_, playerPos1_, playerPos2_).y - 120), *window_);
-                    fire_->draw(elapsed.asSeconds(), sf::Vector2f(GameInterface_->loser(playerHp1_, playerHp2_, playerPos1_, playerPos2_).x - 50, GameInterface_->loser(playerHp1_, playerHp2_, playerPos1_, playerPos2_).y - 90), *window_);
+                    fireworks_->draw(elapsed.asSeconds(), winner_, *window_);
+                    fire_->draw(elapsed.asSeconds(), loser_, *window_);
                 }
                 GameInterface_->backToMenuText(*window_, elapsed.asSeconds());
             }
         }
+        if(menu_->isFpsOn())
+        {
+            window_->draw(GameInterface_->showFps(elapsed.asSeconds()));
+        }
+
         window_ -> display();
     }
 }

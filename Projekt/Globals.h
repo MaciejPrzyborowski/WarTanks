@@ -14,6 +14,7 @@
 #define NazwaGry "WarTanks"
 
 #define MenuMusicSrc "menu_music.ogg"
+#define GameMusicSrc "game_music.ogg"
 #define SelectMenuSoundSrc "select_sound.wav"
 #define ExplodeSoundSrc "explode.wav"
 #define ShootSoundSrc "shoot_sound.wav"
