@@ -5,6 +5,7 @@ Game::Game()
     window_ = make_unique<sf::RenderWindow>(sf::VideoMode(WindowWidth, WindowHeight), NazwaGry);
     window_->setFramerateLimit(WindowFPS);
     window_->setActive(true);
+
     gameBackgroundTexture_.loadFromFile(GameBackgroundTextureSrc);
     gameBackgroundSprite_.setTexture(gameBackgroundTexture_);
     gameBackgroundSprite_.setScale((float)WindowWidth/gameBackgroundTexture_.getSize().x, (float)WindowHeight/gameBackgroundTexture_.getSize().y);
@@ -27,7 +28,7 @@ void Game::initialize(GameState gameState)
     gameState_ = gameState;
     if(gameState == GameMenu)
     {
-        menu_->setMenu(MenuMain);
+        menu_->reset(false);
     }
     else if(gameState == GamePlay)
     {
@@ -38,7 +39,6 @@ void Game::initialize(GameState gameState)
         player1_->enemy = player2_.get();
         player2_->enemy = player1_.get();
 
-        //GameInterface_ = make_unique<Interface>();
         GameInterface_->reset();
 
         fireworks_ = make_unique<Animation>(FireworksEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
@@ -54,7 +54,7 @@ void Game::passEvent(sf::Event &Event)
     }
     else if(gameState_ == GameMenu)
     {
-        if(menu_->getStatus())
+        if(menu_->getMenuStatus())
         {
             menu_->passEvent(Event, *window_);
         }
@@ -88,10 +88,11 @@ void Game::updateAll(sf::Time elapsed)
 
         if(gameState_ == GameMenu)
         {
-            if(menu_->getStatus())
+            if(menu_->getMenuStatus())
             {
                 window_ -> draw(menuBackgroundSprite_);
                 menu_->draw(*window_);
+                GameInterface_->playGameMusic(false);
             }
             else
             {
@@ -116,7 +117,7 @@ void Game::updateAll(sf::Time elapsed)
             player1_ -> update(elapsed.asSeconds(), *window_);
             player2_ -> update(elapsed.asSeconds(), *window_);
 
-            GameInterface_->playGameMusic(menu_->isGameMusicOn());
+            GameInterface_->playGameMusic(menu_->getGameSettings(2));
 
             if(!GameInterface_->checkPlayersHp(playerHp1_, playerHp2_))
             {
@@ -127,11 +128,11 @@ void Game::updateAll(sf::Time elapsed)
                 }
                 if(player1_->getStatus() == 1)
                 {
-                    GameInterface_->turnRed(*window_, player1_->returnTimeLeft());
+                    GameInterface_->whoTurn(*window_, player1_->returnTimeLeft(), 1);
                 }
                 else if(player2_->getStatus() == 1)
                 {
-                    GameInterface_->turnBlue(*window_, player2_->returnTimeLeft());
+                    GameInterface_->whoTurn(*window_, player2_->returnTimeLeft(), 2);
                 }
                 window_->draw(GameInterface_->gameTime(elapsed.asSeconds()));
                 player1_->returnTankInterface().drawHp(*window_, playerHp1_);
@@ -140,7 +141,7 @@ void Game::updateAll(sf::Time elapsed)
             else
             {
                 window_->draw(GameInterface_->gameEnd(playerHp1_, playerHp2_));
-                GameInterface_->playGameMusic(false);
+
                 if(GameInterface_->showAnimations_())
                 {
                     fireworks_->draw(elapsed.asSeconds(), winner_, *window_);
@@ -149,7 +150,7 @@ void Game::updateAll(sf::Time elapsed)
                 GameInterface_->backToMenuText(*window_, elapsed.asSeconds());
             }
         }
-        if(menu_->isFpsOn())
+        if(menu_->getGameSettings(0))
         {
             window_->draw(GameInterface_->showFps(elapsed.asSeconds()));
         }

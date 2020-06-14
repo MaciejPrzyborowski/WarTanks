@@ -187,13 +187,13 @@ void Tank::update(const float elapsed, sf::RenderWindow &window)
         moveTank(elapsed);
         moveCannon(window);
     }
-    draw(elapsed, window);
+    draw(window);
 }
 
 /**
  * Wyświetla czołg i jego parametry
  */
-void Tank::draw(const float elapsed, sf::RenderTarget &window)
+void Tank::draw(sf::RenderTarget &window)
 {
     window.draw(cannonSprite_);
     window.draw(tankSprite_);

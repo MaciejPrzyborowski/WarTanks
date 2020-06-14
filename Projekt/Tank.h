@@ -15,7 +15,7 @@ public:
     void moveShootPower(const int direction);
     void passEvent(sf::Event &event, sf::RenderWindow &window);
     void update(const float elapsed, sf::RenderWindow &window);
-    void draw(const float elapsed, sf::RenderTarget &window);
+    void draw(sf::RenderTarget &window);
     void step(const float elapsed);
 
     int getStatus();
