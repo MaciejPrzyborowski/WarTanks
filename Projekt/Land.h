@@ -36,5 +36,5 @@ private:
     std::vector<int> height_;
     std::map<int, StepLand> steps_;
 
-    sf::Color gradient(const float t, const sf::Color a, const sf::Color b);
+    sf::Color gradient(const float brightness, const sf::Color darkColor, const sf::Color lightColor);
 };

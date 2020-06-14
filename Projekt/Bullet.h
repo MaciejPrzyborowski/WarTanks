@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Globals.h"
-#include "Land.h"
 #include "Animation.h"
+#include "Land.h"
 
 class Bullet
 {
@@ -12,9 +12,9 @@ public:
     void draw(sf::RenderTarget &window);
     void explode();
 
+    bool getStatusExplosion(int target);
     int getStatus();
-    int getStatusExplosion(int client);
-    void setAcceleration(const sf::Vector2f &velocity);
+    void setAcceleration(const sf::Vector2f &acceleration);
     void setVelocity(const sf::Vector2f &velocity);
 
 private:
@@ -24,19 +24,16 @@ private:
 
     bool clientExploded_;
     bool targetExploded_;
-
     int status_;
     int explodeSize_;
 
+    sf::Sound explodeSound_;
+    sf::SoundBuffer explodeSoundBuffer_;
     sf::CircleShape bullet_;
     sf::RectangleShape client_;
     sf::RectangleShape target_;
     sf::Vector2f acceleration_;
     sf::Vector2f velocity_;
-    sf::CircleShape explosionBullet_;
 
-    sf::Sound explodeSound_;
-    sf::SoundBuffer explodeBuffer_;
-
-    bool intersects(sf::CircleShape bullet, sf::RectangleShape Tank);
+    bool intersects(const sf::CircleShape &bullet, const sf::RectangleShape &Tank);
 };

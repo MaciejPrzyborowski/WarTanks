@@ -16,6 +16,7 @@ Game::Game()
 void Game::run()
 {
     menu_ = make_unique<Menu>();
+    land_ = make_unique<Land>(4, 0.2);
 
     initialize(GameMenu);
     update();
@@ -30,7 +31,6 @@ void Game::initialize(GameState gameState)
     }
     else if(gameState == GamePlay)
     {
-        land_ = make_unique<Land>(4, 0.2);
         land_->generate();
 
         player1_ = make_unique<Tank>(1, true, TankTextureSrc1, *land_);

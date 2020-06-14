@@ -17,6 +17,7 @@ private:
     static const int gradientsCube[12][3];
 
     float rawNoise(const float x, const float y);
+
     float getCornerValue(const float x, const float y, const int gradientIndex);
     float matrixDot(const int * matrix, const float x, const float y);
     int fastFloor(const float x);

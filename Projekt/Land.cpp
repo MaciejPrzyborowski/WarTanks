@@ -16,8 +16,8 @@ Land::Land(const float octaves, const float persistence) :
 void Land::generate()
 {
     image_.create(image_.getSize().x, image_.getSize().y, sf::Color::Transparent);
-    float offsetx = rand()%1000;
-    float offsety = rand()%1000;
+    float offsetx = rand() % 1000;
+    float offsety = rand() % 1000;
     for(int x = 0; x < WindowWidth; x++)
     {
         height_[x] = octaveNoise((x + offsetx) / size_, offsety / size_);
@@ -27,10 +27,15 @@ void Land::generate()
         }
     }
     modified_ = true;
+    steps_.clear();
 }
 
 /**
- * Usuwa teren w kształcie koła w punkcie (x,y) i promieniu r
+ * Usuwa teren w kształcie koła o środku w punkcie (x, y) i promieniu r
+ *
+ * @param x - współrzędna x dla środka koła
+ * @param y - współrzędna y dla środka koła
+ * @param r - promień koła
  */
 void Land::destroyCircle(const int x, const int y, const int r)
 {
@@ -43,11 +48,15 @@ void Land::destroyCircle(const int x, const int y, const int r)
 }
 
 /**
- * Usuwa kolumnę terenu o początku - top, końcu - bottom
+ * Usuwa kolumnę terenu w punkcie x dla y o początku - top, końcu - bottom
+ *
+ * @param x - współrzędna x
+ * @param top - pierwsza wartość współrzędnej y
+ * @param bottom - ostatnia wartość współrzędnej y
  */
 void Land::destroyColumn(const int x, int top, int bottom)
 {
-    if(x >= 0 && x <= (int)image_.getSize().x)
+    if(x >= 0 && x < (int)image_.getSize().x)
     {
         if(top < 0)
         {
@@ -80,75 +89,25 @@ void Land::destroyColumn(const int x, int top, int bottom)
 }
 
 /**
- * Sprawdza czy istnieje teren w punkcie (x, y)
+ * Aktualizuje i wyświetla teren
+ *
+ * @param window - okno gry
  */
-bool Land::isSolidPixel(const int x, const int y)
+void Land::draw(sf::RenderTarget &window)
 {
-    if((x >= 0 && x < (int)image_.getSize().x) && (y >= 0 && y < (int)image_.getSize().y))
+    if(modified_)
     {
-        return image_.getPixel(x, y) != sf::Color::Transparent;
+        texture_.loadFromImage(image_);
+        sprite_.setTexture(texture_);
+        modified_ = false;
     }
-    return false;
+    window.draw(sprite_);
 }
 
 /**
- * Zwraca kąt nachylenia powierzchni w punkcie (x,y)
- * Kąt jest wyrażony w radianach
- */
-float Land::getAngleRadian(const int x, const int y)
-{
-    int d = 3;
-    float avgX = 0, avgY = 0;
-    for(int x0 = -d; x0 <= d; x0++)
-    {
-        for(int y0 = -d; y0 <= d; y0++)
-        {
-            if(isSolidPixel(x + x0, y + y0))
-            {
-                avgX += x0;
-                avgY += y0;
-            }
-        }
-    }
-    return avgX ? (M_PI_2 - atan2(avgY, -avgX)) : 0;
-}
-
-/**
- * Zwraca kąt nachylenia powierzchni w punkcie (x,y)
- * Kąt jest wyrażony w stopniach
- */
-float Land::getAngleDegree(const int x, const int y)
-{
-    return fmod(RadianToDegree(getAngleRadian(x, y)), 360.0);
-}
-
-/**
- * Zwraca wysokość powierzchni
- */
-int Land::getLandHeight(const int x)
-{
-    if(x >= 0 && x <= (int)height_.size())
-    {
-        return WindowHeight - height_[x];
-    }
-    return 0;
-}
-
-/**
- * Generuje gradient używając interpolacji liniowej
- */
-sf::Color Land::gradient(const float t, const sf::Color a, const sf::Color b)
-{
-    sf::Color Gradient;
-    Gradient.r = LERP(t, a.r, b.r);
-    Gradient.g = LERP(t, a.g, b.g);
-    Gradient.b = LERP(t, a.b, b.b);
-    Gradient.a = LERP(t, a.a, b.a);
-    return Gradient;
-}
-
-/**
- * Obsługuje grawitacje
+ * Obsługuje grawitacje terenu
+ *
+ * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
 void Land::step(const float elapsed)
 {
@@ -211,15 +170,97 @@ void Land::step(const float elapsed)
 }
 
 /**
- * Aktualizuje i wyświetla teren
+ * Sprawdza czy istnieje teren w punkcie (x, y)
+ *
+ * @param x - współrzędna x
+ * @param y - współrzędna y
+ *
+ * @return
+ *      true - istnieje teren w punkcie (x, y)
+ *      false - nie istnieje teren w punkcie (x, y)
  */
-void Land::draw(sf::RenderTarget &window)
+bool Land::isSolidPixel(const int x, const int y)
 {
-    if(modified_)
+    if((x >= 0 && x < (int)image_.getSize().x) && (y >= 0 && y < (int)image_.getSize().y))
     {
-        texture_.loadFromImage(image_);
-        sprite_.setTexture(texture_);
-        modified_ = false;
+        return image_.getPixel(x, y) != sf::Color::Transparent;
     }
-    window.draw(sprite_);
+    return false;
+}
+
+/**
+ * Oblicza kąt nachylenia powierzchni w punkcie (x, y)
+ *
+ * @param x - współrzędna x
+ * @param y - współrzędna y
+ *
+ * @return Kąt nachylenia powierzchni w punkcie (x, y) w stopniach
+ */
+float Land::getAngleDegree(const int x, const int y)
+{
+    return fmod(RadianToDegree(getAngleRadian(x, y)), 360.0);
+}
+
+/**
+ * Oblicza kąt nachylenia powierzchni w punkcie (x, y)
+ *
+ * Tworzy kwadrat o boku 3 o środku w punkcie (x, y)
+ * Następnie w całym kwadracie sumuje odległość od (x, y) dla istniejącego terenu
+ *
+ * @param x - współrzędna x
+ * @param y - współrzędna y
+ *
+ * @return Kąt nachylenia powierzchni w punkcie (x, y) w radianach
+ */
+float Land::getAngleRadian(const int x, const int y)
+{
+    int d = 3;
+    float avgX = 0, avgY = 0;
+    for(int x0 = -d; x0 <= d; x0++)
+    {
+        for(int y0 = -d; y0 <= d; y0++)
+        {
+            if(isSolidPixel(x + x0, y + y0))
+            {
+                avgX += x0;
+                avgY += y0;
+            }
+        }
+    }
+    return avgX ? (M_PI_2 - atan2(avgY, -avgX)) : 0;
+}
+
+/**
+ * Oblicza wysokość terenu w punkcie x
+ *
+ * @param x - współrzędna x
+ *
+ * @return Wysokość terenu w punkcie x
+ */
+int Land::getLandHeight(const int x)
+{
+    if(x >= 0 && x <= (int)height_.size())
+    {
+        return WindowHeight - height_[x];
+    }
+    return 0;
+}
+
+/**
+ * Oblicza gradient używając interpolacji liniowej
+ *
+ * @param brightness - jasność koloru (im większa wartość tym kolor jest ciemniejszy)
+ * @param darkColor - najciemniejszy kolor
+ * @param lightColor - najjaśniejszy kolor
+ *
+ * @return Kolor gradientu w zależności od jasności koloru
+ */
+sf::Color Land::gradient(const float brightness, const sf::Color darkColor, const sf::Color lightColor)
+{
+    sf::Color Gradient;
+    Gradient.r = LERP(brightness, darkColor.r, lightColor.r);
+    Gradient.g = LERP(brightness, darkColor.g, lightColor.g);
+    Gradient.b = LERP(brightness, darkColor.b, lightColor.b);
+    Gradient.a = LERP(brightness, darkColor.a, lightColor.a);
+    return Gradient;
 }

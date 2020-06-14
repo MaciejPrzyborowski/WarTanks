@@ -208,7 +208,6 @@ void Tank::draw(const float elapsed, sf::RenderTarget &window)
         {
             if(bullet_->getStatus())
             {
-                bullet_->move(elapsed);
                 bullet_->draw(window);
             }
             else
