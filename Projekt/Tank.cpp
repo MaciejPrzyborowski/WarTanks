@@ -67,6 +67,8 @@ void Tank::shoot()
 
 /**
  * Obsługuje przemieszczenie czołgu
+ *
+ * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
 void Tank::moveTank(const float elapsed)
 {
@@ -80,7 +82,9 @@ void Tank::moveTank(const float elapsed)
 }
 
 /**
- * Obsługuje przemieszczenie lufy
+ * Ustawia kąt nachylenia lufy
+ *
+ * @param window - okno gry
  */
 void Tank::moveCannon(sf::RenderWindow &window)
 {
@@ -101,6 +105,11 @@ void Tank::moveCannon(sf::RenderWindow &window)
 
 /**
  * Obsługuje zmianę siły wytrzału
+ *
+ * @param direction
+ *                 1 - siła strzału się zwiększa
+ *                -1 - siła strzału się zmniejsza
+ *
  */
 void Tank::moveShootPower(const int direction)
 {
@@ -112,6 +121,9 @@ void Tank::moveShootPower(const int direction)
 
 /**
  * Obsługuje zdarzenia wykonane przez gracza
+ *
+ * @param event - obiekt wszystkich zdarzeń
+ * @param window - okno gry
  */
 void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 {
@@ -171,6 +183,9 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 
 /**
  * Aktualizuje dane gracza
+ *
+ * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
+ * @param window - okno gry
  */
 void Tank::update(const float elapsed, sf::RenderWindow &window)
 {
@@ -187,11 +202,12 @@ void Tank::update(const float elapsed, sf::RenderWindow &window)
         moveTank(elapsed);
         moveCannon(window);
     }
-    draw(window);
 }
 
 /**
  * Wyświetla czołg i jego parametry
+ *
+ * @param window - okno gry
  */
 void Tank::draw(sf::RenderTarget &window)
 {
@@ -224,6 +240,8 @@ void Tank::draw(sf::RenderTarget &window)
 
 /**
  * Obsługuje grawitacje
+ *
+ * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
 void Tank::step(const float elapsed)
 {
@@ -253,6 +271,10 @@ void Tank::step(const float elapsed)
 
 /**
  * Zwraca status gracza
+ * @return
+ *        0 - nie jego kolej
+ *        1 - jego kolej
+ *        2 - zmiana kolejki
  */
 int Tank::getStatus()
 {
@@ -261,6 +283,8 @@ int Tank::getStatus()
 
 /**
  * Zmienia status gracza
+ *
+ * @param window - okno gry
  */
 void Tank::switchStatus(sf::RenderWindow &window)
 {
@@ -288,6 +312,10 @@ void Tank::switchStatus(sf::RenderWindow &window)
 
 /**
  * Sprawdza czy gracz może zmienić położenie lufy
+ *
+ * @return
+ *        true - gracz może ruszać lufą
+ *        false - gracz nie może ruszać lufą
  */
 bool Tank::canCannonMove()
 {
@@ -300,6 +328,11 @@ bool Tank::canCannonMove()
 
 /**
  * Sprawdza czy czołg może przemieścić się o wektor [x, y]
+ *
+ * @param velocity - wektor prędkości
+ * @return
+ *        true - gracz może ruszyć swoim czołgiem
+ *        false - gracz nie może ruszyć swoim czołgiem
  */
 bool Tank::canTankMove(const sf::Vector2f &velocity)
 {
@@ -313,6 +346,11 @@ bool Tank::canTankMove(const sf::Vector2f &velocity)
 
 /**
  * Sprawdza czy czołg ma kolizję z przeciwnikiem po przemieszczeniu się o wektor [x, y]
+ *
+ * @param velocity - wektor prędkosci
+ * @return
+ *        true - jest kolizja
+ *        false - nie ma kolicji
  */
 bool Tank::getCollision(const sf::Vector2f &velocity)
 {
@@ -329,7 +367,10 @@ bool Tank::getCollision(const sf::Vector2f &velocity)
 }
 
 /**
- * Zwraca nachylenie terenu po przemieszczeniu się o wektor [x, y]
+ * Oblicza nachylenie terenu po przemieszczeniu się o wektor [x, y]
+ *
+ * @param velocity - wektor prędkości
+ * @return zwraca nachylenie terenu
  */
 float Tank::getLandAngle(const sf::Vector2f &velocity)
 {
@@ -340,6 +381,8 @@ float Tank::getLandAngle(const sf::Vector2f &velocity)
 
 /**
  * Przesuwa pozycję czołgu oraz jego lufy
+ *
+ * @param velocity - wektor prędkości
  */
 void Tank::moveTankPosition(const sf::Vector2f &velocity)
 {
@@ -353,6 +396,8 @@ void Tank::moveTankPosition(const sf::Vector2f &velocity)
 
 /**
  * Ustawia pozycję czołgu oraz jego lufy
+ *
+ * @param position - wektor pozycji czołgu i lufy
  */
 void Tank::setTankPosition(const sf::Vector2f &position)
 {
@@ -382,7 +427,10 @@ void Tank::shootReset()
 }
 
 /**
- * Zwraca prawidłową figurę czołgu
+ * Oblicza prawidłową figurę czołgu
+ *
+ * @param Tank - obiekt klasy sf::Sprite którego obliczana jest figura
+ * @return zwraca prawidłową figurę czołgu
  */
 sf::RectangleShape Tank::getTankShape(const sf::Sprite &Tank)
 {

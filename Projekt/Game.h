@@ -9,7 +9,9 @@
 enum GameState
 {
     GameMenu,
-    GamePlay
+    GamePlay,
+    GameEndWinner,
+    GameEndDraw
 };
 
 class Game
@@ -36,9 +38,6 @@ private:
 
     GameState gameState_;
 
-    int playerHp1_, playerHp2_;
-
-    sf::Vector2f playerPos1_, playerPos2_;
     sf::Vector2f winner_, loser_;
 
     sf::Texture gameBackgroundTexture_;

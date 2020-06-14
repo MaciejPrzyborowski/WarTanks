@@ -203,17 +203,20 @@ void Interface::whoTurn(sf::RenderTarget &Window, const float timeLeft, const in
 
 /**
  * Ustawia styl dla obiektu klast sf::Text
+ *
  * @param size - rozmiar czcionki
  * @param thickness - grubość obramowania tekstu
  * @param position - wektor z pozycją tekstu
  * @param contents - treść napisu
  * @param fillColor - kolor tekstu
  * @param borderColor - kolor obramowania
+ *
  * @return zwraca sformatowany obiekt klast sf::Text
  */
 sf::Text Interface::setTextStyle(const int size, const int thickness, const sf::Vector2f position, const std::string &contents, sf::Color fillColor, sf::Color borderColor)
 {
     sf::Text textToSet;
+
     textToSet.setFont(font_);
     textToSet.setCharacterSize(size);
     textToSet.setOutlineThickness(thickness);
@@ -221,16 +224,19 @@ sf::Text Interface::setTextStyle(const int size, const int thickness, const sf::
     textToSet.setOutlineColor(borderColor);
     textToSet.setPosition(position);
     textToSet.setString(contents);
+
     return textToSet;
 }
 
 /**
  * Ustawia styl dla obiektu klasy sf::RectangleShape
+ *
  * @param size - wektor z rozmiarem prostokąta
  * @param thickness - grubość obramowania
  * @param position - wektor z pozycją obiektu
  * @param fillColor - kolor wypełnienia prostokąta
  * @param borderColor - kolor obramowania
+ *
  * @return zwraca sformatowany obiekt klasy sf::Text
  */
 sf::RectangleShape Interface::setRectStyle(const sf::Vector2f size, const int thickness, const sf::Vector2f position, sf::Color fillColor, sf::Color borderColor)
