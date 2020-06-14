@@ -101,7 +101,9 @@ void Bullet::explode()
  *              0 - osoba, która stworzyła pocisk
  *              1 - przeciwnik
  *
- * @return true - pocisk trafił gracza, false - pocisk nie trafił gracza
+ * @return
+ *        true - pocisk trafił gracza
+ *        false - pocisk nie trafił gracza
  */
 bool Bullet::getStatusExplosion(int target)
 {
