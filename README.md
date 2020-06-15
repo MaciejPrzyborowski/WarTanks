@@ -48,8 +48,8 @@ Bullet.h
 Globals.h
 Animation.h
 ``` 
-![menu](Zdjecia/mainMenu.png)
-![ustawienia](Zdjecia/settingsMenu.png)
-![gra](Zdjecia/game.png)
-![koniec1](Zdjecia/endGame1.png)
-![koniec2](Zdjecia/endGame2
+![menu](Zdjęcia/mainMenu.png)
+![ustawienia](Zdjęcia/settingsMenu.png)
+![gra](Zdjęcia/game.png)
+![koniec1](Zdjęcia/endGame1.png)
+![koniec2](Zdjęcia/endGame2
