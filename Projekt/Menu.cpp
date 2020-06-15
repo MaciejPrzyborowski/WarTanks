@@ -234,7 +234,7 @@ bool Menu::getMenuChoice()
             case 0:
             {
                 setMenu(MenuNone);
-                setMenu(MenuPlay);
+                //setMenu(MenuPlay);
                 break;
             }
             case 1:
