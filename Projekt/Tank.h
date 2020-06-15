@@ -8,7 +8,8 @@
 class Tank
 {
 public:
-    Tank(const int playerID, const bool active, const string &texture, Land &land_);
+    Tank(const int playerID, const string &texture, Land &land_);
+    void reset();
     void shoot();
     void moveTank(const float elapsed);
     void moveCannon(sf::RenderWindow &window);
@@ -25,6 +26,7 @@ public:
 
     inline int returnHp() {return health_;};
     inline sf::Vector2f returnPosition() {return tankSprite_.getPosition();};
+
 private:
     Land *land;
     unique_ptr<Interface> tankInterface_;
@@ -53,7 +55,7 @@ private:
 
     bool canCannonMove();
     bool canTankMove(const sf::Vector2f &velocity);
-    bool getCollision(const sf::Vector2f &velocity);
+    bool getEnemyCollision(const sf::Vector2f &velocity);
 
     float getLandAngle(const sf::Vector2f &velocity = sf::Vector2f(0.0, 0.0));
 

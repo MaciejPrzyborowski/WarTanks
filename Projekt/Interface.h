@@ -11,13 +11,13 @@ public:
     void drawPower(sf::RenderTarget &Window, const int shootPower);
     void drawHp(sf::RenderTarget &Window, int health);
     void backToMenuText(sf::RenderTarget &Window, const float elapsed);
-    void whoTurn(sf::RenderTarget &Window, const float timeLeft, const int id);
+    void drawTurn(sf::RenderTarget &Window, const float timeLeft, const int id);
     void reset();
 
     sf::Text setTextStyle(const int size, const int thickness, const sf::Vector2f position, const std::string &contents, const sf::Color fillColor = sf::Color::White, const sf::Color borderColor = sf::Color::Black);
     sf::RectangleShape setRectStyle(const sf::Vector2f size, const int thickness, const sf::Vector2f position, const sf::Color fillColor = sf::Color(0, 0, 0, 0), const sf::Color borderColor = sf::Color(50, 50, 50));
 
-    sf::Text showAngle(const float angle);
+    sf::Text drawAngle(const float angle);
     sf::Text gameTime(const float &elapsed);
     sf::Text gameEnd(const int &hp1, const int &hp2);
     sf::Text showFps(float elapsed);

@@ -6,7 +6,6 @@ Interface::Interface(): totalTime_(0.0), backToMenuTime(0.0), showEndAnimations_
     gameTime_ = setTextStyle(20, 2, sf::Vector2f(340, 5), "");
     gameEndText_ = setTextStyle(50, 3, sf::Vector2f(190,100), "Remis!");
     backToMenu_ = setTextStyle(20, 3, sf::Vector2f(255, 570), "Kliknij enter aby wrocic do menu");
-    turnTimeLeft_ = setTextStyle(18, 2, sf::Vector2f(290, 550), "");
     fps_ = setTextStyle(15, 1, sf::Vector2f(2, 2), "");
 }
 
@@ -18,6 +17,7 @@ Interface::Interface(const int id): totalTime_(0.0), backToMenuTime(0.0), showEn
     shootPowerFill_.setPosition(350,40);
 
     turn_ = setTextStyle(20, 3, sf::Vector2f(260, 570), "");
+    turnTimeLeft_ = setTextStyle(18, 2, sf::Vector2f(290, 550), "");
     hpText_ = setTextStyle(22, 1, sf::Vector2f(0, 0), "HP");
     angle_ = setTextStyle(18, 2, sf::Vector2f(350, 65), "");
 
@@ -35,7 +35,6 @@ Interface::Interface(const int id): totalTime_(0.0), backToMenuTime(0.0), showEn
         healthPointBorder_ = setRectStyle(sf::Vector2f(100, 20), 3, sf::Vector2f(680, 30));
         healthPointFill_.setPosition(680, 30);
     }
-
 }
 
 /**
@@ -77,7 +76,7 @@ void Interface::drawHp(sf::RenderTarget &Window, int health)
  * @param angle - kąt nachylenia
  * @return zwraca obiekt klasy sf::Text odpowiadający za kąt nachylenia
  */
-sf::Text Interface::showAngle(const float angle)
+sf::Text Interface::drawAngle(const float angle)
 {
     angle_.setString("Kat lufy: " + to_string((int)(angle)));
     return angle_;
@@ -164,7 +163,7 @@ void Interface::backToMenuText(sf::RenderTarget &Window, float elapsed)
  * @param timeLeft - pozostały czas do sterowania czołgiem dla danego gracza
  * @param id - identyfikator gracza
  */
-void Interface::whoTurn(sf::RenderTarget &Window, const float timeLeft, const int id)
+void Interface::drawTurn(sf::RenderTarget &Window, const float timeLeft, const int id)
 {
     if(id == 1)
     {

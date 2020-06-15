@@ -24,6 +24,11 @@ void Game::run()
     menu_ = make_unique<Menu>();
     land_ = make_unique<Land>(4, 0.2);
     GameInterface_ = make_unique<Interface>();
+    player1_ = make_unique<Tank>(1, TankTextureSrc1, *land_);
+    player2_ = make_unique<Tank>(2, TankTextureSrc2, *land_);
+    player1_->enemy = player2_.get();
+    player2_->enemy = player1_.get();
+
     initialize(GameMenu);
     update();
 }
@@ -40,11 +45,8 @@ void Game::initialize(GameState gameState)
     {
         land_->generate();
 
-        player1_ = make_unique<Tank>(1, true, TankTextureSrc1, *land_);
-        player2_ = make_unique<Tank>(2, false, TankTextureSrc2, *land_);
-        player1_->enemy = player2_.get();
-        player2_->enemy = player1_.get();
-
+        player1_ -> reset();
+        player2_ -> reset();
         GameInterface_->reset();
         playGameMusic(menu_->getGameSettings(1));
 

@@ -1,19 +1,20 @@
 #include "Tank.h"
 
-Tank::Tank(const int playerID, const bool active, const string &texture, Land &land_) :
+Tank::Tank(const int playerID, const string &texture, Land &land_) :
     land(&land_),
     freefall_(false),
     crosshairActive_(false),
-    status_(active),
+    status_(playerID == 1),
     playerID_(playerID),
     moveDirection_(0),
     shootPower_(50),
     health_(100),
     speed_(50.0),
-    maxAngle_(75),
-    timeLeft_(15),
+    maxAngle_(75.0),
+    timeLeft_(15.0),
     velocityFreefall_(0.0)
 {
+    tankInterface_ = make_unique<Interface>(playerID);
     tankTexture_.loadFromFile(texture);
     cannonTexture_.loadFromFile(BarrelTextureSrc);
     crosshairTexture_.loadFromFile(CrosshairTextureSrc);
@@ -21,12 +22,27 @@ Tank::Tank(const int playerID, const bool active, const string &texture, Land &l
     cannonSprite_.setTexture(cannonTexture_);
     crosshairSprite_.setTexture(crosshairTexture_);
 
-    tankSprite_.setOrigin(tankSprite_.getLocalBounds().width / 2, tankSprite_.getLocalBounds().height);
-    cannonSprite_.setOrigin(0, cannonSprite_.getLocalBounds().height / 2);
-
     shootBuffer_.loadFromFile(ShootSoundSrc);
     shootSound_.setBuffer(shootBuffer_);
     shootSound_.setVolume(10);
+
+    tankSprite_.setOrigin(tankSprite_.getLocalBounds().width / 2, tankSprite_.getLocalBounds().height);
+    cannonSprite_.setOrigin(0, cannonSprite_.getLocalBounds().height / 2);
+}
+
+/**
+ * Resetuje parametry gracza do domyślnych
+ */
+void Tank::reset()
+{
+    freefall_ = false;
+    crosshairActive_ = false;
+    status_ = (playerID_ == 1);
+    moveDirection_ = 0;
+    shootPower_ = 50;
+    health_ = 100;
+    timeLeft_ = 15.0;
+    velocityFreefall_ = 0.0;
 
     sf::Vector2f StartPosition(0, 0);
     StartPosition.x = rand() % 150;
@@ -41,11 +57,11 @@ Tank::Tank(const int playerID, const bool active, const string &texture, Land &l
     StartPosition.y = land->getLandHeight(StartPosition.x);
     setTankPosition(StartPosition);
     cannonSprite_.setRotation(-90);
-    tankInterface_ = make_unique<Interface>(playerID);
 }
 
 /**
  * Tworzy pocisk w miejscu aktualnej pozycji celownika
+ * Pocisk jest wystrzeliwany z mocą shootPower_ wymnożoną przez 5
  */
 void Tank::shoot()
 {
@@ -82,7 +98,7 @@ void Tank::moveTank(const float elapsed)
 }
 
 /**
- * Ustawia kąt nachylenia lufy
+ * Zmienia kąt nachylenia lufy
  *
  * @param window - okno gry
  */
@@ -104,11 +120,11 @@ void Tank::moveCannon(sf::RenderWindow &window)
 }
 
 /**
- * Obsługuje zmianę siły wytrzału
+ * Zmienia siłę wystrzału pocisku
  *
- * @param direction
- *                 1 - siła strzału się zwiększa
- *                -1 - siła strzału się zmniejsza
+ * @param direction - kierunek zmiany siły wystrzału pocisku
+ *                1 - zwiększenie siły wystrzału pocisku
+ *               -1 - zmniejszenie siły wystrzału pocisku
  *
  */
 void Tank::moveShootPower(const int direction)
@@ -121,6 +137,7 @@ void Tank::moveShootPower(const int direction)
 
 /**
  * Obsługuje zdarzenia wykonane przez gracza
+ * Obsługiwana jest klawiatura oraz myszka gracza
  *
  * @param event - obiekt wszystkich zdarzeń
  * @param window - okno gry
@@ -160,7 +177,6 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
             {
                 moveShootPower(-1);
             }
-
             if(event.key.code == sf::Keyboard::Left)
             {
                 moveDirection_ = -1;
@@ -190,7 +206,7 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 void Tank::update(const float elapsed, sf::RenderWindow &window)
 {
     step(elapsed);
-    tankInterface_->drawHp(window, health_);
+    tankInterface_ -> drawHp(window, health_);
     if(status_ == 1)
     {
         if(bullet_ == nullptr)
@@ -202,14 +218,14 @@ void Tank::update(const float elapsed, sf::RenderWindow &window)
         }
         moveTank(elapsed);
         moveCannon(window);
-        tankInterface_->drawPower(window, shootPower_);
-        window.draw(tankInterface_->showAngle(360 - cannonSprite_.getRotation()));
-        tankInterface_->whoTurn(window, timeLeft_, playerID_);
+        tankInterface_ -> drawPower(window, shootPower_);
+        tankInterface_ -> drawTurn(window, timeLeft_, playerID_);
+        window.draw(tankInterface_ -> drawAngle(360 - cannonSprite_.getRotation()));
     }
 }
 
 /**
- * Wyświetla czołg i jego parametry
+ * Wyświetla czołg i jego elementy
  *
  * @param window - okno gry
  */
@@ -221,9 +237,9 @@ void Tank::draw(sf::RenderTarget &window)
     {
         if(bullet_)
         {
-            if(bullet_->getStatus())
+            if(bullet_ -> getStatus())
             {
-                bullet_->draw(window);
+                bullet_ -> draw(window);
             }
             else
             {
@@ -238,14 +254,14 @@ void Tank::draw(sf::RenderTarget &window)
 }
 
 /**
- * Obsługuje grawitacje
+ * Obsługuje grawitacje gracza
  *
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
 void Tank::step(const float elapsed)
 {
     sf::Vector2f TankPosition = tankSprite_.getPosition();
-    int landHeight = land->getLandHeight(tankSprite_.getPosition().x);
+    int landHeight = land -> getLandHeight(tankSprite_.getPosition().x);
     if(TankPosition.y < landHeight)
     {
         freefall_ = true;
@@ -270,10 +286,11 @@ void Tank::step(const float elapsed)
 
 /**
  * Zwraca status gracza
+ *
  * @return
- *        0 - nie jego kolej
- *        1 - jego kolej
- *        2 - zmiana kolejki
+ *        0 - gracz nie może nic wykonać
+ *        1 - gracz może wykonać wszystkie rzeczy
+ *        2 - gracz oczekuje na zmianę kolejki
  */
 int Tank::getStatus()
 {
@@ -306,15 +323,14 @@ void Tank::switchStatus(sf::RenderWindow &window)
         crosshairActive_ = false;
         window.setMouseCursorVisible(true);
     }
-    setTankPosition(tankSprite_.getPosition());
 }
 
 /**
  * Sprawdza czy gracz może zmienić położenie lufy
  *
  * @return
- *        true - gracz może ruszać lufą
- *        false - gracz nie może ruszać lufą
+ *        true - gracz może zmienić położenie lufy
+ *        false - gracz nie może zmienić położenia lufy
  */
 bool Tank::canCannonMove()
 {
@@ -330,13 +346,13 @@ bool Tank::canCannonMove()
  *
  * @param velocity - wektor prędkości
  * @return
- *        true - gracz może ruszyć swoim czołgiem
- *        false - gracz nie może ruszyć swoim czołgiem
+ *        true - gracz może się przemieścić swoim czołgiem
+ *        false - gracz nie może się przemieścić swoim czołgiem
  */
 bool Tank::canTankMove(const sf::Vector2f &velocity)
 {
-    if(status_ == 1 && !freefall_ && !crosshairActive_ && bullet_ == nullptr && fabs(getLandAngle(velocity)) <= maxAngle_ && !getCollision(velocity)
-            && tankSprite_.getPosition().x + velocity.x > 0 && tankSprite_.getPosition().x + velocity.x < WindowWidth)
+    if(status_ == 1 && !freefall_ && !crosshairActive_ && bullet_ == nullptr && fabs(getLandAngle(velocity)) <= maxAngle_
+            && !getEnemyCollision(velocity) && tankSprite_.getPosition().x + velocity.x > 0 && tankSprite_.getPosition().x + velocity.x < WindowWidth)
     {
         return true;
     }
@@ -348,16 +364,16 @@ bool Tank::canTankMove(const sf::Vector2f &velocity)
  *
  * @param velocity - wektor prędkosci
  * @return
- *        true - jest kolizja
- *        false - nie ma kolicji
+ *        true - jest kolizja z przeciwnikiem
+ *        false - nie ma kolicji z przeciwnikiem
  */
-bool Tank::getCollision(const sf::Vector2f &velocity)
+bool Tank::getEnemyCollision(const sf::Vector2f &velocity)
 {
-    if(!tankSprite_.getGlobalBounds().intersects(enemy->tankSprite_.getGlobalBounds()))
+    if(!tankSprite_.getGlobalBounds().intersects(enemy -> tankSprite_.getGlobalBounds()))
     {
         sf::Sprite tempTankSprite = tankSprite_;
         tempTankSprite.move(velocity);
-        if(tempTankSprite.getGlobalBounds().intersects(enemy->tankSprite_.getGlobalBounds()))
+        if(tempTankSprite.getGlobalBounds().intersects(enemy -> tankSprite_.getGlobalBounds()))
         {
             return true;
         }
@@ -366,10 +382,11 @@ bool Tank::getCollision(const sf::Vector2f &velocity)
 }
 
 /**
- * Oblicza nachylenie terenu po przemieszczeniu się o wektor [x, y]
+ * Oblicza nachylenie terenu po przemieszczeniu się o wektor prędkości [x, y]
  *
  * @param velocity - wektor prędkości
- * @return zwraca nachylenie terenu
+ *
+ * @return Nachylenie terenu w radianach po przemieszczeniu się o wektor prędkości [x, y]
  */
 float Tank::getLandAngle(const sf::Vector2f &velocity)
 {
@@ -401,7 +418,7 @@ void Tank::moveTankPosition(const sf::Vector2f &velocity)
 void Tank::setTankPosition(const sf::Vector2f &position)
 {
     tankSprite_.setPosition(position);
-    cannonSprite_.setPosition(position - sf::Vector2f(0, tankSprite_.getLocalBounds().height/2));
+    cannonSprite_.setPosition(position - sf::Vector2f(0, tankSprite_.getLocalBounds().height / 2));
     tankSprite_.setRotation(getLandAngle());
 }
 
