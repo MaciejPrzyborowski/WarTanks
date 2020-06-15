@@ -52,4 +52,4 @@ Animation.h
 ![ustawienia](Zdjęcia/settingsMenu.png)
 ![gra](Zdjęcia/game.png)
 ![koniec1](Zdjęcia/endGame1.png)
-![koniec2](Zdjęcia/endGame2
+![koniec2](Zdjęcia/endGame2.png)
