@@ -23,7 +23,6 @@ public:
     void initialize(GameState gameState);
     void passEvent(sf::Event &Event);
     void update();
-    void setTimer();
     void updateAll(sf::Time elapsed);
     void playMenuMusic(const bool isMenuMusicOn);
     void playGameMusic(const bool isGameMusicOn);

@@ -17,11 +17,10 @@ Game::Game()
     menuMusic_.setBuffer(menuMusicBuffer_);
     menuMusic_.setVolume(5);
     menuMusic_.setLoop(true);
-
     gameBuffer_.loadFromFile(GameMusicSrc);
     gameMusic_.setBuffer(gameBuffer_);
     gameMusic_.setVolume(30);
-
+    gameMusic_.setLoop(true);
     fireworksBuffer_.loadFromFile(FireWorksSoundSrc);
     fireworksSound_.setBuffer(fireworksBuffer_);
     fireworksSound_.setVolume(5);
@@ -45,7 +44,7 @@ void Game::initialize(GameState gameState)
     gameState_ = gameState;
     if(gameState == GameMenu)
     {
-        menu_->reset(false);
+        menu_ -> reset(false);
         playGameMusic(false);
         playMenuMusic(menu_->getGameSettings(2));
         fireworksSound_.stop();
