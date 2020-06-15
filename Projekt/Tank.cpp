@@ -375,6 +375,7 @@ bool Tank::getEnemyCollision(const sf::Vector2f &velocity)
     {
         sf::Sprite tempTankSprite = tankSprite_;
         tempTankSprite.move(velocity);
+        tempTankSprite.setRotation(getLandAngle(velocity));
         if(tempTankSprite.getGlobalBounds().intersects(enemy -> tankSprite_.getGlobalBounds()))
         {
             return true;
