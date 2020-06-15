@@ -2,7 +2,6 @@
 
 Tank::Tank(const int playerID, const bool active, const string &texture, Land &land_) :
     land(&land_),
-    tankInterface_(playerID),
     freefall_(false),
     crosshairActive_(false),
     status_(active),
@@ -42,6 +41,7 @@ Tank::Tank(const int playerID, const bool active, const string &texture, Land &l
     StartPosition.y = land->getLandHeight(StartPosition.x);
     setTankPosition(StartPosition);
     cannonSprite_.setRotation(-90);
+    tankInterface_ = make_unique<Interface>(playerID);
 }
 
 /**
@@ -51,13 +51,13 @@ void Tank::shoot()
 {
     if(!moveDirection_ && !crosshairActive_ && bullet_ == nullptr)
     {
-        float BulletVelocity = (float)shootPower_ * 5.0;
-        float CannonRotation = DegreeToRadian(cannonSprite_.getRotation());
-        sf::Vector2f BulletRotation(cos(CannonRotation), sin(CannonRotation));
         if(shootSound_.getStatus() != sf::Music::Playing)
         {
             shootSound_.play();
         }
+        float BulletVelocity = (float)shootPower_ * 5.0;
+        float CannonRotation = DegreeToRadian(cannonSprite_.getRotation());
+        sf::Vector2f BulletRotation(cos(CannonRotation), sin(CannonRotation));
         bullet_ = make_unique<Bullet>(sf::Vector2f(cannonSprite_.getPosition().x + cannonSprite_.getLocalBounds().width * BulletRotation.x,
                                                    cannonSprite_.getPosition().y + cannonSprite_.getLocalBounds().width * BulletRotation.y),
                                       getTankShape(tankSprite_), getTankShape(enemy->tankSprite_), *land);
@@ -190,6 +190,7 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 void Tank::update(const float elapsed, sf::RenderWindow &window)
 {
     step(elapsed);
+    tankInterface_->drawHp(window, health_);
     if(status_ == 1)
     {
         if(bullet_ == nullptr)
@@ -201,6 +202,9 @@ void Tank::update(const float elapsed, sf::RenderWindow &window)
         }
         moveTank(elapsed);
         moveCannon(window);
+        tankInterface_->drawPower(window, shootPower_);
+        window.draw(tankInterface_->showAngle(360 - cannonSprite_.getRotation()));
+        tankInterface_->whoTurn(window, timeLeft_, playerID_);
     }
 }
 
@@ -215,11 +219,6 @@ void Tank::draw(sf::RenderTarget &window)
     window.draw(tankSprite_);
     if(status_ == 1)
     {
-        if(!tankInterface_.checkPlayersHp(this->returnHp(), enemy->returnHp()))
-        {
-            tankInterface_.drawPower(window, shootPower_);
-            window.draw(tankInterface_.showAngle(360 - cannonSprite_.getRotation()));
-        }
         if(bullet_)
         {
             if(bullet_->getStatus())
@@ -382,7 +381,7 @@ float Tank::getLandAngle(const sf::Vector2f &velocity)
 /**
  * Przesuwa pozycję czołgu oraz jego lufy
  *
- * @param velocity - wektor prędkości
+ * @param velocity - wektor prędkości przesunięcia gracza
  */
 void Tank::moveTankPosition(const sf::Vector2f &velocity)
 {
@@ -397,7 +396,7 @@ void Tank::moveTankPosition(const sf::Vector2f &velocity)
 /**
  * Ustawia pozycję czołgu oraz jego lufy
  *
- * @param position - wektor pozycji czołgu i lufy
+ * @param position - aktualna pozycja gracza
  */
 void Tank::setTankPosition(const sf::Vector2f &position)
 {
@@ -415,11 +414,11 @@ void Tank::shootReset()
     {
         if(bullet_->getStatusExplosion(0))
         {
-            health_ -= 100;
+            health_ -= 25;
         }
         if(bullet_->getStatusExplosion(1))
         {
-            enemy->health_ -= 100;
+            enemy->health_ -= 25;
         }
         bullet_.reset();
         status_ = 2;
@@ -429,8 +428,9 @@ void Tank::shootReset()
 /**
  * Oblicza prawidłową figurę czołgu
  *
- * @param Tank - obiekt klasy sf::Sprite którego obliczana jest figura
- * @return zwraca prawidłową figurę czołgu
+ * @param Tank - obiekt klasy sf::Sprite dla którego obliczana jest figura
+ *
+ * @return Prawidłowa figura czołgu
  */
 sf::RectangleShape Tank::getTankShape(const sf::Sprite &Tank)
 {

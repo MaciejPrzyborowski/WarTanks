@@ -25,11 +25,9 @@ public:
 
     inline int returnHp() {return health_;};
     inline sf::Vector2f returnPosition() {return tankSprite_.getPosition();};
-    inline Interface returnTankInterface() { return tankInterface_; };
-    inline float returnTimeLeft() {return timeLeft_;};
 private:
     Land *land;
-    Interface tankInterface_;
+    unique_ptr<Interface> tankInterface_;
     unique_ptr<Bullet> bullet_;
 
     bool freefall_;

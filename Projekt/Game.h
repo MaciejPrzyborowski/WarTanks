@@ -25,6 +25,7 @@ public:
     void update();
     void setTimer();
     void updateAll(sf::Time elapsed);
+    void playGameMusic(const bool isMusicOn);
 
 private:
     unique_ptr<Animation> fireworks_;
@@ -44,4 +45,7 @@ private:
     sf::Sprite gameBackgroundSprite_;
     sf::Texture menuBackgroundTexture_;
     sf::Sprite menuBackgroundSprite_;
+
+    sf::Sound gameMusic_;
+    sf::SoundBuffer gameBuffer_;
 };

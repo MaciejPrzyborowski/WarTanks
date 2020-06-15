@@ -6,13 +6,8 @@ Interface::Interface(): totalTime_(0.0), backToMenuTime(0.0), showEndAnimations_
     gameTime_ = setTextStyle(20, 2, sf::Vector2f(340, 5), "");
     gameEndText_ = setTextStyle(50, 3, sf::Vector2f(190,100), "Remis!");
     backToMenu_ = setTextStyle(20, 3, sf::Vector2f(255, 570), "Kliknij enter aby wrocic do menu");
-    turn_ = setTextStyle(20, 3, sf::Vector2f(260, 570), "");
     turnTimeLeft_ = setTextStyle(18, 2, sf::Vector2f(290, 550), "");
     fps_ = setTextStyle(15, 1, sf::Vector2f(2, 2), "");
-
-    gameBuffer_.loadFromFile(GameMusicSrc);
-    gameMusic_.setBuffer(gameBuffer_);
-    gameMusic_.setVolume(30);
 }
 
 Interface::Interface(const int id): totalTime_(0.0), backToMenuTime(0.0), showEndAnimations_(true)
@@ -22,7 +17,9 @@ Interface::Interface(const int id): totalTime_(0.0), backToMenuTime(0.0), showEn
     shootPowerBorder_ = setRectStyle(sf::Vector2f(100, 20), 3, sf::Vector2f(350, 40));
     shootPowerFill_.setPosition(350,40);
 
+    turn_ = setTextStyle(20, 3, sf::Vector2f(260, 570), "");
     hpText_ = setTextStyle(22, 1, sf::Vector2f(0, 0), "HP");
+    angle_ = setTextStyle(18, 2, sf::Vector2f(350, 65), "");
 
     if(id == 1)
     {
@@ -39,7 +36,6 @@ Interface::Interface(const int id): totalTime_(0.0), backToMenuTime(0.0), showEn
         healthPointFill_.setPosition(680, 30);
     }
 
-    angle_ = setTextStyle(18, 2, sf::Vector2f(350, 65), "");
 }
 
 /**
@@ -107,22 +103,6 @@ void Interface::reset()
     totalTime_ = 0.0;
     backToMenuTime = 0.0;
     showEndAnimations_ = true;
-}
-
-/**
- * Włącza muzyke w grze jeżeli opcja ta jest włączona w ustawieniach
- * @param isMusicOn - sprawdza czy muzyka w grze jest włączona
- */
-void Interface::playGameMusic(const bool isMusicOn)
-{
-    if(isMusicOn && gameMusic_.getStatus() != sf::Music::Playing)
-    {
-        gameMusic_.play();
-    }
-    else if(!isMusicOn)
-    {
-        gameMusic_.stop();
-    }
 }
 
 /**
@@ -203,20 +183,17 @@ void Interface::whoTurn(sf::RenderTarget &Window, const float timeLeft, const in
 
 /**
  * Ustawia styl dla obiektu klast sf::Text
- *
  * @param size - rozmiar czcionki
  * @param thickness - grubość obramowania tekstu
  * @param position - wektor z pozycją tekstu
  * @param contents - treść napisu
  * @param fillColor - kolor tekstu
  * @param borderColor - kolor obramowania
- *
  * @return zwraca sformatowany obiekt klast sf::Text
  */
 sf::Text Interface::setTextStyle(const int size, const int thickness, const sf::Vector2f position, const std::string &contents, sf::Color fillColor, sf::Color borderColor)
 {
     sf::Text textToSet;
-
     textToSet.setFont(font_);
     textToSet.setCharacterSize(size);
     textToSet.setOutlineThickness(thickness);
@@ -224,19 +201,16 @@ sf::Text Interface::setTextStyle(const int size, const int thickness, const sf::
     textToSet.setOutlineColor(borderColor);
     textToSet.setPosition(position);
     textToSet.setString(contents);
-
     return textToSet;
 }
 
 /**
  * Ustawia styl dla obiektu klasy sf::RectangleShape
- *
  * @param size - wektor z rozmiarem prostokąta
  * @param thickness - grubość obramowania
  * @param position - wektor z pozycją obiektu
  * @param fillColor - kolor wypełnienia prostokąta
  * @param borderColor - kolor obramowania
- *
  * @return zwraca sformatowany obiekt klasy sf::Text
  */
 sf::RectangleShape Interface::setRectStyle(const sf::Vector2f size, const int thickness, const sf::Vector2f position, sf::Color fillColor, sf::Color borderColor)

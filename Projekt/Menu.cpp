@@ -245,7 +245,9 @@ bool Menu::getMenuChoice()
         {
             case 0:
             {
-                setMenu(MenuPlay);
+                setMenu(MenuNone);
+                menuMusic_.stop();
+                //setMenu(MenuPlay);
                 break;
             }
             case 1:
