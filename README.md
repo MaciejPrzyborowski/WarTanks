@@ -30,21 +30,20 @@ W rogach gry (lewy górny i prawy górny) pokazany jest pasek punktów życia da
 
 Gracze mogą poruszać się czołgiem lewo (strzałka w lewo) i prawo (strzałka w prawo). Poruszanie nie jest możliwe dla dużych wzniesień i spadków terenu - maksymalny kąt pod który może wjechać czołg to 75 stopni, ale również czołg nie może zjechać gdy spadek wynosi więcej niż 75 stopni.
 
-Aby ustawić kąt nachylenia lufy należy kliknąć LPM, mamy wtedy możliwość obracnia jej w pełnym zakresie (360 stopni), gdy dostosujemy już kąt lufy ponownie klikamy LPM aby zaakceptować. W momencie ustawienia kąta lufy nie można się poruszać! Aby oddać strzał trzeba kliknąć spację. Jeżeli czołg znajdzie się w promieniu wybuchu strzału to straci on 25 punktów życia. W przypadku zderzenia się pocisku z ziemią będzie on niszczył teren w kształt okręgu oraz pokaże się animacjia wybuchu, wisząca ziemia będzie opadała.
+Aby ustawić kąt nachylenia lufy należy kliknąć LPM, mamy wtedy możliwość obracnia jej w pełnym zakresie (360 stopni), gdy dostosujemy już kąt lufy ponownie klikamy LPM aby zaakceptować. W momencie ustawienia kąta lufy nie można się poruszać! Aby oddać strzał trzeba kliknąć spację. Jeżeli czołg znajdzie się w promieniu wybuchu strzału to straci on 25 punktów życia. W przypadku zderzenia się pocisku z ziemią będzie on niszczył teren w kształt okręgu oraz pokaże się animacja wybuchu, a wisząca ziemia będzie opadała.
 
-Gra zostanie zakończona w momencie gdy jeden z graczy straci wszystkie punkty życia. Istnieją 2 zakończenia gry: wygra jeden z graczy lub będzie remis. W pierwszym przypadku na środku ekranu pokazuje się napis kto wygrał, nad przegranym pokazuje się animacja płomienia, nad zwycięrzcą animacja z fajerwerkami, towarzyszy temu dźwięk wybuchu fajerwerków. W przypadku remisu nie pokazują się żadne animację, ani nie ma dodatkowych dźwięków. W obu przypadkach po 2 sekundach od zakończenia gry na dole ekranu pokazuje się napis "Kliknij enter aby wrócić do menu".
+Gra zostanie zakończona w momencie gdy jeden z graczy straci wszystkie punkty życia. Istnieją 2 zakończenia gry: wygra jeden z graczy lub będzie remis. W pierwszym przypadku na środku ekranu pokazuje się napis kto wygrał, nad przegranym pokazuje się animacja płomienia, nad zwycięzcą animacja z fajerwerkami i towarzyszyć będzie temu dźwięk wybuchu fajerwerków. W przypadku remisu nie pokazują się żadne animacje, ani nie ma dodatkowych dźwięków. W obu przypadkach po 2 sekundach od zakończenia gry na dole ekranu pokazuje się napis "Kliknij enter aby wrócić do menu".
 
 # Klasy:
 ```
-Perlin.h
-Land.h
-Tank.h
-Game.h
-Menu.h
-Interface.h
-Bullet.h
-Globals.h
-Animation.h
+Animation
+Bullet
+Game
+Interface
+Land
+Menu
+Perlin
+Tank
 ``` 
 ![menu](Zdjęcia/mainMenu.png)
 ![ustawienia](Zdjęcia/settingsMenu.png)
