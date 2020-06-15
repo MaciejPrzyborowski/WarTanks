@@ -20,17 +20,17 @@ public:
     void step(const float elapsed);
 
     int getStatus();
+
     void switchStatus(sf::RenderWindow &window);
 
     Tank *enemy;
-
     inline int returnHp() {return health_;};
     inline sf::Vector2f returnPosition() {return tankSprite_.getPosition();};
 
 private:
     Land *land;
-    unique_ptr<Interface> tankInterface_;
     unique_ptr<Bullet> bullet_;
+    unique_ptr<Interface> tankInterface_;
 
     bool freefall_;
     bool crosshairActive_;
@@ -52,6 +52,8 @@ private:
     sf::Texture tankTexture_;
     sf::Texture cannonTexture_;
     sf::Texture crosshairTexture_;
+    sf::SoundBuffer shootBuffer_;
+    sf::Sound shootSound_;
 
     bool canCannonMove();
     bool canTankMove(const sf::Vector2f &velocity);
@@ -62,9 +64,6 @@ private:
     void moveTankPosition(const sf::Vector2f &velocity);
     void setTankPosition(const sf::Vector2f &position);
     void shootReset();
-
-    sf::Sound shootSound_;
-    sf::SoundBuffer shootBuffer_;
 
     sf::RectangleShape getTankShape(const sf::Sprite &Tank);
 };

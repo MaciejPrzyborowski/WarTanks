@@ -38,8 +38,10 @@ void Tank::reset()
     freefall_ = false;
     crosshairActive_ = false;
     status_ = (playerID_ == 1);
+
     moveDirection_ = 0;
     shootPower_ = 50;
+
     health_ = 100;
     timeLeft_ = 15.0;
     velocityFreefall_ = 0.0;
