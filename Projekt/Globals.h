@@ -18,6 +18,7 @@
 #define SelectMenuSoundSrc "select_sound.wav"
 #define ExplodeSoundSrc "explode.wav"
 #define ShootSoundSrc "shoot_sound.wav"
+#define FireWorksSoundSrc "fireworksSound.wav"
 
 #define GameFontSrc "game_font.ttf"
 #define TankTextureSrc1 "tank1.png"

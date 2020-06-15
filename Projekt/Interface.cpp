@@ -1,26 +1,30 @@
 #include "Interface.h"
 
-Interface::Interface(): totalTime_(0.0), backToMenuTime(0.0), showEndAnimations_(true)
+Interface::Interface() :
+    winnerID_(0),
+    totalTime_(0.0),
+    backToMenuTime_(0.0)
 {
     font_.loadFromFile(GameFontSrc);
-    gameTime_ = setTextStyle(20, 2, sf::Vector2f(340, 5), "");
-    gameEndText_ = setTextStyle(50, 3, sf::Vector2f(190,100), "Remis!");
-    backToMenu_ = setTextStyle(20, 3, sf::Vector2f(255, 570), "Kliknij enter aby wrocic do menu");
-    fps_ = setTextStyle(15, 1, sf::Vector2f(2, 2), "");
+    backToMenu_ = setTextStyle(20, 3, "Kliknij enter aby wrocic do menu");
+    backToMenu_.setPosition(sf::Vector2f((WindowWidth - backToMenu_.getLocalBounds().width) / 2, 570));
+    fps_ = setTextStyle(15, 1, "", sf::Vector2f(2, 2));
+    gameTime_ = setTextStyle(20, 2);
+    gameEndText_ = setTextStyle(50, 3);
 }
 
-Interface::Interface(const int id): totalTime_(0.0), backToMenuTime(0.0), showEndAnimations_(true)
+Interface::Interface(const int id) :
+    winnerID_(0),
+    totalTime_(0.0),
+    backToMenuTime_(0.0)
 {
     font_.loadFromFile(GameFontSrc);
-
+    angle_ = setTextStyle(18, 2);
+    hpText_ = setTextStyle(22, 1, "HP", sf::Vector2f(0, 0));
     shootPowerBorder_ = setRectStyle(sf::Vector2f(100, 20), 3, sf::Vector2f(350, 40));
-    shootPowerFill_.setPosition(350,40);
-
-    turn_ = setTextStyle(20, 3, sf::Vector2f(260, 570), "");
-    turnTimeLeft_ = setTextStyle(18, 2, sf::Vector2f(290, 550), "");
-    hpText_ = setTextStyle(22, 1, sf::Vector2f(0, 0), "HP");
-    angle_ = setTextStyle(18, 2, sf::Vector2f(350, 65), "");
-
+    shootPowerFill_.setPosition(350, 40);
+    turn_ = setTextStyle(20, 3);
+    turnTimeLeft_ = setTextStyle(18, 2);
     if(id == 1)
     {
         hpText_.setFillColor(sf::Color::Red);
@@ -38,132 +42,97 @@ Interface::Interface(const int id): totalTime_(0.0), backToMenuTime(0.0), showEn
 }
 
 /**
- * Rysuje pasek siły strzału
- *
- * @param Window - okno gry
- * @param shootPower - siła strzału danego gracza
-*/
-void Interface::drawPower(sf::RenderTarget &Window, int shootPower)
-{
-    shootPowerFill_.setSize(sf::Vector2f(shootPower, 20));
-    shootPowerFill_.setFillColor(sf::Color(200 - shootPower, 2 * shootPower, 0));
-
-    Window.draw(shootPowerFill_);
-    Window.draw(shootPowerBorder_);
-}
-
-/**
- * Rysune pasek stanu życia
- *
- * @param Window - okno gry
- * @param health - poziom życia gracza
- */
-void Interface::drawHp(sf::RenderTarget &Window, int health)
-{
-    if(health < 0) health = 0;
-
-    healthPointFill_.setSize(sf::Vector2f(health, 20));
-    healthPointFill_.setFillColor(sf::Color(200 - health, 2* health, 0));
-
-    Window.draw(healthPointFill_);
-    Window.draw(healthPointBorder_);
-    Window.draw(hpText_);
-}
-
-/**
- * Ustawia napis z kątem nachylenia lufy
- *
- * @param angle - kąt nachylenia
- * @return zwraca obiekt klasy sf::Text odpowiadający za kąt nachylenia
- */
-sf::Text Interface::drawAngle(const float angle)
-{
-    angle_.setString("Kat lufy: " + to_string((int)(angle)));
-    return angle_;
-}
-
-/**
- * Ustawia napis z liczbą klatek w grze
- *
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- * @return zwraca obiekt klasy sf::Text odpowiadający za liczbę klatek w grze
- */
-sf::Text Interface::showFps(float elapsed)
-{
-    fps_.setString(std::to_string((int)(1/elapsed)) + " FPS");
-    return fps_;
-}
-
-/**
- * Ustawia początkowe wartości zmiennych
+ * Resetuje parametry interface do wartości domyślnych
  */
 void Interface::reset()
 {
+    winnerID_ = 0;
+    backToMenuTime_ = 0.0;
     totalTime_ = 0.0;
-    backToMenuTime = 0.0;
-    showEndAnimations_ = true;
 }
 
 /**
- * Ustawia napis związany z długością czasu gry
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- * @return zwraca obiekt klasy sf::Text odpowiadający za czas gry
+ * Wyświetla napis z kątem nachylenia lufy
+ *
+ * @param angle - kąt nachylenia lufy
+ * @param window - okno gry
  */
-sf::Text Interface::gameTime(const float &elapsed)
+void Interface::drawAngle(const float angle, sf::RenderTarget &window)
+{
+    angle_.setPosition(sf::Vector2f((WindowWidth - angle_.getLocalBounds().width)/2, 65));
+    angle_.setString("Kat lufy: " + to_string((int)(angle)));
+    window.draw(angle_);
+}
+
+/**
+ * Wyświetla licznik FPS (liczba klatek na sekundę)
+ *
+ * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
+ * @param window - okno gry
+ */
+void Interface::drawFPS(const float elapsed, sf::RenderTarget &window)
+{
+    fps_.setString(to_string((int)(1 / elapsed)) + " FPS");
+    window.draw(fps_);
+}
+
+/**
+ * Wyświetla aktualny czas gry
+ *
+ * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
+ * @param window - okno gry
+ */
+void Interface::drawGameTime(const float elapsed, sf::RenderTarget &window)
 {
     totalTime_ += elapsed;
-    gameTime_.setString("Czas: " + std::to_string((int)totalTime_) + " sekund");
-    return gameTime_;
+    gameTime_.setString("Czas: " + to_string((int)totalTime_) + " sekund");
+    gameTime_.setPosition(sf::Vector2f((WindowWidth - gameTime_.getLocalBounds().width) / 2, 5));
+    window.draw(gameTime_);
 }
 
 /**
- * Ustawia napis końcowy gry gdy któryś z graczy straci wszystkie punkty życia
- * @param hp1 - punkty życia gracza 1
- * @param hp2 - punkty życia gracza 2
- * @return zwraca obiekt klasy sf::Text odpowiadający za napis na zakończenie gry
+ * Wyświetla pasek poziomu życia gracza
+ *
+ * @param health - poziom życia gracza
+ * @param window - okno gry
  */
-sf::Text Interface::gameEnd(const int &hp1, const int &hp2)
+void Interface::drawHealth(int health, sf::RenderTarget &window)
 {
-    if(hp1 <= 0 && hp2 > 0)
+    if(health < 0)
     {
-        gameEndText_.setOutlineColor(sf::Color(0, 100, 255));
-        gameEndText_.setString("Niebieski wygrywa!");
+        health = 0;
+    }
+    healthPointFill_.setSize(sf::Vector2f(health, 20));
+    healthPointFill_.setFillColor(sf::Color(200 - health, 2 * health, 0));
 
-    }
-    else if(hp2 <= 0 && hp1 > 0)
-    {
-        gameEndText_.setOutlineColor(sf::Color::Red);
-        gameEndText_.setString("Czerwony wygrywa!");
-    }
-    else if(hp1 <= 0 && hp2 <= 0)
-    {
-        gameEndText_.setPosition(325, 100);
-        showEndAnimations_ = false;
-    }
-    return gameEndText_;
+    window.draw(healthPointFill_);
+    window.draw(healthPointBorder_);
+    window.draw(hpText_);
 }
 
 /**
- * Po zakończeniu gry wyświetla napis "Kliknij enter aby wrocic do menu"
- * @param Window - okno gry
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- */
-void Interface::backToMenuText(sf::RenderTarget &Window, float elapsed)
+ * Wyświetla pasek siły wystrzału pocisku
+ *
+ * @param shootPower - siła wystrzału pocisku gracza
+ * @param window - okno gry
+*/
+void Interface::drawShootPower(const int shootPower, sf::RenderTarget &window)
 {
-    backToMenuTime += elapsed;
-    if(backToMenuTime >= 2.0)
-    {
-        Window.draw(backToMenu_);
-    }
+    shootPowerFill_.setSize(sf::Vector2f(shootPower, 20));
+    shootPowerFill_.setFillColor(sf::Color(200 - shootPower, 2 * shootPower, 0));
+    window.draw(shootPowerFill_);
+    window.draw(shootPowerBorder_);
 }
 
 /**
- * Sprawdza i wyświetla którego gracza jest kolej
- * @param Window - okno gry
- * @param timeLeft - pozostały czas do sterowania czołgiem dla danego gracza
+ * Wyświetla napis, który gracz jest aktualnie aktywny
+ * Nad napisem wyświetlony jest pozostały czas na oddanie strzału
+ *
  * @param id - identyfikator gracza
+ * @param timeLeft - pozostały czas na oddanie strzału
+ * @param window - okno gry
  */
-void Interface::drawTurn(sf::RenderTarget &Window, const float timeLeft, const int id)
+void Interface::drawTurn(const int id, const float timeLeft, sf::RenderTarget &window)
 {
     if(id == 1)
     {
@@ -175,22 +144,88 @@ void Interface::drawTurn(sf::RenderTarget &Window, const float timeLeft, const i
         turn_.setString("Kolej gracza niebieskiego");
         turn_.setFillColor(sf::Color(0, 100, 255));
     }
-    turnTimeLeft_.setString("Pozostaly czas: " + std::to_string((int)timeLeft));
-    Window.draw(turn_);
-    Window.draw(turnTimeLeft_);
+    turn_.setPosition(sf::Vector2f((WindowWidth - turn_.getLocalBounds().width) / 2, 570));
+    turnTimeLeft_.setString("Pozostaly czas: " + to_string((int)timeLeft));
+    turnTimeLeft_.setPosition(sf::Vector2f((WindowWidth - turnTimeLeft_.getLocalBounds().width) / 2, 550));
+    window.draw(turn_);
+    window.draw(turnTimeLeft_);
+}
+
+/**
+ * Wyświetla napis, który gracz wygrał grę
+ * Dodatkowo po 2 sekundach wyświetla napis "Kliknij enter aby wrocic do menu"
+ *
+ * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
+ * @param window - okno gry
+ */
+void Interface::drawGameEnd(const float elapsed, sf::RenderTarget &window)
+{
+    if((backToMenuTime_ += elapsed) >= 2.0)
+    {
+        window.draw(backToMenu_);
+    }
+    if(winnerID_ == 1)
+    {
+        gameEndText_.setOutlineColor(sf::Color::Red);
+        gameEndText_.setString("Czerwony wygrywa!");
+    }
+    else if(winnerID_ == 2)
+    {
+        gameEndText_.setOutlineColor(sf::Color(0, 100, 255));
+        gameEndText_.setString("Niebieski wygrywa!");
+    }
+    else
+    {
+        gameEndText_.setOutlineColor(sf::Color::Black);
+        gameEndText_.setString("Remis!");
+        gameEndText_.setPosition(325, 100);
+    }
+    gameEndText_.setPosition(sf::Vector2f((WindowWidth - gameEndText_.getLocalBounds().width)/2, 100));
+    window.draw(gameEndText_);
+}
+
+/**
+ * Sprawdza, który z graczy wygrał grę
+ *
+ * @param health - wektor poziomów życia graczy
+ *           [0] - poziom życia pierwszego gracza
+ *           [1] - poziom życia drugiego gracza
+ * @param tankPosition1 - pozycja pierwszego gracza
+ * @param tankPosition2 - pozycja drugiego gracza
+ *
+ * @return wektor pozycji dwóch graczy dopasowana do animacji końcowych
+ *         [0] - współrzędne wygranej pozycji
+ *         [1] - współrzędne przegranej pozycji
+ */
+vector<sf::Vector2f> Interface::checkWinner(const int health[2], const sf::Vector2f &tankPosition1, const sf::Vector2f &tankPosition2)
+{
+    vector<sf::Vector2f> position;
+    if(health[0] > 0)
+    {
+        winnerID_ = 1;
+    }
+    else
+    {
+        winnerID_ = 2;
+    }
+    position.emplace_back((health[0] > 0 ? tankPosition1 : tankPosition2) - sf::Vector2f(50.0, 120.0));
+    position.emplace_back((health[0] > 0 ? tankPosition2 : tankPosition1) - sf::Vector2f(50.0, 90.0));
+    return position;
 }
 
 /**
  * Ustawia styl dla obiektu klast sf::Text
+ *
  * @param size - rozmiar czcionki
  * @param thickness - grubość obramowania tekstu
  * @param position - wektor z pozycją tekstu
  * @param contents - treść napisu
  * @param fillColor - kolor tekstu
  * @param borderColor - kolor obramowania
+ *
  * @return zwraca sformatowany obiekt klast sf::Text
  */
-sf::Text Interface::setTextStyle(const int size, const int thickness, const sf::Vector2f position, const std::string &contents, sf::Color fillColor, sf::Color borderColor)
+sf::Text Interface::setTextStyle(const int size, const int thickness, const string &contents, const sf::Vector2f position, const sf::Color fillColor, const sf::Color borderColor)
 {
     sf::Text textToSet;
     textToSet.setFont(font_);
@@ -205,14 +240,16 @@ sf::Text Interface::setTextStyle(const int size, const int thickness, const sf::
 
 /**
  * Ustawia styl dla obiektu klasy sf::RectangleShape
+ *
  * @param size - wektor z rozmiarem prostokąta
  * @param thickness - grubość obramowania
  * @param position - wektor z pozycją obiektu
  * @param fillColor - kolor wypełnienia prostokąta
  * @param borderColor - kolor obramowania
+ *
  * @return zwraca sformatowany obiekt klasy sf::Text
  */
-sf::RectangleShape Interface::setRectStyle(const sf::Vector2f size, const int thickness, const sf::Vector2f position, sf::Color fillColor, sf::Color borderColor)
+sf::RectangleShape Interface::setRectStyle(const sf::Vector2f size, const int thickness, const sf::Vector2f position, const sf::Color fillColor, const sf::Color borderColor)
 {
     sf::RectangleShape rectToSet;
     rectToSet.setSize(size);

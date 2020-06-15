@@ -208,7 +208,7 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 void Tank::update(const float elapsed, sf::RenderWindow &window)
 {
     step(elapsed);
-    tankInterface_ -> drawHp(window, health_);
+    tankInterface_ -> drawHealth(health_, window);
     if(status_ == 1)
     {
         if(bullet_ == nullptr)
@@ -220,9 +220,9 @@ void Tank::update(const float elapsed, sf::RenderWindow &window)
         }
         moveTank(elapsed);
         moveCannon(window);
-        tankInterface_ -> drawPower(window, shootPower_);
-        tankInterface_ -> drawTurn(window, timeLeft_, playerID_);
-        window.draw(tankInterface_ -> drawAngle(360 - cannonSprite_.getRotation()));
+        tankInterface_ -> drawShootPower(shootPower_, window);
+        tankInterface_ -> drawTurn(playerID_, timeLeft_, window);
+        tankInterface_ -> drawAngle(360 - cannonSprite_.getRotation(), window);
     }
 }
 

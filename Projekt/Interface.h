@@ -8,46 +8,37 @@ public:
     Interface();
     Interface(const int id);
 
-    void drawPower(sf::RenderTarget &Window, const int shootPower);
-    void drawHp(sf::RenderTarget &Window, int health);
-    void backToMenuText(sf::RenderTarget &Window, const float elapsed);
-    void drawTurn(sf::RenderTarget &Window, const float timeLeft, const int id);
     void reset();
+    void drawAngle(const float angle, sf::RenderTarget &window);
+    void drawFPS(const float elapsed, sf::RenderTarget &window);
+    void drawGameEnd(const float elapsed, sf::RenderTarget &window);
+    void drawGameTime(const float elapsed, sf::RenderTarget &window);
+    void drawHealth(int health, sf::RenderTarget &window);
+    void drawShootPower(const int shootPower, sf::RenderTarget &window);
+    void drawTurn(const int id, const float timeLeft, sf::RenderTarget &window);
 
-    sf::Text setTextStyle(const int size, const int thickness, const sf::Vector2f position, const std::string &contents, const sf::Color fillColor = sf::Color::White, const sf::Color borderColor = sf::Color::Black);
+    vector<sf::Vector2f> checkWinner(const int healths[2], const sf::Vector2f &TankPos1, const sf::Vector2f &TankPos2);
+
+    sf::Text setTextStyle(const int size, const int thickness, const string &contents = "", const sf::Vector2f position = sf::Vector2f(0, 0), const sf::Color fillColor = sf::Color::White, const sf::Color borderColor = sf::Color::Black);
     sf::RectangleShape setRectStyle(const sf::Vector2f size, const int thickness, const sf::Vector2f position, const sf::Color fillColor = sf::Color(0, 0, 0, 0), const sf::Color borderColor = sf::Color(50, 50, 50));
 
-    sf::Text drawAngle(const float angle);
-    sf::Text gameTime(const float &elapsed);
-    sf::Text gameEnd(const int &hp1, const int &hp2);
-    sf::Text showFps(float elapsed);
-
-    inline sf::Vector2f winner(const int &hp1, const sf::Vector2f &TankPos1, const sf::Vector2f &TankPos2) {return (hp1 <= 0) ? TankPos2 : TankPos1;};
-    inline sf::Vector2f loser(const int &hp1, const sf::Vector2f &TankPos1, const sf::Vector2f &TankPos2) {return (hp1 <= 0) ? TankPos1 : TankPos2;};
-
-    inline bool checkPlayersHp(const int &hp1, const int &hp2) {return (hp1 <= 0 || hp2 <=0) ? true : false;};
-    inline bool showAnimations_() {return showEndAnimations_;};
-
-
-
 private:
+    sf::Font font_;
+    sf::Text angle_;
+    sf::Text backToMenu_;
+    sf::Text fps_;
+    sf::Text gameEndText_;
+    sf::Text gameTime_;
+    sf::Text hpText_;
+    sf::Text turn_;
+    sf::Text turnTimeLeft_;
+
+    int winnerID_;
     float totalTime_;
-    float backToMenuTime;
-    bool showEndAnimations_;
+    float backToMenuTime_;
 
     sf::RectangleShape shootPowerBorder_;
     sf::RectangleShape shootPowerFill_;
     sf::RectangleShape healthPointBorder_;
     sf::RectangleShape healthPointFill_;
-
-    sf::Font font_;
-
-    sf::Text hpText_;
-    sf::Text turn_;
-    sf::Text angle_;
-    sf::Text gameTime_;
-    sf::Text gameEndText_;
-    sf::Text backToMenu_;
-    sf::Text turnTimeLeft_;
-    sf::Text fps_;
 };

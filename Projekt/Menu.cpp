@@ -8,10 +8,6 @@ Menu::Menu() :
     menuSelectSoundBuffer_.loadFromFile(SelectMenuSoundSrc);
     menuSelectSound_.setBuffer(menuSelectSoundBuffer_);
     menuSelectSound_.setVolume(1);
-    menuMusicBuffer_.loadFromFile(MenuMusicSrc);
-    menuMusic_.setBuffer(menuMusicBuffer_);
-    menuMusic_.setVolume(5);
-    menuMusic_.setLoop(true);
 }
 
 /**
@@ -29,14 +25,6 @@ void Menu::reset(bool settings)
         gameSettings_[1] = true;
         gameSettings_[2] = true;
         gameSettings_[3] = true;
-    }
-    if(menuMusic_.getStatus() == sf::Sound::Playing)
-    {
-        menuMusic_.stop();
-    }
-    if(gameSettings_[2])
-    {
-        menuMusic_.play();
     }
     isMouseActive_ = false;
     setMenu(MenuMain);
@@ -246,8 +234,7 @@ bool Menu::getMenuChoice()
             case 0:
             {
                 setMenu(MenuNone);
-                menuMusic_.stop();
-                //setMenu(MenuPlay);
+                setMenu(MenuPlay);
                 break;
             }
             case 1:
@@ -269,13 +256,11 @@ bool Menu::getMenuChoice()
             case 0:
             {
                 setMenu(MenuNone);
-                menuMusic_.stop();
                 break;
             }
             case 1:
             {
                 setMenu(MenuNone);
-                menuMusic_.stop();
                 break;
             }
             case 2:
@@ -352,14 +337,7 @@ void Menu::setSettings(int setting)
     gameSettings_[setting] = !gameSettings_[setting];
     if(gameSettings_[setting])
     {
-        if(setting == 2)
-        {
-            if(menuMusic_.getStatus() != sf::Music::Playing)
-            {
-                menuMusic_.play();
-            }
-        }
-        else if(setting == 3)
+        if(setting == 3)
         {
             menuSelectSound_.setVolume(1);
         }
@@ -368,14 +346,7 @@ void Menu::setSettings(int setting)
     }
     else
     {
-        if(setting == 2)
-        {
-            if(menuMusic_.getStatus() == sf::Music::Playing)
-            {
-                menuMusic_.stop();
-            }
-        }
-        else if(setting == 3)
+        if(setting == 3)
         {
             menuSelectSound_.setVolume(0);
         }

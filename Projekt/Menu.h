@@ -25,9 +25,7 @@ public:
 
 private:
     sf::Font font_;
-    sf::Sound menuMusic_;
     sf::Sound menuSelectSound_;
-    sf::SoundBuffer menuMusicBuffer_;
     sf::SoundBuffer menuSelectSoundBuffer_;
 
     MenuType menuType_;
