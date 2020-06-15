@@ -24,6 +24,7 @@ Game::Game()
     fireworksBuffer_.loadFromFile(FireWorksSoundSrc);
     fireworksSound_.setBuffer(fireworksBuffer_);
     fireworksSound_.setVolume(5);
+    srand(time(NULL));
 }
 
 void Game::run()
