@@ -1,5 +1,7 @@
 # WarTanks
 
+Prezentacja gry: https://www.youtube.com/watch?v=Kdn8K6T_7OE
+
 Gra posiada menu, które posiada następujące opcje:
 
 Graj:
