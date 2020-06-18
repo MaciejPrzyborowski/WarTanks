@@ -102,11 +102,16 @@ Mateusz Kozłowski
             - dźwięk fajerwerków
       - zmienianie kąta lufy przez myszkę
       - dźwięki w grze
-      - siła strzału: zmiana siły strzału zakres od 0 do 100
+      - siła strzału
+            - zmiana siły strzału zakres od 0 do 100
       - punkty życia
       - zakończenie gry
             - wygrywa jeden z graczy lub remis i pokazuje sie stosowny do tego napis
-      - wdrożenie ustawień z menu do gry: FPS, muzyka, dźwięk
+      - wdrożenie ustawień z menu do gry
+            - licznik FPS
+            - muzyka w menu
+            - muzyka w grze
+            - dźwięk w menu
 ```      
 Wspólnie:
 ```
