@@ -52,6 +52,7 @@ Tank
 Podział pracy:
 
 Maciej Przyborowski:
+```
       - poruszanie czołgiem
             - prędkość zależna od kąta nachylenia terenu
             - poruszanie nie jest możliwe dla dużych wzniesień i spadków (max 75 stopni)
@@ -73,8 +74,9 @@ Maciej Przyborowski:
       - zmiana tury graczy
             - obsługa czasu tury dla gracza
             - zmiana tury gdy skończy się czas lub wybuchnie pocisk
-            
+```            
 Mateusz Kozłowski
+```
       - interfejs:
             - menu
             - punkty życia
@@ -105,8 +107,9 @@ Mateusz Kozłowski
       - zakończenie gry
             - wygrywa jeden z graczy lub remis i pokazuje sie stosowny do tego napis
       - wdrożenie ustawień z menu do gry: FPS, muzyka, dźwięk
-      
+```      
 Wspólnie:
+```
       - menu
       - obsługa zdarzeń wykonywanych przez gracza
             - spacja - strzał
@@ -115,6 +118,7 @@ Wspólnie:
             - sprawne poruszanie się myszką lub klawiaturą po menu
             - enter aby wrócić do menu (na koniec gry)
       - opisy funkcji
+```
 
 ![menu](Zdjęcia/mainMenu.png)
 ![ustawienia](Zdjęcia/settingsMenu.png)
