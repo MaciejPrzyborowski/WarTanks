@@ -1,6 +1,6 @@
 #include "Tank.h"
 
-Tank::Tank(const int playerID, const string &texture, Land &land_) :
+Tank::Tank(const int &playerID, const string &texture, Land &land_) :
     land(&land_),
     moveDirection_(TankMove::None),
     freefall_(false),
@@ -102,7 +102,7 @@ void Tank::shoot()
  *
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
-void Tank::moveTank(const float elapsed)
+void Tank::moveTank(const float &elapsed)
 {
     if(moveDirection_ != TankMove::None)
     {
@@ -147,7 +147,7 @@ void Tank::moveCannon(sf::RenderWindow &window)
  *               -1 - zmniejszenie siły wystrzału pocisku
  *
  */
-void Tank::moveShootPower(const int direction)
+void Tank::moveShootPower(const int &direction)
 {
     if(!((shootPower_ == 0 && direction < 0) || (shootPower_ == 100 && direction > 0)))
     {
@@ -162,7 +162,7 @@ void Tank::moveShootPower(const int direction)
  * @param event - obiekt wszystkich zdarzeń
  * @param window - okno gry
  */
-void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
+void Tank::passEvent(const sf::Event &event, sf::RenderWindow &window)
 {
     if(status_ == TankState::Active)
     {
@@ -223,7 +223,7 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  * @param window - okno gry
  */
-void Tank::update(const float elapsed, sf::RenderWindow &window)
+void Tank::update(const float &elapsed, sf::RenderWindow &window)
 {
     step(elapsed);
     tankInterface_ -> drawHealth(health_, window);
@@ -278,7 +278,7 @@ void Tank::draw(sf::RenderTarget &window)
  *
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
-void Tank::step(const float elapsed)
+void Tank::step(const float &elapsed)
 {
     sf::Vector2f TankPosition = tankSprite_.getPosition();
     int landHeight = land -> getLandHeight(tankSprite_.getPosition().x);

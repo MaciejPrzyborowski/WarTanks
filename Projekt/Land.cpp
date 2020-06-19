@@ -1,6 +1,6 @@
 #include "Land.h"
 
-Land::Land(const float octaves, const float persistence) :
+Land::Land(const float &octaves, const float &persistence) :
     Perlin(octaves, persistence),
     modified_(false),
     size_(WindowWidth / 2.0),
@@ -37,7 +37,7 @@ void Land::generate()
  * @param y - współrzędna y dla środka koła
  * @param r - promień koła
  */
-void Land::destroyCircle(const int x, const int y, const int r)
+void Land::destroyCircle(const int &x, const int &y, const int &r)
 {
     for(int x0 = 0; x0 < r; x0++)
     {
@@ -54,7 +54,7 @@ void Land::destroyCircle(const int x, const int y, const int r)
  * @param top - pierwsza wartość współrzędnej y
  * @param bottom - ostatnia wartość współrzędnej y
  */
-void Land::destroyColumn(const int x, int top, int bottom)
+void Land::destroyColumn(const int &x, int top, int bottom)
 {
     if(x >= 0 && x < (int)image_.getSize().x)
     {
@@ -109,7 +109,7 @@ void Land::draw(sf::RenderTarget &window)
  *
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
-void Land::step(const float elapsed)
+void Land::step(const float &elapsed)
 {
     if(steps_.size() > 0)
     {
@@ -179,7 +179,7 @@ void Land::step(const float elapsed)
  *      true - istnieje teren w punkcie (x, y)
  *      false - nie istnieje teren w punkcie (x, y)
  */
-bool Land::isSolidPixel(const int x, const int y)
+bool Land::isSolidPixel(const int &x, const int &y)
 {
     if((x >= 0 && x < (int)image_.getSize().x) && (y >= 0 && y < (int)image_.getSize().y))
     {
@@ -196,7 +196,7 @@ bool Land::isSolidPixel(const int x, const int y)
  *
  * @return Kąt nachylenia powierzchni w punkcie (x, y) w stopniach
  */
-float Land::getAngleDegree(const int x, const int y)
+float Land::getAngleDegree(const int &x, const int &y)
 {
     return fmod(RadianToDegree(getAngleRadian(x, y)), 360.0);
 }
@@ -212,7 +212,7 @@ float Land::getAngleDegree(const int x, const int y)
  *
  * @return Kąt nachylenia powierzchni w punkcie (x, y) w radianach
  */
-float Land::getAngleRadian(const int x, const int y)
+float Land::getAngleRadian(const int &x, const int &y)
 {
     int d = 3;
     float avgX = 0, avgY = 0;
@@ -237,7 +237,7 @@ float Land::getAngleRadian(const int x, const int y)
  *
  * @return Wysokość terenu w punkcie x
  */
-int Land::getLandHeight(const int x)
+int Land::getLandHeight(const int &x)
 {
     if(x >= 0 && x <= (int)height_.size())
     {
@@ -255,7 +255,7 @@ int Land::getLandHeight(const int x)
  *
  * @return Kolor gradientu w zależności od jasności koloru
  */
-sf::Color Land::gradient(const float brightness, const sf::Color darkColor, const sf::Color lightColor)
+sf::Color Land::gradient(const float &brightness, const sf::Color &darkColor, const sf::Color &lightColor)
 {
     sf::Color Gradient;
     Gradient.r = LERP(brightness, darkColor.r, lightColor.r);

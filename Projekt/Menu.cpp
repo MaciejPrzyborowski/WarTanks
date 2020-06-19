@@ -17,7 +17,7 @@ Menu::Menu() :
  *            true - resetuje ustawienia gry do domyślnych
  *           false - nie resetuje ustawień gry do domyślnych
  */
-void Menu::reset(bool settings)
+void Menu::reset(const bool &settings)
 {
     if(settings)
     {
@@ -38,7 +38,7 @@ void Menu::reset(bool settings)
  *               -1 - w górę
  *                1 - w dół
  */
-void Menu::move(int direction)
+void Menu::move(const int &direction)
 {
     if(!((menuSelected_ == 0 && direction < 0) || (menuSelected_ == menuOptions_.size() - 1 && direction > 0)))
     {
@@ -56,7 +56,7 @@ void Menu::move(int direction)
  * @param event - obiekt wszystkich zdarzeń
  * @param window - okno gry
  */
-void Menu::passEvent(sf::Event &event, sf::RenderWindow &window)
+void Menu::passEvent(const sf::Event &event, sf::RenderWindow &window)
 {
     if(event.type == sf::Event::KeyPressed)
     {
@@ -135,7 +135,7 @@ bool Menu::getMenuStatus()
  *        true - ustawienie jest włączone
  *        false - ustawienie jest wyłączone
  */
-bool Menu::getGameSettings(int setting)
+bool Menu::getGameSettings(const int &setting)
 {
     return gameSettings_[setting];
 }
@@ -148,7 +148,7 @@ bool Menu::getGameSettings(int setting)
  *        Main - menu główne
  *        Settings - menu ustawień
  */
-void Menu::setMenu(MenuType type)
+void Menu::setMenu(const MenuType &type)
 {
     menuSelected_ = 0;
     menuOptions_.clear();
@@ -304,7 +304,7 @@ bool Menu::getMenuMouse(const sf::Vector2f &mousePosition)
  *              2 - muzyka w menu
  *              3 - dźwięki w menu
  */
-void Menu::setSettings(int setting)
+void Menu::setSettings(const int &setting)
 {
     gameSettings_[setting] = !gameSettings_[setting];
     if(gameSettings_[setting])

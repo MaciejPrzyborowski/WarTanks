@@ -5,9 +5,10 @@
 class Animation
 {
 public:
-    Animation(const string &fileName, sf::IntRect position, int stepPosition, int radius, bool repeat, float scale);
-    void changeAnimation(const float elapsed);
-    void draw(const float elapsed, const sf::Vector2f &position, sf::RenderTarget &window);
+    Animation(const string &fileName, const sf::IntRect &position,
+              const int &stepPosition, const int &radius, const bool &repeat, const float &scale);
+    void changeAnimation(const float &elapsed);
+    void draw(const float &elapsed, const sf::Vector2f &position, sf::RenderTarget &window);
 
     bool getStatus();
 

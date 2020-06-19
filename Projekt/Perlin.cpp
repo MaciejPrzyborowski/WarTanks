@@ -30,7 +30,7 @@ const int Perlin::gradientsCube[12][3] =
     {0, 1, 1}, {0, -1, 1}, {0, 1, -1}, {0, -1, -1}
 };
 
-Perlin::Perlin(const float octaves, const float persistence) :
+Perlin::Perlin(const float &octaves, const float &persistence) :
     octaves_(octaves),
     persistence_(persistence)
 {
@@ -47,7 +47,7 @@ Perlin::Perlin(const float octaves, const float persistence) :
  *
  * @return Suma wartości szumów Perlina, która jest dopasowana do wysokości okna
  */
-float Perlin::octaveNoise(const float x, const float y)
+float Perlin::octaveNoise(const float &x, const float &y)
 {
     float total = 0;
     float frequency = 1;
@@ -71,7 +71,7 @@ float Perlin::octaveNoise(const float x, const float y)
  *
  * @return Wartość szumu w zakresie [-1, 1]
  */
-float Perlin::rawNoise(const float x, const float y)
+float Perlin::rawNoise(const float &x, const float &y)
 {
     float Noise[3];
 
@@ -121,7 +121,7 @@ float Perlin::rawNoise(const float x, const float y)
  *
  * @return Wartość wkładu jednego rogu
  */
-float Perlin::getCornerValue(const float x, const float y, const int gradientIndex)
+float Perlin::getCornerValue(const float &x, const float &y, const int &gradientIndex)
 {
     float CornerValue = 0.5 - powf(x, 2) - powf(y, 2);
     if(CornerValue < 0)
@@ -140,7 +140,7 @@ float Perlin::getCornerValue(const float x, const float y, const int gradientInd
  *
  * @return Wyznacznik macierzy w zależności od wartości x i y
  */
-float Perlin::matrixDot(const int * matrix, const float x, const float y)
+float Perlin::matrixDot(const int *matrix, const float &x, const float &y)
 {
     return matrix[0] * x + matrix[1] * y;
 }
@@ -152,7 +152,7 @@ float Perlin::matrixDot(const int * matrix, const float x, const float y)
  *
  * @return Największa wartość całkowita liczby dla wartości zmiennoprzecinkowej
  */
-int Perlin::fastFloor(const float x)
+int Perlin::fastFloor(const float &x)
 {
     return (x > 0.0) ? (int)x : (int)(x - 1.0);
 }
@@ -164,7 +164,7 @@ int Perlin::fastFloor(const float x)
  *
  * @return Wartość permutacji dla podanej wartości całkowitej
  */
-int Perlin::hash(const int i)
+int Perlin::hash(const int &i)
 {
     return permutation[i & 255];
 }

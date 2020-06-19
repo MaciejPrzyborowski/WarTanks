@@ -26,7 +26,7 @@ Bullet::Bullet(const sf::Vector2f &position, const sf::RectangleShape &client, c
  *
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
-void Bullet::move(const float elapsed)
+void Bullet::move(const float &elapsed)
 {
     if(status_ == BulletState::Active)
     {
@@ -105,7 +105,7 @@ void Bullet::explode()
  *        true - pocisk trafił gracza
  *        false - pocisk nie trafił gracza
  */
-bool Bullet::getStatusExplosion(int target)
+bool Bullet::getStatusExplosion(const int &target)
 {
     if(target == 0)
     {

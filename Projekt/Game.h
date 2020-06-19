@@ -20,12 +20,12 @@ public:
     Game();
 
     void run();
-    void initialize(GameState gameState);
-    void passEvent(sf::Event &Event);
+    void initialize(const GameState &gameState);
+    void passEvent(const sf::Event &Event);
     void update();
-    void updateAll(sf::Time elapsed);
-    void playMenuMusic(const bool isMenuMusicOn);
-    void playGameMusic(const bool isGameMusicOn);
+    void updateAll(const sf::Time &elapsed);
+    void playMenuMusic(const bool &isMenuMusicOn);
+    void playGameMusic(const bool &isGameMusicOn);
     void playFireworksSound();
 
 private:

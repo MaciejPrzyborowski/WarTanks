@@ -22,16 +22,16 @@ enum class TankMove
 class Tank
 {
 public:
-    Tank(const int playerID, const string &texture, Land &land_);
+    Tank(const int &playerID, const string &texture, Land &land_);
     void reset();
     void shoot();
-    void moveTank(const float elapsed);
+    void moveTank(const float &elapsed);
     void moveCannon(sf::RenderWindow &window);
-    void moveShootPower(const int direction);
-    void passEvent(sf::Event &event, sf::RenderWindow &window);
-    void update(const float elapsed, sf::RenderWindow &window);
+    void moveShootPower(const int &direction);
+    void passEvent(const sf::Event &event, sf::RenderWindow &window);
+    void update(const float &elapsed, sf::RenderWindow &window);
     void draw(sf::RenderTarget &window);
-    void step(const float elapsed);
+    void step(const float &elapsed);
 
     TankState getStatus();
 

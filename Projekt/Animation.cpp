@@ -1,6 +1,7 @@
 #include "Animation.h"
 
-Animation::Animation(const string &fileName, sf::IntRect position, int stepPosition, int radius, bool repeat, float scale) :
+Animation::Animation(const string &fileName, const sf::IntRect &position,
+                     const int &stepPosition, const int &radius, const bool &repeat, const float &scale) :
     active_(true),
     stepPosition_(stepPosition),
     stepTime_(0.1),
@@ -21,7 +22,7 @@ Animation::Animation(const string &fileName, sf::IntRect position, int stepPosit
  *
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  */
-void Animation::changeAnimation(const float elapsed)
+void Animation::changeAnimation(const float &elapsed)
 {
     if((timeElapsed_ += elapsed) >= stepTime_)
     {
@@ -46,7 +47,7 @@ void Animation::changeAnimation(const float elapsed)
  * @param position - współrzędne punktu (x, y), w którym ma zostać wyświetlona animacja
  * @param window - okno gry
  */
-void Animation::draw(const float elapsed, const sf::Vector2f &position, sf::RenderTarget &window)
+void Animation::draw(const float &elapsed, const sf::Vector2f &position, sf::RenderTarget &window)
 {
     shape_.setPosition(position);
     if(active_)

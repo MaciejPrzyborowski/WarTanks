@@ -40,7 +40,7 @@ void Game::run()
     update();
 }
 
-void Game::initialize(GameState gameState)
+void Game::initialize(const GameState &gameState)
 {
     gameState_ = gameState;
     if(gameState == GameState::Menu)
@@ -64,7 +64,7 @@ void Game::initialize(GameState gameState)
     }
 }
 
-void Game::passEvent(sf::Event &Event)
+void Game::passEvent(const sf::Event &Event)
 {
     if(Event.type == sf::Event::Closed)
     {
@@ -93,7 +93,7 @@ void Game::passEvent(sf::Event &Event)
     }
 }
 
-void Game::updateAll(sf::Time elapsed)
+void Game::updateAll(const sf::Time &elapsed)
 {
     if(window_ -> isOpen())
     {
@@ -183,7 +183,7 @@ void Game::update()
  *
  * @param isMenuMusicOn - sprawdza czy muzyka w menu jest włączona
  */
-void Game::playMenuMusic(bool isMenuMusicOn)
+void Game::playMenuMusic(const bool &isMenuMusicOn)
 {
     if(isMenuMusicOn && menuMusic_.getStatus() != sf::Music::Playing)
     {
@@ -200,7 +200,7 @@ void Game::playMenuMusic(bool isMenuMusicOn)
  *
  * @param isGameMusicOn - sprawdza czy muzyka w grze jest włączona
  */
-void Game::playGameMusic(const bool isGameMusicOn)
+void Game::playGameMusic(const bool &isGameMusicOn)
 {
     if(isGameMusicOn && gameMusic_.getStatus() != sf::Music::Playing)
     {

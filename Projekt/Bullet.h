@@ -15,11 +15,11 @@ class Bullet
 {
 public:
     Bullet(const sf::Vector2f &position, const sf::RectangleShape &client, const sf::RectangleShape &target, Land &land_);
-    void move(const float elapsed);
+    void move(const float &elapsed);
     void draw(sf::RenderTarget &window);
     void explode();
 
-    bool getStatusExplosion(int target);
+    bool getStatusExplosion(const int &target);
     BulletState getStatus();
     void setAcceleration(const sf::Vector2f &acceleration);
     void setVelocity(const sf::Vector2f &velocity);

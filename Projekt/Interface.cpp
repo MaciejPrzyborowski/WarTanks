@@ -12,7 +12,7 @@ Interface::Interface() :
     gameEndText_ = setTextStyle(50, 3);
 }
 
-Interface::Interface(const int id) :
+Interface::Interface(const int &id) :
     totalTime_(0.0),
     backToMenuTime_(0.0)
 {
@@ -55,7 +55,7 @@ void Interface::reset()
  * @param angle - kąt nachylenia lufy
  * @param window - okno gry
  */
-void Interface::drawAngle(const float angle, sf::RenderTarget &window)
+void Interface::drawAngle(const float &angle, sf::RenderTarget &window)
 {
     angle_.setPosition(sf::Vector2f((WindowWidth - angle_.getLocalBounds().width)/2, 65));
     angle_.setString("Kat lufy: " + to_string((int)(angle)));
@@ -68,7 +68,7 @@ void Interface::drawAngle(const float angle, sf::RenderTarget &window)
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  * @param window - okno gry
  */
-void Interface::drawFPS(const float elapsed, sf::RenderTarget &window)
+void Interface::drawFPS(const float &elapsed, sf::RenderTarget &window)
 {
     fps_.setString(to_string((int)(1 / elapsed)) + " FPS");
     window.draw(fps_);
@@ -80,7 +80,7 @@ void Interface::drawFPS(const float elapsed, sf::RenderTarget &window)
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  * @param window - okno gry
  */
-void Interface::drawGameTime(const float elapsed, sf::RenderTarget &window)
+void Interface::drawGameTime(const float &elapsed, sf::RenderTarget &window)
 {
     totalTime_ += elapsed;
     gameTime_.setString("Czas: " + to_string((int)totalTime_) + " sekund");
@@ -94,12 +94,8 @@ void Interface::drawGameTime(const float elapsed, sf::RenderTarget &window)
  * @param health - poziom życia gracza
  * @param window - okno gry
  */
-void Interface::drawHealth(int health, sf::RenderTarget &window)
+void Interface::drawHealth(const int &health, sf::RenderTarget &window)
 {
-    if(health < 0)
-    {
-        health = 0;
-    }
     healthPointFill_.setSize(sf::Vector2f(health, 20));
     healthPointFill_.setFillColor(sf::Color(200 - health, 2 * health, 0));
 
@@ -114,7 +110,7 @@ void Interface::drawHealth(int health, sf::RenderTarget &window)
  * @param shootPower - siła wystrzału pocisku gracza
  * @param window - okno gry
 */
-void Interface::drawShootPower(const int shootPower, sf::RenderTarget &window)
+void Interface::drawShootPower(const int &shootPower, sf::RenderTarget &window)
 {
     shootPowerFill_.setSize(sf::Vector2f(shootPower, 20));
     shootPowerFill_.setFillColor(sf::Color(200 - shootPower, 2 * shootPower, 0));
@@ -130,7 +126,7 @@ void Interface::drawShootPower(const int shootPower, sf::RenderTarget &window)
  * @param timeLeft - pozostały czas na oddanie strzału
  * @param window - okno gry
  */
-void Interface::drawTurn(const int id, const float timeLeft, sf::RenderTarget &window)
+void Interface::drawTurn(const int &id, const float &timeLeft, sf::RenderTarget &window)
 {
     if(id == 1)
     {
@@ -156,7 +152,7 @@ void Interface::drawTurn(const int id, const float timeLeft, sf::RenderTarget &w
  * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
  * @param window - okno gry
  */
-void Interface::drawGameEnd(const float elapsed, sf::RenderTarget &window)
+void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
 {
     if((backToMenuTime_ += elapsed) >= 2.0)
     {
@@ -195,7 +191,7 @@ void Interface::drawGameEnd(const float elapsed, sf::RenderTarget &window)
  *         [0] - współrzędne wygranej pozycji
  *         [1] - współrzędne przegranej pozycji
  */
-vector<sf::Vector2f> Interface::checkWinner(const int health[2], const sf::Vector2f &tankPosition1, const sf::Vector2f &tankPosition2)
+vector<sf::Vector2f> Interface::checkWinner(const int *health, const sf::Vector2f &tankPosition1, const sf::Vector2f &tankPosition2)
 {
     vector<sf::Vector2f> position;
     if(health[0] > 0)
@@ -223,7 +219,8 @@ vector<sf::Vector2f> Interface::checkWinner(const int health[2], const sf::Vecto
  *
  * @return zwraca sformatowany obiekt klast sf::Text
  */
-sf::Text Interface::setTextStyle(const int size, const int thickness, const string &contents, const sf::Vector2f position, const sf::Color fillColor, const sf::Color borderColor)
+sf::Text Interface::setTextStyle(const int &size, const int &thickness, const string &contents, const sf::Vector2f &position,
+                                 const sf::Color &fillColor, const sf::Color &borderColor)
 {
     sf::Text textToSet;
     textToSet.setFont(font_);
@@ -247,7 +244,8 @@ sf::Text Interface::setTextStyle(const int size, const int thickness, const stri
  *
  * @return zwraca sformatowany obiekt klasy sf::Text
  */
-sf::RectangleShape Interface::setRectStyle(const sf::Vector2f size, const int thickness, const sf::Vector2f position, const sf::Color fillColor, const sf::Color borderColor)
+sf::RectangleShape Interface::setRectStyle(const sf::Vector2f &size, const int &thickness, const sf::Vector2f &position,
+                                           const sf::Color &fillColor, const sf::Color &borderColor)
 {
     sf::RectangleShape rectToSet;
     rectToSet.setSize(size);

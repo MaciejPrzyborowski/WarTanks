@@ -13,14 +13,14 @@ class Menu
 {
 public:
     Menu();
-    void reset(bool settings);
-    void move(int direction);
-    void passEvent(sf::Event &event, sf::RenderWindow &window);
+    void reset(const bool &settings);
+    void move(const int &direction);
+    void passEvent(const sf::Event &event, sf::RenderWindow &window);
     void draw(sf::RenderTarget &window);
 
-    bool getGameSettings(int setting);
+    bool getGameSettings(const int &setting);
     bool getMenuStatus();
-    void setMenu(MenuType type);
+    void setMenu(const MenuType &type);
 
 private:
     sf::Font font_;
@@ -35,7 +35,7 @@ private:
 
     bool getMenuChoice();
     bool getMenuMouse(const sf::Vector2f &mousePosition);
-    void setSettings(int setting);
+    void setSettings(const int &setting);
 
     vector<sf::Text> menuOptions_;
     vector<sf::Text> menuSelectOptions_;
