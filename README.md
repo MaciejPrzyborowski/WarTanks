@@ -1,5 +1,7 @@
 # WarTanks
 
+Prezentacja gry: https://www.youtube.com/watch?v=Kdn8K6T_7OE
+
 Gra posiada menu, które posiada następujące opcje:
 
 Graj:
@@ -44,7 +46,85 @@ Land
 Menu
 Perlin
 Tank
-``` 
+```
+*w celu otworzenia pełnej gry należy wszystkie pliki z folderu "data" wrzucić do folderu build
+
+Podział pracy:
+
+Maciej Przyborowski:
+```
+      - poruszanie czołgiem
+            - prędkość zależna od kąta nachylenia terenu
+            - poruszanie nie jest możliwe dla dużych wzniesień i spadków (max 75 stopni)
+      - wystrzeliwanie pocisku
+            - akceleracja
+            - przyśpieszenie
+      - obsługa terenu
+            - generowanie terenu z zastosowaniem szumu Perlina
+            - niszczenie terenu przez pocisk w kształcie okręgu
+            - obliczanie kąta nachylenia terenu
+            - kolor terenu: gradient z zastosowaniem interpolacji liniowej
+      - kolizja
+            - czołg z czołgiem
+            - pocisk z czołgiem
+      - grawitacja
+            - czołgu - gdy teren pod czołgiem się niszczy to czołg spada
+            - pocisku - rzut ukośny
+            - terenu - opadanie wiszącego terenu
+      - zmiana tury graczy
+            - obsługa czasu tury dla gracza
+            - zmiana tury gdy skończy się czas lub wybuchnie pocisk
+```            
+Mateusz Kozłowski
+```
+      - interfejs:
+            - menu
+            - punkty życia
+            - siła strzału
+            - czas gry
+            - czas tury
+            - kąt nachlenia
+            - FPS     
+      - animacje
+            - animacja wybuchu
+            - fajerwerków
+            - płomienia
+      - grafiki
+            - grafika menu
+            - tło gry
+            - wygląd czołgów oraz lufy
+      - muzyka
+            - muzyka w grze
+            - muzyka w menu
+            - dżwięk przy wyborze
+            - dźwięk wystrzału
+            - dźwięk wybuchu
+            - dźwięk fajerwerków
+      - zmienianie kąta lufy przez myszkę
+      - dźwięki w grze
+      - siła strzału
+            - zmiana siły strzału zakres od 0 do 100
+      - punkty życia
+      - zakończenie gry
+            - wygrywa jeden z graczy lub remis i pokazuje sie stosowny do tego napis
+      - wdrożenie ustawień z menu do gry
+            - licznik FPS
+            - muzyka w menu
+            - muzyka w grze
+            - dźwięk w menu
+```      
+Wspólnie:
+```
+      - menu
+      - obsługa zdarzeń wykonywanych przez gracza
+            - spacja - strzał
+            - strzałka w lewo lub prawo - poruszanie
+            - strzałka w górę lub dół - siła strzału
+            - sprawne poruszanie się myszką lub klawiaturą po menu
+            - enter aby wrócić do menu (na koniec gry)
+      - opisy funkcji
+```
+
 ![menu](Zdjęcia/mainMenu.png)
 ![ustawienia](Zdjęcia/settingsMenu.png)
 ![gra](Zdjęcia/game.png)
