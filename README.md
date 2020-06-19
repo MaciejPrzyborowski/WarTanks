@@ -41,11 +41,14 @@ Gra zostanie zakończona w momencie gdy jeden z graczy straci wszystkie punkty �
 Animation
 Bullet
 Game
+Globals
 Interface
 Land
 Menu
 Perlin
 Tank
+World
+WorldObject
 ```
 *w celu otworzenia pełnej gry należy wszystkie pliki z folderu "data" wrzucić do folderu build
 
