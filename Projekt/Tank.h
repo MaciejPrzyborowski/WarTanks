@@ -5,6 +5,20 @@
 #include "Land.h"
 #include "Interface.h"
 
+enum class TankState
+{
+    InActive,
+    Active,
+    Switch
+};
+
+enum class TankMove
+{
+    None,
+    Left,
+    Right
+};
+
 class Tank
 {
 public:
@@ -19,7 +33,7 @@ public:
     void draw(sf::RenderTarget &window);
     void step(const float elapsed);
 
-    int getStatus();
+    TankState getStatus();
 
     void switchStatus(sf::RenderWindow &window);
 
@@ -31,13 +45,13 @@ private:
     Land *land;
     unique_ptr<Bullet> bullet_;
     unique_ptr<Interface> tankInterface_;
+    TankState status_;
+    TankMove moveDirection_;
 
     bool freefall_;
     bool crosshairActive_;
 
-    int status_;
     int playerID_;
-    int moveDirection_;
     int shootPower_;
     int health_;
 

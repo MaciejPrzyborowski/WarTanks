@@ -27,7 +27,7 @@ void Menu::reset(bool settings)
         gameSettings_[3] = true;
     }
     isMouseActive_ = false;
-    setMenu(MenuMain);
+    setMenu(MenuType::Main);
 }
 
 /**
@@ -119,7 +119,7 @@ void Menu::draw(sf::RenderTarget &window)
  */
 bool Menu::getMenuStatus()
 {
-    return !(menuType_ == MenuNone);
+    return !(menuType_ == MenuType::None);
 }
 
 /**
@@ -144,10 +144,9 @@ bool Menu::getGameSettings(int setting)
  * Ustawia dane w menu
  *
  * @param type - typ menu:
- *        MenuNone - brak menu
- *        MenuMain - menu główne
- *        MenuPlay - menu gry
- *        MenuSettings - menu ustawień
+ *        None - brak menu
+ *        Main - menu główne
+ *        Settings - menu ustawień
  */
 void Menu::setMenu(MenuType type)
 {
@@ -156,25 +155,19 @@ void Menu::setMenu(MenuType type)
     menuSelectOptions_.clear();
     menuSelectBackground_.clear();
     menuType_ = type;
-    if(type != MenuNone)
+    if(type != MenuType::None)
     {
         float CharakterSize;
         size_t StartPosition;
         vector<string> SettingNames;
 
-        if(type == MenuMain)
+        if(type == MenuType::Main)
         {
             CharakterSize = 0.1;
             StartPosition = 3;
             SettingNames = {"Graj", "Ustawienia", "Wyjscie"};
         }
-        if(type == MenuPlay)
-        {
-            CharakterSize = 0.1;
-            StartPosition = 3;
-            SettingNames = {"Tryb Offline", "Tryb MultiPlayer", "Wstecz"};
-        }
-        if(type == MenuSettings)
+        if(type == MenuType::Settings)
         {
             CharakterSize = 0.07;
             StartPosition = 2;
@@ -227,19 +220,18 @@ void Menu::setMenu(MenuType type)
 bool Menu::getMenuChoice()
 {
     bool isMenuActive = true;
-    if(menuType_ == MenuMain)
+    if(menuType_ == MenuType::Main)
     {
         switch(menuSelected_)
         {
             case 0:
             {
-                setMenu(MenuNone);
-                //setMenu(MenuPlay);
+                setMenu(MenuType::None);
                 break;
             }
             case 1:
             {
-                setMenu(MenuSettings);
+                setMenu(MenuType::Settings);
                 break;
             }
             case 2:
@@ -249,33 +241,13 @@ bool Menu::getMenuChoice()
             }
         }
     }
-    else if(menuType_ == MenuPlay)
-    {
-        switch(menuSelected_)
-        {
-            case 0:
-            {
-                setMenu(MenuNone);
-                break;
-            }
-            case 1:
-            {
-                setMenu(MenuNone);
-                break;
-            }
-            case 2:
-            {
-                setMenu(MenuMain);
-            }
-        }
-    }
-    else if(menuType_ == MenuSettings)
+    else if(menuType_ == MenuType::Settings)
     {
         switch(menuSelected_)
         {
             case 4:
             {
-                setMenu(MenuMain);
+                setMenu(MenuType::Main);
                 break;
             }
             default:

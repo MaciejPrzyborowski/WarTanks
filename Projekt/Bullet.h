@@ -4,6 +4,13 @@
 #include "Animation.h"
 #include "Land.h"
 
+enum class BulletState
+{
+    InActive,
+    Active,
+    Explode
+};
+
 class Bullet
 {
 public:
@@ -13,7 +20,7 @@ public:
     void explode();
 
     bool getStatusExplosion(int target);
-    int getStatus();
+    BulletState getStatus();
     void setAcceleration(const sf::Vector2f &acceleration);
     void setVelocity(const sf::Vector2f &velocity);
 
@@ -21,10 +28,10 @@ private:
     Land *land;
     sf::Clock clock_;
     unique_ptr<Animation> explode_;
+    BulletState status_;
 
     bool clientExploded_;
     bool targetExploded_;
-    int status_;
     int explodeSize_;
 
     sf::Sound explodeSound_;

@@ -2,9 +2,9 @@
 
 Bullet::Bullet(const sf::Vector2f &position, const sf::RectangleShape &client, const sf::RectangleShape &target, Land &land_) :
     land(&land_),
+    status_(BulletState::Active),
     clientExploded_(false),
     targetExploded_(false),
-    status_(1),
     explodeSize_(30),
     client_(client),
     target_(target),
@@ -28,11 +28,11 @@ Bullet::Bullet(const sf::Vector2f &position, const sf::RectangleShape &client, c
  */
 void Bullet::move(const float elapsed)
 {
-    if(status_ == 1)
+    if(status_ == BulletState::Active)
     {
         if(bullet_.getPosition().x < 0 || bullet_.getPosition().x > WindowWidth || bullet_.getPosition().y >= WindowHeight)
         {
-            status_ = 0;
+            status_ = BulletState::InActive;
         }
         else if(intersects(bullet_, target_) || intersects(bullet_, client_) || bullet_.getPosition().y + bullet_.getRadius() >= land->getLandHeight(bullet_.getPosition().x))
         {
@@ -59,7 +59,7 @@ void Bullet::draw(sf::RenderTarget &window)
         }
         else
         {
-            status_ = 0;
+            status_ = BulletState::InActive;
         }
     }
     else
@@ -74,7 +74,7 @@ void Bullet::draw(sf::RenderTarget &window)
  */
 void Bullet::explode()
 {
-    status_ = 2;
+    status_ = BulletState::Explode;
     sf::CircleShape explosionBullet = bullet_;
     explosionBullet.setOrigin(explodeSize_, explodeSize_);
     explosionBullet.setRadius(explodeSize_);
@@ -118,11 +118,11 @@ bool Bullet::getStatusExplosion(int target)
  * Sprawdza status pocisku
  *
  * @return
- *          0 - pocisk nie jest aktywny
- *          1 - pocisk jest aktywny, porusza i wyświetla si ę
- *          2 - pocisk trafił w ziemię, nie wyświetla się i oczekuje na zakończenie animacji eksplozji
+ *         BulletState::InActive - pocisk nie jest aktywny
+ *         BulletState::Active - pocisk jest aktywny, porusza i wyświetla się
+ *         BulletState::Explode - pocisk exploduje w trafionym punkcie
  */
-int Bullet::getStatus()
+BulletState Bullet::getStatus()
 {
     return status_;
 }

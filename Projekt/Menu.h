@@ -2,12 +2,11 @@
 
 #include "Globals.h"
 
-enum MenuType
+enum class MenuType
 {
-    MenuNone,
-    MenuMain,
-    MenuPlay,
-    MenuSettings
+    None,
+    Main,
+    Settings
 };
 
 class Menu

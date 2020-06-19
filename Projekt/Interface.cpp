@@ -1,7 +1,6 @@
 #include "Interface.h"
 
 Interface::Interface() :
-    winnerID_(0),
     totalTime_(0.0),
     backToMenuTime_(0.0)
 {
@@ -14,7 +13,6 @@ Interface::Interface() :
 }
 
 Interface::Interface(const int id) :
-    winnerID_(0),
     totalTime_(0.0),
     backToMenuTime_(0.0)
 {
@@ -46,7 +44,7 @@ Interface::Interface(const int id) :
  */
 void Interface::reset()
 {
-    winnerID_ = 0;
+    winnerID_ = Winner::None;
     backToMenuTime_ = 0.0;
     totalTime_ = 0.0;
 }
@@ -164,12 +162,12 @@ void Interface::drawGameEnd(const float elapsed, sf::RenderTarget &window)
     {
         window.draw(backToMenu_);
     }
-    if(winnerID_ == 1)
+    if(winnerID_ == Winner::Red)
     {
         gameEndText_.setOutlineColor(sf::Color::Red);
         gameEndText_.setString("Czerwony wygrywa!");
     }
-    else if(winnerID_ == 2)
+    else if(winnerID_ == Winner::Blue)
     {
         gameEndText_.setOutlineColor(sf::Color(0, 100, 255));
         gameEndText_.setString("Niebieski wygrywa!");
@@ -202,11 +200,11 @@ vector<sf::Vector2f> Interface::checkWinner(const int health[2], const sf::Vecto
     vector<sf::Vector2f> position;
     if(health[0] > 0)
     {
-        winnerID_ = 1;
+        winnerID_ = Winner::Red;
     }
     else
     {
-        winnerID_ = 2;
+        winnerID_ = Winner::Blue;
     }
     position.emplace_back((health[0] > 0 ? tankPosition1 : tankPosition2) - sf::Vector2f(50.0, 120.0));
     position.emplace_back((health[0] > 0 ? tankPosition2 : tankPosition1) - sf::Vector2f(50.0, 90.0));

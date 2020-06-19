@@ -2,11 +2,10 @@
 
 Tank::Tank(const int playerID, const string &texture, Land &land_) :
     land(&land_),
+    moveDirection_(TankMove::None),
     freefall_(false),
     crosshairActive_(false),
-    status_(playerID == 1),
     playerID_(playerID),
-    moveDirection_(0),
     shootPower_(50),
     health_(100),
     speed_(50.0),
@@ -14,6 +13,14 @@ Tank::Tank(const int playerID, const string &texture, Land &land_) :
     timeLeft_(15.0),
     velocityFreefall_(0.0)
 {
+    if(playerID == 1)
+    {
+        status_ = TankState::Active;
+    }
+    else
+    {
+        status_ = TankState::InActive;
+    }
     tankInterface_ = make_unique<Interface>(playerID);
     tankTexture_.loadFromFile(texture);
     cannonTexture_.loadFromFile(BarrelTextureSrc);
@@ -35,11 +42,18 @@ Tank::Tank(const int playerID, const string &texture, Land &land_) :
  */
 void Tank::reset()
 {
+    if(playerID_ == 1)
+    {
+        status_ = TankState::Active;
+    }
+    else
+    {
+        status_ = TankState::InActive;
+    }
     freefall_ = false;
     crosshairActive_ = false;
-    status_ = (playerID_ == 1);
 
-    moveDirection_ = 0;
+    moveDirection_ = TankMove::None;
     shootPower_ = 50;
 
     health_ = 100;
@@ -67,7 +81,7 @@ void Tank::reset()
  */
 void Tank::shoot()
 {
-    if(!moveDirection_ && !crosshairActive_ && bullet_ == nullptr)
+    if(moveDirection_ == TankMove::None && !crosshairActive_ && bullet_ == nullptr)
     {
         if(shootSound_.getStatus() != sf::Music::Playing)
         {
@@ -90,10 +104,14 @@ void Tank::shoot()
  */
 void Tank::moveTank(const float elapsed)
 {
-    if(moveDirection_)
+    if(moveDirection_ != TankMove::None)
     {
         sf::Vector2f velocity(0.0, 0.0);
-        velocity.x = (speed_ * cos(DegreeToRadian(tankSprite_.getRotation()))) * moveDirection_ * elapsed;
+        velocity.x = (speed_ * cos(DegreeToRadian(tankSprite_.getRotation()))) * elapsed;
+        if(moveDirection_ == TankMove::Left)
+        {
+            velocity.x *= -1;
+        }
         velocity.y = land->getLandHeight(tankSprite_.getPosition().x + velocity.x) - tankSprite_.getPosition().y;
         moveTankPosition(velocity);
     }
@@ -146,22 +164,22 @@ void Tank::moveShootPower(const int direction)
  */
 void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
 {
-    if(status_ == 1)
+    if(status_ == TankState::Active)
     {
         if(event.type == sf::Event::KeyReleased)
         {
             if(event.key.code == sf::Keyboard::Left)
             {
-                if(moveDirection_ == -1)
+                if(moveDirection_ == TankMove::Left)
                 {
-                    moveDirection_ = 0;
+                    moveDirection_ = TankMove::None;
                 }
             }
             if(event.key.code == sf::Keyboard::Right)
             {
-                if(moveDirection_ == 1)
+                if(moveDirection_ == TankMove::Right)
                 {
-                    moveDirection_ = 0;
+                    moveDirection_ = TankMove::None;
                 }
             }
         }
@@ -181,11 +199,11 @@ void Tank::passEvent(sf::Event &event, sf::RenderWindow &window)
             }
             if(event.key.code == sf::Keyboard::Left)
             {
-                moveDirection_ = -1;
+                moveDirection_ = TankMove::Left;
             }
             if(event.key.code == sf::Keyboard::Right)
             {
-                moveDirection_ = 1;
+                moveDirection_ = TankMove::Right;
             }
         }
         if(event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
@@ -209,13 +227,13 @@ void Tank::update(const float elapsed, sf::RenderWindow &window)
 {
     step(elapsed);
     tankInterface_ -> drawHealth(health_, window);
-    if(status_ == 1)
+    if(status_ == TankState::Active)
     {
         if(bullet_ == nullptr)
         {
             if((timeLeft_ -= elapsed) <= 0)
             {
-                status_ = 2;
+                status_ = TankState::Switch;
             }
         }
         moveTank(elapsed);
@@ -235,11 +253,11 @@ void Tank::draw(sf::RenderTarget &window)
 {
     window.draw(cannonSprite_);
     window.draw(tankSprite_);
-    if(status_ == 1)
+    if(status_ == TankState::Active)
     {
         if(bullet_)
         {
-            if(bullet_ -> getStatus())
+            if(bullet_ -> getStatus() != BulletState::InActive)
             {
                 bullet_ -> draw(window);
             }
@@ -290,11 +308,11 @@ void Tank::step(const float elapsed)
  * Zwraca status gracza
  *
  * @return
- *        0 - gracz nie może nic wykonać
- *        1 - gracz może wykonać wszystkie rzeczy
- *        2 - gracz oczekuje na zmianę kolejki
+ *        TankState::InActive - gracz aktualnie nie jest aktywny
+ *        TankState::Active - gracz aktualnie jest aktywny
+ *        TankState::Switch - gracz aktualnie oczekuje na zmianę kolejki
  */
-int Tank::getStatus()
+TankState Tank::getStatus()
 {
     return status_;
 }
@@ -307,19 +325,19 @@ int Tank::getStatus()
 void Tank::switchStatus(sf::RenderWindow &window)
 {
     timeLeft_ = 15.0;
-    if(status_ == 0)
+    if(status_ == TankState::InActive)
     {
-        status_ = 1;
+        status_ = TankState::Active;
     }
     else
     {
-        status_ = 0;
+        status_ = TankState::InActive;
     }
     if(bullet_)
     {
         bullet_.reset();
     }
-    moveDirection_ = 0;
+    moveDirection_ = TankMove::None;
     if(crosshairActive_)
     {
         crosshairActive_ = false;
@@ -336,7 +354,7 @@ void Tank::switchStatus(sf::RenderWindow &window)
  */
 bool Tank::canCannonMove()
 {
-    if(status_ == 1 && !freefall_ && !moveDirection_ && bullet_ == nullptr)
+    if(status_ == TankState::Active && !freefall_ && moveDirection_ == TankMove::None && bullet_ == nullptr)
     {
         return true;
     }
@@ -353,7 +371,7 @@ bool Tank::canCannonMove()
  */
 bool Tank::canTankMove(const sf::Vector2f &velocity)
 {
-    if(status_ == 1 && !freefall_ && !crosshairActive_ && bullet_ == nullptr && fabs(getLandAngle(velocity)) <= maxAngle_
+    if(status_ == TankState::Active && !freefall_ && !crosshairActive_ && bullet_ == nullptr && fabs(getLandAngle(velocity)) <= maxAngle_
             && !getEnemyCollision(velocity) && tankSprite_.getPosition().x + velocity.x > 0 && tankSprite_.getPosition().x + velocity.x < WindowWidth)
     {
         return true;
@@ -441,7 +459,7 @@ void Tank::shootReset()
             enemy->health_ -= 25;
         }
         bullet_.reset();
-        status_ = 2;
+        status_ = TankState::Switch;
     }
 }
 

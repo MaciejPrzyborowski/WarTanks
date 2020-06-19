@@ -6,12 +6,12 @@
 #include "Interface.h"
 #include "Animation.h"
 
-enum GameState
+enum class GameState
 {
-    GameMenu,
-    GamePlay,
-    GameEndWinner,
-    GameEndDraw
+    Menu,
+    Play,
+    EndWinner,
+    EndDraw
 };
 
 class Game

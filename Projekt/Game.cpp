@@ -36,21 +36,21 @@ void Game::run()
     player2_ = make_unique<Tank>(2, TankTextureSrc2, *land_);
     player1_ -> enemy = player2_.get();
     player2_ -> enemy = player1_.get();
-    initialize(GameMenu);
+    initialize(GameState::Menu);
     update();
 }
 
 void Game::initialize(GameState gameState)
 {
     gameState_ = gameState;
-    if(gameState == GameMenu)
+    if(gameState == GameState::Menu)
     {
         menu_ -> reset(false);
         playGameMusic(false);
         playMenuMusic(menu_->getGameSettings(2));
         fireworksSound_.stop();
     }
-    else if(gameState == GamePlay)
+    else if(gameState == GameState::Play)
     {
         land_->generate();
 
@@ -70,7 +70,7 @@ void Game::passEvent(sf::Event &Event)
     {
         window_->close();
     }
-    else if(gameState_ == GameMenu)
+    else if(gameState_ == GameState::Menu)
     {
         if(menu_->getMenuStatus())
         {
@@ -79,17 +79,17 @@ void Game::passEvent(sf::Event &Event)
         }
         else
         {
-            initialize(GamePlay);
+            initialize(GameState::Play);
         }
     }
-    else if(gameState_ == GamePlay)
+    else if(gameState_ == GameState::Play)
     {
         player1_->passEvent(Event, *window_);
         player2_->passEvent(Event, *window_);
     }
     else if(Event.type == sf::Event::KeyReleased && Event.key.code == sf::Keyboard::Return)
     {
-        initialize(GameMenu);
+        initialize(GameState::Menu);
     }
 }
 
@@ -98,7 +98,7 @@ void Game::updateAll(sf::Time elapsed)
     if(window_ -> isOpen())
     {
         window_ -> clear();
-        if(gameState_ == GameMenu)
+        if(gameState_ == GameState::Menu)
         {
             if(menu_->getMenuStatus())
             {
@@ -107,7 +107,7 @@ void Game::updateAll(sf::Time elapsed)
             }
             else
             {
-                initialize(GamePlay);
+                initialize(GameState::Play);
             }
         }
         else
@@ -117,14 +117,14 @@ void Game::updateAll(sf::Time elapsed)
             player1_ -> draw(*window_);
             player2_ -> draw(*window_);
             int playerHealth[2] = {player1_ -> returnHp(), player2_ -> returnHp()};
-            if(gameState_ == GamePlay)
+            if(gameState_ == GameState::Play)
             {
                 if(playerHealth[0] > 0 && playerHealth[1] > 0)
                 {
                     land_ -> step(elapsed.asSeconds());
                     player1_ -> update(elapsed.asSeconds(), *window_);
                     player2_ -> update(elapsed.asSeconds(), *window_);
-                    if(player1_ -> getStatus() == 2 || player2_ -> getStatus() == 2)
+                    if(player1_ -> getStatus() == TankState::Switch || player2_ -> getStatus() == TankState::Switch)
                     {
                         player1_ -> switchStatus(*window_);
                         player2_ -> switchStatus(*window_);
@@ -133,20 +133,20 @@ void Game::updateAll(sf::Time elapsed)
                 }
                 else if(playerHealth[0] > 0 || playerHealth[1] > 0)
                 {
-                    initialize(GameEndWinner);
+                    initialize(GameState::EndWinner);
                     vector<sf::Vector2f> position = GameInterface_ -> checkWinner(playerHealth, player1_->returnPosition(), player2_->returnPosition());
                     winner_ = position[0];
                     loser_ = position[1];
                 }
                 else
                 {
-                    initialize(GameEndDraw);
+                    initialize(GameState::EndDraw);
                 }
             }
             else
             {
                 GameInterface_ -> drawGameEnd(elapsed.asSeconds(), *window_);
-                if(gameState_ == GameEndWinner)
+                if(gameState_ == GameState::EndWinner)
                 {
                     playGameMusic(false);
                     playFireworksSound();

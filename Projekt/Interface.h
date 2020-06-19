@@ -2,6 +2,13 @@
 
 #include "Globals.h"
 
+enum class Winner
+{
+    None,
+    Red,
+    Blue
+};
+
 class Interface
 {
 public:
@@ -32,8 +39,8 @@ private:
     sf::Text hpText_;
     sf::Text turn_;
     sf::Text turnTimeLeft_;
+    Winner winnerID_;
 
-    int winnerID_;
     float totalTime_;
     float backToMenuTime_;
 
