@@ -1,8 +1,8 @@
-#include "Game.h"
+#include "Application.h"
 
 int main()
 {
-    Game game;
-    game.run();
+    srand(time(NULL));
+    Application::run();
     return 0;
 }

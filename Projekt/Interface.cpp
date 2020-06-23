@@ -39,9 +39,6 @@ Interface::Interface(const int &id) :
     }
 }
 
-/**
- * Resetuje parametry interface do wartości domyślnych
- */
 void Interface::reset()
 {
     winnerID_ = Winner::None;
@@ -49,12 +46,6 @@ void Interface::reset()
     totalTime_ = 0.0;
 }
 
-/**
- * Wyświetla napis z kątem nachylenia lufy
- *
- * @param angle - kąt nachylenia lufy
- * @param window - okno gry
- */
 void Interface::drawAngle(const float &angle, sf::RenderTarget &window)
 {
     angle_.setPosition(sf::Vector2f((WindowWidth - angle_.getLocalBounds().width)/2, 65));
@@ -62,24 +53,12 @@ void Interface::drawAngle(const float &angle, sf::RenderTarget &window)
     window.draw(angle_);
 }
 
-/**
- * Wyświetla licznik FPS (liczba klatek na sekundę)
- *
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- * @param window - okno gry
- */
 void Interface::drawFPS(const float &elapsed, sf::RenderTarget &window)
 {
     fps_.setString(to_string((int)(1 / elapsed)) + " FPS");
     window.draw(fps_);
 }
 
-/**
- * Wyświetla aktualny czas gry
- *
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- * @param window - okno gry
- */
 void Interface::drawGameTime(const float &elapsed, sf::RenderTarget &window)
 {
     totalTime_ += elapsed;
@@ -88,12 +67,6 @@ void Interface::drawGameTime(const float &elapsed, sf::RenderTarget &window)
     window.draw(gameTime_);
 }
 
-/**
- * Wyświetla pasek poziomu życia gracza
- *
- * @param health - poziom życia gracza
- * @param window - okno gry
- */
 void Interface::drawHealth(const int &health, sf::RenderTarget &window)
 {
     healthPointFill_.setSize(sf::Vector2f(health, 20));
@@ -104,12 +77,6 @@ void Interface::drawHealth(const int &health, sf::RenderTarget &window)
     window.draw(hpText_);
 }
 
-/**
- * Wyświetla pasek siły wystrzału pocisku
- *
- * @param shootPower - siła wystrzału pocisku gracza
- * @param window - okno gry
-*/
 void Interface::drawShootPower(const int &shootPower, sf::RenderTarget &window)
 {
     shootPowerFill_.setSize(sf::Vector2f(shootPower, 20));
@@ -118,14 +85,6 @@ void Interface::drawShootPower(const int &shootPower, sf::RenderTarget &window)
     window.draw(shootPowerBorder_);
 }
 
-/**
- * Wyświetla napis, który gracz jest aktualnie aktywny
- * Nad napisem wyświetlony jest pozostały czas na oddanie strzału
- *
- * @param id - identyfikator gracza
- * @param timeLeft - pozostały czas na oddanie strzału
- * @param window - okno gry
- */
 void Interface::drawTurn(const int &id, const float &timeLeft, sf::RenderTarget &window)
 {
     if(id == 1)
@@ -145,13 +104,6 @@ void Interface::drawTurn(const int &id, const float &timeLeft, sf::RenderTarget 
     window.draw(turnTimeLeft_);
 }
 
-/**
- * Wyświetla napis, który gracz wygrał grę
- * Dodatkowo po 2 sekundach wyświetla napis "Kliknij enter aby wrocic do menu"
- *
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- * @param window - okno gry
- */
 void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
 {
     if((backToMenuTime_ += elapsed) >= 2.0)
@@ -178,19 +130,6 @@ void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
     window.draw(gameEndText_);
 }
 
-/**
- * Sprawdza, który z graczy wygrał grę
- *
- * @param health - wektor poziomów życia graczy
- *           [0] - poziom życia pierwszego gracza
- *           [1] - poziom życia drugiego gracza
- * @param tankPosition1 - pozycja pierwszego gracza
- * @param tankPosition2 - pozycja drugiego gracza
- *
- * @return wektor pozycji dwóch graczy dopasowana do animacji końcowych
- *         [0] - współrzędne wygranej pozycji
- *         [1] - współrzędne przegranej pozycji
- */
 vector<sf::Vector2f> Interface::checkWinner(const int *health, const sf::Vector2f &tankPosition1, const sf::Vector2f &tankPosition2)
 {
     vector<sf::Vector2f> position;
@@ -207,20 +146,7 @@ vector<sf::Vector2f> Interface::checkWinner(const int *health, const sf::Vector2
     return position;
 }
 
-/**
- * Ustawia styl dla obiektu klast sf::Text
- *
- * @param size - rozmiar czcionki
- * @param thickness - grubość obramowania tekstu
- * @param position - wektor z pozycją tekstu
- * @param contents - treść napisu
- * @param fillColor - kolor tekstu
- * @param borderColor - kolor obramowania
- *
- * @return zwraca sformatowany obiekt klast sf::Text
- */
-sf::Text Interface::setTextStyle(const int &size, const int &thickness, const string &contents, const sf::Vector2f &position,
-                                 const sf::Color &fillColor, const sf::Color &borderColor)
+sf::Text Interface::setTextStyle(const int &size, const int &thickness, const string &contents, const sf::Vector2f &position, const sf::Color &fillColor, const sf::Color &borderColor)
 {
     sf::Text textToSet;
     textToSet.setFont(font_);
@@ -233,19 +159,7 @@ sf::Text Interface::setTextStyle(const int &size, const int &thickness, const st
     return textToSet;
 }
 
-/**
- * Ustawia styl dla obiektu klasy sf::RectangleShape
- *
- * @param size - wektor z rozmiarem prostokąta
- * @param thickness - grubość obramowania
- * @param position - wektor z pozycją obiektu
- * @param fillColor - kolor wypełnienia prostokąta
- * @param borderColor - kolor obramowania
- *
- * @return zwraca sformatowany obiekt klasy sf::Text
- */
-sf::RectangleShape Interface::setRectStyle(const sf::Vector2f &size, const int &thickness, const sf::Vector2f &position,
-                                           const sf::Color &fillColor, const sf::Color &borderColor)
+sf::RectangleShape Interface::setRectStyle(const sf::Vector2f &size, const int &thickness, const sf::Vector2f &position, const sf::Color &fillColor, const sf::Color &borderColor)
 {
     sf::RectangleShape rectToSet;
     rectToSet.setSize(size);

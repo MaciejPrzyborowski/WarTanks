@@ -10,13 +10,6 @@ Menu::Menu() :
     menuSelectSound_.setVolume(1);
 }
 
-/**
- * Resetuje układ menu do ustawień domyślnych
- *
- * @param settings - określa czy resetowi podlegają ustawienia gry
- *            true - resetuje ustawienia gry do domyślnych
- *           false - nie resetuje ustawień gry do domyślnych
- */
 void Menu::reset(const bool &settings)
 {
     if(settings)
@@ -30,14 +23,6 @@ void Menu::reset(const bool &settings)
     setMenu(MenuType::Main);
 }
 
-/**
- * Zmienia aktualny wybór w menu
- * Funkcja przeznaczona tylko dla obsługi klawiatury
- *
- * @param direction - kierunek w którą stronę ma zostać dokonana zmiana
- *               -1 - w górę
- *                1 - w dół
- */
 void Menu::move(const int &direction)
 {
     if(!((menuSelected_ == 0 && direction < 0) || (menuSelected_ == menuOptions_.size() - 1 && direction > 0)))
@@ -49,45 +34,6 @@ void Menu::move(const int &direction)
     }
 }
 
-/**
- * Obsługuje zdarzenia wykonane przez gracza
- * Obsługiwana jest klawiatura oraz myszka gracza
- *
- * @param event - obiekt wszystkich zdarzeń
- * @param window - okno gry
- */
-void Menu::passEvent(const sf::Event &event, sf::RenderWindow &window)
-{
-    if(event.type == sf::Event::KeyPressed)
-    {
-        if(event.key.code == sf::Keyboard::Up)
-        {
-            move(-1);
-        }
-        if(event.key.code == sf::Keyboard::Down)
-        {
-            move(1);
-        }
-    }
-    if(event.type == sf::Event::MouseMoved)
-    {
-        isMouseActive_ = getMenuMouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-    }
-    if((event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return) ||
-            (isMouseActive_ && event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonReleased))
-    {
-        if(!getMenuChoice())
-        {
-            window.close();
-        }
-    }
-}
-
-/**
- * Wyświetla aktualne menu
- *
- * @param window - okno gry
- */
 void Menu::draw(sf::RenderTarget &window)
 {
     if(menuOptions_.size() > 0)
@@ -110,44 +56,16 @@ void Menu::draw(sf::RenderTarget &window)
     }
 }
 
-/**
- * Sprawdza status menu
- *
- * @return
- *        true - menu jest aktywne
- *        false - menu nie jest aktywne
- */
 bool Menu::getMenuStatus()
 {
     return !(menuType_ == MenuType::None);
 }
 
-/**
- * Sprawdza ustawienia gry
- *
- * @param setting - ID ustawienia gry:
- *              0 - licznik FPS
- *              1 - muzyka w grze
- *              2 - muzyka w menu
- *              3 - dźwięki w menu
- *
- * @return
- *        true - ustawienie jest włączone
- *        false - ustawienie jest wyłączone
- */
 bool Menu::getGameSettings(const int &setting)
 {
     return gameSettings_[setting];
 }
 
-/**
- * Ustawia dane w menu
- *
- * @param type - typ menu:
- *        None - brak menu
- *        Main - menu główne
- *        Settings - menu ustawień
- */
 void Menu::setMenu(const MenuType &type)
 {
     menuSelected_ = 0;
@@ -210,13 +128,6 @@ void Menu::setMenu(const MenuType &type)
     }
 }
 
-/**
- * Obsługuje wybór elementu z menu
- *
- * @return
- *        true - menu jest aktywne
- *        false - menu zostało zamknięte
- */
 bool Menu::getMenuChoice()
 {
     bool isMenuActive = true;
@@ -260,14 +171,6 @@ bool Menu::getMenuChoice()
     return isMenuActive;
 }
 
-/**
- * Sprawdza czy myszka znajduje się aktualnie na wybranym elemencie
- * Funkcja dodatkowo ustawia element menu, na którym znajduje się myszka, jako aktywny
- *
- * @return
- *        true - myszka znajduje się na wybranym elemencie
- *        false - myszka nie znajduje się na wybranym elemencie
- */
 bool Menu::getMenuMouse(const sf::Vector2f &mousePosition)
 {
     if(menuOptions_[menuSelected_].getGlobalBounds().contains(mousePosition))
@@ -295,15 +198,6 @@ bool Menu::getMenuMouse(const sf::Vector2f &mousePosition)
     }
 }
 
-/**
- * Zmienia ustawienia gry
- *
- * @param setting - ID ustawienia gry:
- *              0 - licznik FPS
- *              1 - muzyka w grze
- *              2 - muzyka w menu
- *              3 - dźwięki w menu
- */
 void Menu::setSettings(const int &setting)
 {
     gameSettings_[setting] = !gameSettings_[setting];
@@ -325,4 +219,9 @@ void Menu::setSettings(const int &setting)
         menuSelectOptions_[setting].setString("NIE");
         menuSelectOptions_[setting].setFillColor(sf::Color::Red);
     }
+}
+
+void Menu::setMouseActive(sf::RenderWindow &window)
+{
+    isMouseActive_ = getMenuMouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
 }

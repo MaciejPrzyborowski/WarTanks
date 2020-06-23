@@ -5,52 +5,102 @@
 #include "Globals.h"
 #include "Interface.h"
 #include "Animation.h"
+#include "World.h"
+#include "Controll.h"
 
+/**
+ * @brief Enum GameState
+ */
 enum class GameState
 {
-    Menu,
-    Play,
-    EndWinner,
-    EndDraw
+    Menu, /**< Menu */
+    Play, /**< Gra */
+    EndWinner, /**< Wygrał jeden z graczy */
+    EndDraw /**< Remis */
 };
 
+/**
+ * @brief Klasa Game
+ */
 class Game
 {
 public:
+    /**
+     * @brief
+     *
+     */
     Game();
 
+    /**
+     * @brief Odpala grę.
+     */
     void run();
+
+    /**
+     * @brief W zależności od statusu gry ustawia funkcję potrzebne do poprawnego uruchomienia menu lub gry.
+     * @param gameState - status gry
+     *          Menu - gracz jest w menu
+     *          Play - gracz rozpoczął grę
+     *          EndWinner - koniec gry - 1 z graczy wygrał
+     *          EndDraw - koniec gry - remis
+     */
     void initialize(const GameState &gameState);
-    void passEvent(const sf::Event &Event);
-    void update();
-    void updateAll(const sf::Time &elapsed);
+
+    /**
+     * @brief Obsługuje zdarzenia wykonywane przez gracza.
+     * @param Event - obiekt wszystkich zdarzeń
+     */
+    void passEvent(sf::RenderWindow &window, sf::Event &Event);
+
+    /**
+     * @brief Aktualizuje na bieżąco wszystkie elementy gry.
+     * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
+     */
+    void updateAll(sf::RenderWindow &window, sf::Time &elapsed);
+    /**
+     * @brief Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach.
+     * @param isMenuMusicOn - sprawdza czy muzyka w menu jest włączona
+     */
     void playMenuMusic(const bool &isMenuMusicOn);
+
+    /**
+     * @brief Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach.
+     * @param isGameMusicOn - sprawdza czy muzyka w grze jest włączona
+     */
     void playGameMusic(const bool &isGameMusicOn);
+
+    /**
+     * @brief Włącza dźwięk fajerwerków na koniec gry.
+     */
     void playFireworksSound();
 
+    void addWorldObj(WorldObject *wo){ world.addObject(wo); }
+    inline void incCounter() { ++taskCounter; }
+    inline void decCounter() { --taskCounter; }
+
 private:
-    unique_ptr<Animation> fireworks_;
-    unique_ptr<Animation> fire_;
-    unique_ptr<sf::RenderWindow> window_;
-    unique_ptr<Menu> menu_;
-    unique_ptr<Land> land_;
-    unique_ptr<Tank> player1_;
-    unique_ptr<Tank> player2_;
-    unique_ptr<Interface> GameInterface_;
 
-    GameState gameState_;
+    int taskCounter = 0;
+    unique_ptr<Animation> fireworks_; /**< Animacja fajerwerków */
+    unique_ptr<Animation> fire_; /**< Animacja strzału */
+    unique_ptr<Menu> menu_; /**< Menu */
+    unique_ptr<Interface> GameInterface_; /**< Interface gry */
+    World world; /**< Elementy gry */
 
-    sf::Vector2f winner_, loser_;
+    Controll controll_; /**< Kontroler gracza */
+    GameState gameState_; /**< Status gry */
 
-    sf::Texture gameBackgroundTexture_;
-    sf::Sprite gameBackgroundSprite_;
-    sf::Texture menuBackgroundTexture_;
-    sf::Sprite menuBackgroundSprite_;
+    sf::Vector2f winner_, loser_; /**< Wektor z pozycją wygranego, przegranego */
 
-    sf::Sound menuMusic_;
-    sf::Sound gameMusic_;
-    sf::Sound fireworksSound_;
-    sf::SoundBuffer menuMusicBuffer_;
-    sf::SoundBuffer gameBuffer_;
-    sf::SoundBuffer fireworksBuffer_;
+    sf::Texture gameBackgroundTexture_; /**< Tekstura tła gry */
+    sf::Sprite gameBackgroundSprite_; /**< Tło gry */
+    sf::Texture menuBackgroundTexture_; /**< Tekstura tła menu */
+    sf::Sprite menuBackgroundSprite_; /**< Tło menu */
+
+    sf::Sound menuMusic_; /**< Muzyka w menu */
+    sf::Sound gameMusic_; /**< Muzyka w grze */
+    sf::Sound fireworksSound_; /**< Dźwięk fajerwerków */
+    sf::SoundBuffer menuMusicBuffer_; /**< Bufer muzyki w menu */
+    sf::SoundBuffer gameBuffer_; /**< Bufer muzyki w grze */
+    sf::SoundBuffer fireworksBuffer_; /**< Bufer dźwięku fajerwerek */
 };

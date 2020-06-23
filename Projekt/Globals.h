@@ -37,4 +37,4 @@
 
 using namespace std;
 
-const int Gravity = 180;
+const int Gravity = 180; /**< Wartość grawitacji */

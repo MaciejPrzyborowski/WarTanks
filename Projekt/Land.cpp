@@ -7,13 +7,11 @@ Land::Land(const float &octaves, const float &persistence) :
     height_(WindowWidth),
     steps_()
 {
+    type_ = TypeObject::Land;
     image_.create(WindowWidth, WindowHeight, sf::Color::Transparent);
 }
 
-/**
- * Generuje teren mapy
- */
-void Land::generate()
+void Land::reset()
 {
     image_.create(image_.getSize().x, image_.getSize().y, sf::Color::Transparent);
     float offsetx = rand() % 1000;
@@ -30,13 +28,6 @@ void Land::generate()
     steps_.clear();
 }
 
-/**
- * Usuwa teren w kształcie koła o środku w punkcie (x, y) i promieniu r
- *
- * @param x - współrzędna x dla środka koła
- * @param y - współrzędna y dla środka koła
- * @param r - promień koła
- */
 void Land::destroyCircle(const int &x, const int &y, const int &r)
 {
     for(int x0 = 0; x0 < r; x0++)
@@ -47,13 +38,6 @@ void Land::destroyCircle(const int &x, const int &y, const int &r)
     }
 }
 
-/**
- * Usuwa kolumnę terenu w punkcie x dla y o początku - top, końcu - bottom
- *
- * @param x - współrzędna x
- * @param top - pierwsza wartość współrzędnej y
- * @param bottom - ostatnia wartość współrzędnej y
- */
 void Land::destroyColumn(const int &x, int top, int bottom)
 {
     if(x >= 0 && x < (int)image_.getSize().x)
@@ -88,11 +72,18 @@ void Land::destroyColumn(const int &x, int top, int bottom)
     }
 }
 
-/**
- * Aktualizuje i wyświetla teren
- *
- * @param window - okno gry
- */
+void Land::getCollison(WorldObject &object)
+{
+    if(object.type_ == TypeObject::Tank)
+    {
+        object.getCollison(*this);
+    }
+    else if(object.type_ == TypeObject::Bullet)
+    {
+        object.getCollison(*this);
+    }
+}
+
 void Land::draw(sf::RenderTarget &window)
 {
     if(modified_)
@@ -104,11 +95,6 @@ void Land::draw(sf::RenderTarget &window)
     window.draw(sprite_);
 }
 
-/**
- * Obsługuje grawitacje terenu
- *
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- */
 void Land::step(const float &elapsed)
 {
     if(steps_.size() > 0)
@@ -169,16 +155,6 @@ void Land::step(const float &elapsed)
     }
 }
 
-/**
- * Sprawdza czy istnieje teren w punkcie (x, y)
- *
- * @param x - współrzędna x
- * @param y - współrzędna y
- *
- * @return
- *      true - istnieje teren w punkcie (x, y)
- *      false - nie istnieje teren w punkcie (x, y)
- */
 bool Land::isSolidPixel(const int &x, const int &y)
 {
     if((x >= 0 && x < (int)image_.getSize().x) && (y >= 0 && y < (int)image_.getSize().y))
@@ -188,30 +164,11 @@ bool Land::isSolidPixel(const int &x, const int &y)
     return false;
 }
 
-/**
- * Oblicza kąt nachylenia powierzchni w punkcie (x, y)
- *
- * @param x - współrzędna x
- * @param y - współrzędna y
- *
- * @return Kąt nachylenia powierzchni w punkcie (x, y) w stopniach
- */
 float Land::getAngleDegree(const int &x, const int &y)
 {
     return fmod(RadianToDegree(getAngleRadian(x, y)), 360.0);
 }
 
-/**
- * Oblicza kąt nachylenia powierzchni w punkcie (x, y)
- *
- * Tworzy kwadrat o boku 3 o środku w punkcie (x, y)
- * Następnie w całym kwadracie sumuje odległość od (x, y) dla istniejącego terenu
- *
- * @param x - współrzędna x
- * @param y - współrzędna y
- *
- * @return Kąt nachylenia powierzchni w punkcie (x, y) w radianach
- */
 float Land::getAngleRadian(const int &x, const int &y)
 {
     int d = 3;
@@ -230,13 +187,6 @@ float Land::getAngleRadian(const int &x, const int &y)
     return avgX ? (M_PI_2 - atan2(avgY, -avgX)) : 0;
 }
 
-/**
- * Oblicza wysokość terenu w punkcie x
- *
- * @param x - współrzędna x
- *
- * @return Wysokość terenu w punkcie x
- */
 int Land::getLandHeight(const int &x)
 {
     if(x >= 0 && x <= (int)height_.size())
@@ -246,15 +196,6 @@ int Land::getLandHeight(const int &x)
     return 0;
 }
 
-/**
- * Oblicza gradient używając interpolacji liniowej
- *
- * @param brightness - jasność koloru (im większa wartość tym kolor jest ciemniejszy)
- * @param darkColor - najciemniejszy kolor
- * @param lightColor - najjaśniejszy kolor
- *
- * @return Kolor gradientu w zależności od jasności koloru
- */
 sf::Color Land::gradient(const float &brightness, const sf::Color &darkColor, const sf::Color &lightColor)
 {
     sf::Color Gradient;
