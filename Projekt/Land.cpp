@@ -50,7 +50,7 @@ void Land::destroyColumn(const int &x, int top, int bottom)
         {
             bottom = WindowHeight - 1;
         }
-        if(bottom > getLandHeight(x))
+        if(bottom > getHeight(x))
         {
             for(int y = top; y <= bottom; y++)
             {
@@ -59,7 +59,7 @@ void Land::destroyColumn(const int &x, int top, int bottom)
                     image_.setPixel(x, y, sf::Color::Transparent);
                 }
             }
-            if(top > getLandHeight(x))
+            if(top > getHeight(x))
             {
                 steps_[x] = StepLand{top, bottom, Gravity, true};
             }
@@ -70,29 +70,6 @@ void Land::destroyColumn(const int &x, int top, int bottom)
             modified_ = true;
         }
     }
-}
-
-void Land::getCollison(WorldObject &object)
-{
-    if(object.type_ == ObjectType::Tank)
-    {
-        object.getCollison(*this);
-    }
-    else if(object.type_ == ObjectType::Bullet)
-    {
-        object.getCollison(*this);
-    }
-}
-
-void Land::draw(sf::RenderTarget &window)
-{
-    if(modified_)
-    {
-        texture_.loadFromImage(image_);
-        sprite_.setTexture(texture_);
-        modified_ = false;
-    }
-    window.draw(sprite_);
 }
 
 void Land::step(const float &elapsed)
@@ -110,7 +87,7 @@ void Land::step(const float &elapsed)
                 int velocity = stepList.velocity_ * elapsed;
                 if(velocity > 0)
                 {
-                    int y = getLandHeight(x);
+                    int y = getHeight(x);
                     if(stepList.top_ + velocity >= stepList.bottom_)
                     {
                         velocity = stepList.bottom_ - stepList.top_ + 1;
@@ -155,6 +132,29 @@ void Land::step(const float &elapsed)
     }
 }
 
+void Land::getCollison(WorldObject &object)
+{
+    if(object.type_ == ObjectType::Tank)
+    {
+        object.getCollison(*this);
+    }
+    else if(object.type_ == ObjectType::Bullet)
+    {
+        object.getCollison(*this);
+    }
+}
+
+void Land::draw(sf::RenderTarget &window)
+{
+    if(modified_)
+    {
+        texture_.loadFromImage(image_);
+        sprite_.setTexture(texture_);
+        modified_ = false;
+    }
+    window.draw(sprite_);
+}
+
 bool Land::isSolidPixel(const int &x, const int &y)
 {
     if((x >= 0 && x < (int)image_.getSize().x) && (y >= 0 && y < (int)image_.getSize().y))
@@ -187,13 +187,13 @@ float Land::getAngleRadian(const int &x, const int &y)
     return avgX ? (M_PI_2 - atan2(avgY, -avgX)) : 0;
 }
 
-int Land::getLandHeight(const int &x)
+int Land::getHeight(const int &x)
 {
     if(x >= 0 && x <= (int)height_.size())
     {
         return WindowHeight - height_[x];
     }
-    return 0;
+    return WindowHeight;
 }
 
 sf::Color Land::gradient(const float &brightness, const sf::Color &darkColor, const sf::Color &lightColor)

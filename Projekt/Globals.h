@@ -8,6 +8,8 @@
 #include <cmath>
 #include <list>
 
+#define Gravity 180
+#define MaxAngle 75
 #define WindowFPS 120
 #define WindowWidth 800
 #define WindowHeight 600
@@ -36,5 +38,3 @@
 #define DegreeToRadian(degree) (degree * (M_PI / 180.0))
 
 using namespace std;
-
-const int Gravity = 180; /**< Wartość grawitacji */

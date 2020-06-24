@@ -5,23 +5,32 @@
 #include "World.h"
 
 /**
- * @brief Enum TankState
+ * @brief Status czołgu
  */
 enum class TankState
 {
-    InActive, /**< InActive */
-    Active, /**< Active */
-    Switch /**< Switch */
+    InActive, /**< Czołg jest nieaktywny */
+    Active, /**< Czołg jest aktywny */
+    Waiting /**< Czołg oczekuje na zmianę tury */
 };
 
 /**
- * @brief Enum TankMove
+ * @brief Kierunek przemieszczenia czołgu
  */
 enum class TankMove
 {
-    None, /**< Czołg się nie rusza */
-    Left, /**< Czołg rusza się w lewo */
-    Right /**< Czołg rusza się w prawo */
+    Left = -1, /**< Przemieszczenie w lewo */
+    None, /**< Brak przemieszczenia */
+    Right /**< Przemieszczenie w lewo */
+};
+
+/**
+ * @brief Kierunek przemieszczenia siły strzału
+ */
+enum class ShootPowerMove
+{
+    LevelDown = -1, /**< Zwiększenie siły wystrzału */
+    LevelUp = 1 /**< Zmniejszenie siły wystrzału */
 };
 
 /**
@@ -30,28 +39,21 @@ enum class TankMove
 class Tank : public WorldObject
 {
 public:
-    /**
-     * @param playerID - numer id gracza
-     * @param texture - tekstura czołgu
-     * @param land_ - teren gry
-     */
-    Tank(const int playerID, const string &texture);
 
     /**
-     * @brief Resetuje parametry gracza do domyślnych.
+     * @param playerID - ID gracza
+     */
+    Tank(const int playerID);
+
+    /**
+     * @brief Resetuje parametry czołgu do ustawień domyślnych.
      */
     void reset();
 
     /**
-     * @brief Tworzy pocisk w miejscu aktualnej pozycji celownika. Pocisk jest wystrzeliwany z mocą shootPower_ wymnożoną przez 5.
+     * @brief Tworzy pocisk w miejscu aktualnej pozycji celownika.
      */
     void shoot();
-
-    /**
-     * @brief Obsługuje przemieszczenie czołgu.
-     * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
-     */
-    void moveTank(const float &elapsed);
 
     /**
      * @brief Zmienia kąt nachylenia lufy.
@@ -64,9 +66,20 @@ public:
      * @param direction - kierunek zmiany siły wystrzału pocisku
      *          1 - zwiększenie siły wystrzału pocisku
      *          -1 - zmniejszenie siły wystrzału pocisku
-     *
      */
-    void moveShootPower(const int &direction);
+    void moveShootPower(const ShootPowerMove &direction);
+
+    /**
+     * @brief Obsługuje grawitacje i przemieszczenie gracza.
+     * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
+     */
+    void step(const float &elapsed);
+
+    /**
+     * @brief Sprawdza kolizje z innymi obiektami.
+     * @param object - obiekt elementu gry
+     */
+    void getCollison(WorldObject &object);
 
     /**
      * @brief Aktualizuje dane gracza.
@@ -76,32 +89,28 @@ public:
     void update(const float &elapsed, sf::RenderWindow &window);
 
     /**
-     * @brief
-     *
-     * @param object
-     */
-    void getCollison(WorldObject &object);
-
-    /**
      * @brief Wyświetla czołg i jego elementy.
      * @param window - okno gry
      */
     void draw(sf::RenderTarget &window);
 
     /**
-     * @brief Obsługuje grawitacje gracza.
-     * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
+     * @brief Ustawia kierunek przemieszczenia czołgu
+     * @param direction - kierunek przemieszczenia
      */
-    void step(const float &elapsed);
+    void setMoveDirection(const TankMove &direction);
 
     /**
-     * @brief Zwraca status gracza.
-     * @return
-     *        TankState::InActive - gracz aktualnie nie jest aktywny
-     *        TankState::Active - gracz aktualnie jest aktywny
-     *        TankState::Switch - gracz aktualnie oczekuje na zmianę kolejki
+     * @brief Ustawia poziom życia gracza
+     * @param health - poziom życia
      */
-    TankState getStatus();
+    void setPlayerHealth(const int &health);
+
+    /**
+     * @brief Zmienia status widoczności kursora.
+     * @param window - okno gry
+     */
+    void switchCursorVisibility(sf::RenderWindow &window);
 
     /**
      * @brief Zmienia status gracza.
@@ -109,60 +118,32 @@ public:
      */
     void switchStatus(sf::RenderWindow &window);
 
-    int playerID_; /** < Identyfikator gracza */
-
     /**
-     * @brief Zwraca punkty życia gracza.
-     * @return Zwraca punkty życia gracza
+     * @brief Określa poziom życia gracza.
+     * @return Zwraca poziom życia gracza
      */
-    inline int returnHp() {return health_;};
+    int getPlayerHealth();
 
     /**
-     * @brief Zwarca pozycje czołgu.
+     * @brief Określa identyfikator czołgu.
+     * @return Zwraca identyfikator czołgu
+     */
+    int getTankID();
+
+    /**
+     * @brief Zwraca status gracza.
+     * @return
+     *        TankState::InActive - czołg jest nieaktywny;
+     *        TankState::Active - czołg jest aktywny;
+     *        TankState::Waiting - czołg oczekuje na zmianę tury
+     */
+    TankState getStatus();
+
+    /**
+     * @brief Określa pozycje czołgu.
      * @return Zwraca pozycję czołgu
      */
-    inline sf::Vector2f returnPosition() {return tankSprite_.getPosition();};
-
-    /**
-     * @brief Sprawdza czy gracz może zmienić położenie lufy.
-     * @return
-     *          true - gracz może zmienić położenie lufy
-     *          false - gracz nie może zmienić położenia lufy
-     */
-    bool canCannonMove();
-
-    /**
-     * @brief Sprawdza czy czołg może przemieścić się o wektor [x, y].
-     * @param velocity - wektor prędkości
-     * @return
-     *          true - gracz może się przemieścić swoim czołgiem
-     *          false - gracz nie może się przemieścić swoim czołgiem
-     */
-    bool canTankMove(const sf::Vector2f &velocity);
-
-    /**
-     * @brief Oblicza nachylenie terenu po przemieszczeniu się o wektor prędkości [x, y].
-     * @param velocity - wektor prędkości
-     * @return Nachylenie terenu w radianach po przemieszczeniu się o wektor prędkości [x, y]
-     */
-    float getLandAngle(const sf::Vector2f &velocity = sf::Vector2f(0.0, 0.0));
-
-    /**
-     * @brief Przesuwa pozycję czołgu oraz jego lufy.
-     * @param velocity - wektor prędkości przesunięcia gracza
-     */
-    void moveTankPosition(const sf::Vector2f &velocity);
-
-    /**
-     * @brief Ustawia pozycję czołgu oraz jego lufy.
-     * @param position - aktualna pozycja gracza
-     */
-    void setTankPosition(const sf::Vector2f &position);
-
-    /**
-     * @brief Usuwa pocisk i zadaje obrażenia trafionym graczom.
-     */
-    void shootReset();
+    sf::Vector2f getTankPosition();
 
     /**
      * @brief Oblicza prawidłową figurę czołgu.
@@ -171,38 +152,54 @@ public:
      */
     sf::RectangleShape getTankShape();
 
-    /**
-     * @brief Wyłącza widocznośc kursora gdy gracz zmienia nachylenie lufy.
-     * @param window - okno gry
-     */
-    void setCursorVisibility(sf::RenderWindow &window);
-    int health_; /**< Ilość punktów życia */
-
-    TankMove moveDirection_;
 private:
-    unique_ptr<Interface> tankInterface_; /**< Interface gracza */
     TankState status_; /**< Status czołgu */
+    TankMove moveDirection_; /**< Kierunek przemieszczenia czołgu */
+    sf::Vector2f velocity; /**< Wektor prędkości czołgu */
+    unique_ptr<Interface> tankInterface_; /**< Interface gracza */
 
-    //TankMove moveDirection_;
+    bool freefall_; /**< Określa czy czołg spada */
+    bool crosshairActive_; /**< Określa czy celownik jest aktywny */
+    bool getCollision_; /**< Określa czy jest kolizja z przeciwnikiem */
 
-    bool freefall_; /**< Czy czołg spada */
-    bool crosshairActive_; /**< Czy celownik aktywny */
-    bool getEnemyCollision_; /**< Czy jest kolizja z przeciwnikiem */
-
+    int health_; /**< Ilość punktów życia */
+    int playerID_; /** < Identyfikator gracza */
     int shootPower_; /**< Siła strzału */
 
     float speed_; /**< Szybkość czołgu */
-    float maxAngle_; /**< Maksymalny kąt pod który czołg podjedzie i z którego może zjechać */
     float timeLeft_; /**< Pozostały czas tury danego gracza */
-    float velocityFreefall_; /**< Prędkość spadania */
+    float velocityFreefall_; /**< Prędkość spadania czołgu */
 
     sf::Sprite tankSprite_; /**< Czołg */
     sf::Sprite cannonSprite_; /**< Lufa */
     sf::Sprite crosshairSprite_; /**< Celownik */
+    sf::Sound shootSound_; /**< Dźwięk strzału */
+    sf::SoundBuffer shootBuffer_; /**< Bufer dźwięku strzału */
     sf::Texture tankTexture_; /**< Tekstura czołgu */
     sf::Texture cannonTexture_; /**< Tekstura lufy */
     sf::Texture crosshairTexture_; /**< Tekstura celownika */
-    sf::SoundBuffer shootBuffer_; /**< Bufer dźwięku strzału */
-    sf::Sound shootSound_; /**< Dźwięk strzału */
-    sf::Vector2f velocity; /**< Wektor prędkości */
+
+    /**
+     * @brief Sprawdza czy gracz może zmienić położenie lufy.
+     * @return
+     *        true - gracz może zmienić położenie lufy;
+     *        false - gracz nie może zmienić położenia lufy
+     */
+    bool canCannonMove();
+
+    /**
+     * @brief Sprawdza czy czołg może przemieścić się o wektor [x, y].
+     * @param velocity - wektor prędkości
+     * @return
+     *        true - gracz może się przemieścić swoim czołgiem;
+     *        false - gracz nie może się przemieścić swoim czołgiem
+     */
+    bool canTankMove(const sf::Vector2f &velocity);
+
+    /**
+     * @brief Oblicza nachylenie terenu po przemieszczeniu się o wektor prędkości [x, y].
+     * @param velocity - wektor prędkości
+     * @return Nachylenie terenu w radianach po przemieszczeniu się o wektor prędkości [x, y]
+     */
+    float getTankAngle(const sf::Vector2f &velocity = sf::Vector2f(0.0, 0.0));
 };

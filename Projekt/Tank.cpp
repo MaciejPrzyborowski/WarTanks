@@ -1,31 +1,32 @@
 #include "Tank.h"
 #include "Application.h"
 
-Tank::Tank(const int playerID, const string &texture) :
+Tank::Tank(const int playerID) :
     moveDirection_(TankMove::None),
+    velocity(0.0, 0.0),
     freefall_(false),
     crosshairActive_(false),
-    getEnemyCollision_(false),
-    //playerID_(playerID),
-    shootPower_(50),
+    getCollision_(false),
     health_(100),
+    playerID_(playerID),
+    shootPower_(50),
     speed_(50.0),
-    maxAngle_(75.0),
     timeLeft_(15.0),
     velocityFreefall_(0.0)
 {
-    playerID_ = playerID;
     type_ = ObjectType::Tank;
     if(playerID == 1)
     {
         status_ = TankState::Active;
+        tankTexture_.loadFromFile(TankTextureSrc1);
     }
     else
     {
         status_ = TankState::InActive;
+        tankTexture_.loadFromFile(TankTextureSrc2);
     }
     tankInterface_ = make_unique<Interface>(playerID);
-    tankTexture_.loadFromFile(texture);
+
     cannonTexture_.loadFromFile(BarrelTextureSrc);
     crosshairTexture_.loadFromFile(CrosshairTextureSrc);
     tankSprite_.setTexture(tankTexture_);
@@ -42,43 +43,39 @@ Tank::Tank(const int playerID, const string &texture) :
 
 void Tank::reset()
 {
+    health_ = 100;
+    timeLeft_ = 15.0;
+    shootPower_ = 50;
+    velocityFreefall_ = 0.0;
+    velocity = sf::Vector2f(0.0, 0.0);
+
+    freefall_ = false;
+    crosshairActive_ = false;
+    moveDirection_ = TankMove::None;
+
+    sf::Vector2f StartPosition(rand() % 150, 0);
     if(playerID_ == 1)
     {
+        StartPosition.x += 50;
         status_ = TankState::Active;
     }
     else
     {
+        StartPosition.x += 400;
         status_ = TankState::InActive;
     }
-    freefall_ = false;
-    crosshairActive_ = false;
-
-    moveDirection_ = TankMove::None;
-    shootPower_ = 50;
-
-    health_ = 100;
-    timeLeft_ = 15.0;
-    velocityFreefall_ = 0.0;
-
-    sf::Vector2f StartPosition(0, 0);
-    StartPosition.x = rand() % 150;
-    if(playerID_ == 1)
-    {
-        StartPosition.x += 50;
-    }
-    else
-    {
-        StartPosition.x += 400;
-    }
     StartPosition.y = Application::getGame().getLandHeight(StartPosition.x);
-    setTankPosition(StartPosition);
+    tankSprite_.setPosition(StartPosition);
+    cannonSprite_.setPosition(StartPosition - sf::Vector2f(0, tankSprite_.getLocalBounds().height / 2));
+    tankSprite_.setRotation(getTankAngle());
     cannonSprite_.setRotation(-90);
 }
 
 void Tank::shoot()
 {
-    if(moveDirection_ == TankMove::None && !crosshairActive_)
+    if(!(int)moveDirection_ && !crosshairActive_)
     {
+        status_ = TankState::Waiting;
         if(shootSound_.getStatus() != sf::Music::Playing)
         {
             shootSound_.play();
@@ -86,31 +83,10 @@ void Tank::shoot()
         float BulletPower = (float)shootPower_ * 5.0;
         float CannonRotation = DegreeToRadian(cannonSprite_.getRotation());
         sf::Vector2f BulletRotation(cos(CannonRotation), sin(CannonRotation));
-        sf::Vector2f BulletPosition = sf::Vector2f(cannonSprite_.getPosition().x + cannonSprite_.getLocalBounds().width * BulletRotation.x,
-                                    cannonSprite_.getPosition().y + cannonSprite_.getLocalBounds().width * BulletRotation.y);
-        sf::Vector2f BulletVelocity = sf::Vector2f(BulletPower * BulletRotation.x, BulletPower * BulletRotation.y);
-
-        Bullet *bullet = new Bullet(BulletPosition);
-        bullet->setVelocity(BulletVelocity);
+        Bullet *bullet = new Bullet(sf::Vector2f(cannonSprite_.getPosition().x + cannonSprite_.getLocalBounds().width * BulletRotation.x,
+                                                 cannonSprite_.getPosition().y + cannonSprite_.getLocalBounds().width * BulletRotation.y));
+        bullet -> setVelocity(sf::Vector2f(BulletPower * BulletRotation.x, BulletPower * BulletRotation.y));
         Application::getGame().addWorldObj(bullet);
-    }
-}
-
-void Tank::moveTank(const float &elapsed)
-{
-    if(moveDirection_ != TankMove::None)
-    {
-        velocity.x = (speed_ * cos(DegreeToRadian(tankSprite_.getRotation()))) * elapsed;
-        if(moveDirection_ == TankMove::Left)
-        {
-            velocity.x *= -1;
-        }
-        velocity.y = Application::getGame().getLandHeight(tankSprite_.getPosition().x + velocity.x) - tankSprite_.getPosition().y;
-        moveTankPosition(velocity);
-    }
-    else
-    {
-        velocity = sf::Vector2f(0.0, 0.0);
     }
 }
 
@@ -131,15 +107,15 @@ void Tank::moveCannon(sf::RenderWindow &window)
     }
 }
 
-void Tank::moveShootPower(const int &direction)
+void Tank::moveShootPower(const ShootPowerMove &direction)
 {
-    if(!((shootPower_ == 0 && direction < 0) || (shootPower_ == 100 && direction > 0)))
+    if(!((shootPower_ == 0 && (int)direction < 0) || (shootPower_ == 100 && (int)direction > 0)))
     {
-        shootPower_ += direction;
+        shootPower_ += (int)direction;
     }
 }
 
-void Tank::setCursorVisibility(sf::RenderWindow &window)
+void Tank::switchCursorVisibility(sf::RenderWindow &window)
 {
     if(canCannonMove())
     {
@@ -150,12 +126,21 @@ void Tank::setCursorVisibility(sf::RenderWindow &window)
 
 void Tank::update(const float &elapsed, sf::RenderWindow &window)
 {
-    //step(elapsed);
     tankInterface_ -> drawHealth(health_, window);
     if(status_ == TankState::Active)
     {
-        moveTank(elapsed);
-        moveCannon(window);
+        if((timeLeft_ -= elapsed) <= 0)
+        {
+            status_ = TankState::Waiting;
+            Application::getGame().decCounter();
+        }
+        else
+        {
+            moveCannon(window);
+        }
+    }
+    if(status_ != TankState::InActive)
+    {
         tankInterface_ -> drawShootPower(shootPower_, window);
         tankInterface_ -> drawTurn(playerID_, timeLeft_, window);
         tankInterface_ -> drawAngle(360 - cannonSprite_.getRotation(), window);
@@ -173,14 +158,14 @@ void Tank::getCollison(WorldObject &object)
             {
                 sf::Sprite tempTankSprite = tankSprite_;
                 tempTankSprite.move(velocity);
-                tempTankSprite.setRotation(getLandAngle(velocity));
+                tempTankSprite.setRotation(getTankAngle(velocity));
                 if(tempTankSprite.getGlobalBounds().intersects(Enemy -> tankSprite_.getGlobalBounds()))
                 {
-                    getEnemyCollision_ = true;
+                    getCollision_ = true;
                 }
                 else
                 {
-                    getEnemyCollision_ = false;
+                    getCollision_ = false;
                 }
             }
         }
@@ -204,16 +189,26 @@ void Tank::draw(sf::RenderTarget &window)
     }
 }
 
+void Tank::setMoveDirection(const TankMove &direction)
+{
+    moveDirection_ = direction;
+}
+
+void Tank::setPlayerHealth(const int &health)
+{
+    health_ = health;
+}
+
 void Tank::step(const float &elapsed)
 {
     sf::Vector2f TankPosition = tankSprite_.getPosition();
-    int landHeight = Application::getGame().getLandHeight(tankSprite_.getPosition().x);
+    int landHeight = Application::getGame().getLandHeight(TankPosition.x);
     if(TankPosition.y < landHeight)
     {
         freefall_ = true;
         velocityFreefall_ += Gravity * elapsed;
 
-        sf::Vector2f velocity(0.0, 0.0);
+        velocity.x = 0;
         velocity.y = velocityFreefall_ * elapsed;
         if(TankPosition.y + velocity.y >= landHeight)
         {
@@ -221,12 +216,30 @@ void Tank::step(const float &elapsed)
         }
         tankSprite_.move(velocity);
         cannonSprite_.move(velocity);
-        tankSprite_.setRotation(getLandAngle());
+        tankSprite_.setRotation(getTankAngle());
     }
-    else if(freefall_)
+    else
     {
-        velocityFreefall_ = 0.0;
-        freefall_ = false;
+        if(freefall_)
+        {
+            freefall_ = false;
+            velocityFreefall_ = 0.0;
+        }
+        if((int)moveDirection_)
+        {
+            velocity.x = (speed_ * cos(DegreeToRadian(tankSprite_.getRotation()))) * (int)moveDirection_ * elapsed;
+            velocity.y = Application::getGame().getLandHeight(tankSprite_.getPosition().x + velocity.x) - tankSprite_.getPosition().y;
+            if(canTankMove(velocity))
+            {
+                tankSprite_.move(velocity);
+                cannonSprite_.move(velocity);
+                tankSprite_.setRotation(getTankAngle());
+            }
+        }
+        else
+        {
+            velocity = sf::Vector2f(0.0, 0.0);
+        }
     }
 }
 
@@ -257,7 +270,7 @@ void Tank::switchStatus(sf::RenderWindow &window)
 
 bool Tank::canCannonMove()
 {
-    if(status_ == TankState::Active && !freefall_ && moveDirection_ == TankMove::None)
+    if(status_ == TankState::Active && !(int)moveDirection_)
     {
         return true;
     }
@@ -266,40 +279,19 @@ bool Tank::canCannonMove()
 
 bool Tank::canTankMove(const sf::Vector2f &velocity)
 {
-    if(status_ == TankState::Active && !freefall_ && !crosshairActive_ && fabs(getLandAngle(velocity)) <= maxAngle_
-            && !getEnemyCollision_ && tankSprite_.getPosition().x + velocity.x > 0 && tankSprite_.getPosition().x + velocity.x < WindowWidth)
+    if(status_ == TankState::Active && !freefall_ && !crosshairActive_ && fabs(getTankAngle(velocity)) <= MaxAngle
+            && !getCollision_ && tankSprite_.getPosition().x + velocity.x > 0 && tankSprite_.getPosition().x + velocity.x < WindowWidth)
     {
         return true;
     }
     return false;
 }
 
-float Tank::getLandAngle(const sf::Vector2f &velocity)
+float Tank::getTankAngle(const sf::Vector2f &velocity)
 {
     sf::Sprite tempTankSprite = tankSprite_;
     tempTankSprite.move(velocity);
     return Application::getGame().getLandAngleDegree(tempTankSprite.getPosition().x, tempTankSprite.getPosition().y);
-}
-
-void Tank::moveTankPosition(const sf::Vector2f &velocity)
-{
-    if(canTankMove(velocity))
-    {
-        tankSprite_.move(velocity);
-        cannonSprite_.move(velocity);
-        tankSprite_.setRotation(getLandAngle());
-    }
-}
-
-void Tank::setTankPosition(const sf::Vector2f &position)
-{
-    tankSprite_.setPosition(position);
-    cannonSprite_.setPosition(position - sf::Vector2f(0, tankSprite_.getLocalBounds().height / 2));
-    tankSprite_.setRotation(getLandAngle());
-}
-
-void Tank::shootReset()
-{
 }
 
 sf::RectangleShape Tank::getTankShape()
@@ -307,4 +299,19 @@ sf::RectangleShape Tank::getTankShape()
     sf::RectangleShape TankShape(sf::Vector2f(tankSprite_.getLocalBounds().width, tankSprite_.getLocalBounds().height));
     TankShape.setPosition(tankSprite_.getPosition().x, tankSprite_.getPosition().y - tankSprite_.getLocalBounds().height / 2);
     return TankShape;
+}
+
+int Tank::getPlayerHealth()
+{
+    return health_;
+}
+
+int Tank::getTankID()
+{
+    return playerID_;
+}
+
+sf::Vector2f Tank::getTankPosition()
+{
+    return tankSprite_.getPosition();
 }

@@ -5,11 +5,6 @@ World::World()
 
 }
 
-World::~World()
-{
-
-}
-
 WorldObject * World::addObject(ObjectType type)
 {
     if(type == ObjectType::Land)
@@ -18,22 +13,14 @@ WorldObject * World::addObject(ObjectType type)
     }
     else if(type == ObjectType::Tank)
     {
-        if(PlayerIndex == 1)
-        {
-            objects_.emplace_back(make_unique<Tank>(PlayerIndex, TankTextureSrc1));
-        }
-        else
-        {
-            objects_.emplace_back(make_unique<Tank>(PlayerIndex, TankTextureSrc2));
-        }
-        PlayerIndex++;
+        objects_.emplace_back(make_unique<Tank>(PlayerIndex++));
     }
     return objects_.back().get();
 }
 
 WorldObject * World::addObject(WorldObject *object)
 {
-    objects_.emplace_back(unique_ptr<WorldObject> (object));
+    objects_.emplace_back(unique_ptr<WorldObject>(object));
     return objects_.back().get();
 }
 

@@ -17,8 +17,8 @@ enum class MenuType
  */
 enum class MenuMove
 {
-    Up, /**< W górę */
-    Down /**< W dół */
+    Up = -1, /**< W górę */
+    Down = 1 /**< W dół */
 };
 
 /**

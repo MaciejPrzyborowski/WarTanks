@@ -29,7 +29,7 @@ public:
     Land(const float &octaves, const float &persistence);
 
     /**
-     * @brief Resetuje pramatetry mapy i generuje teren.
+     * @brief Resetuje parametry mapy i generuje teren.
      */
     void reset();
 
@@ -50,6 +50,12 @@ public:
     void destroyColumn(const int &x, int top, int bottom);
 
     /**
+     * @brief Obsługuje grawitacje terenu.
+     * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
+     */
+    void step(const float &elapsed);
+
+    /**
      * @brief Sprawdza kolizje z innymi obiektami.
      * @param object - obiekt elementu gry
      */
@@ -60,12 +66,6 @@ public:
      * @param window - okno gry
      */
     void draw(sf::RenderTarget &window);
-
-    /**
-     * @brief Obsługuje grawitacje terenu.
-     * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
-     */
-    void step(const float &elapsed);
 
     /**
      * @brief Sprawdza czy istnieje teren w punkcie (x, y).
@@ -98,7 +98,7 @@ public:
      * @param x - współrzędna x
      * @return Wysokość terenu w punkcie x
      */
-    int getLandHeight(const int &x);
+    int getHeight(const int &x);
 
 private:
     bool modified_; /**< Określa czy teren został zmodyfikowany */

@@ -20,7 +20,7 @@ public:
     /**
      * @brief
      */
-    ~World();
+    ~World() = default;
     /**
      * @brief Dodaje obiekt do świata gry
      * @param type - typ dodawanego obiektu

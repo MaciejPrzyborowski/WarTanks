@@ -1,14 +1,17 @@
 #include "Bullet.h"
 #include "Application.h"
+#include "Land.h"
+#include "Tank.h"
 
 Bullet::Bullet(const sf::Vector2f &position) :
-    status_(BulletState::Active),
+    explode_(nullptr),
+    status_(true),
+    players_(2),
     explodeSize_(30),
     acceleration_(0, Gravity),
     velocity_(0, 0)
 {
     type_ = ObjectType::Bullet;
-    isDestructed_ = false;
 
     bullet_.setRadius(4.0);
     bullet_.setFillColor(sf::Color::Red);
@@ -20,44 +23,28 @@ Bullet::Bullet(const sf::Vector2f &position) :
     explodeSound_.setVolume(10);
 }
 
+void Bullet::reset()
+{
+    isDestructed_ = false;
+}
+
 void Bullet::step(const float &elapsed)
 {
-    if(status_ == BulletState::Active)
+    if(status_ == true)
     {
         if(bullet_.getPosition().x < 0 || bullet_.getPosition().x > WindowWidth || bullet_.getPosition().y >= WindowHeight)
         {
-            status_ = BulletState::InActive;
+            Application::getGame().decCounter();
+            isDestructed_ = true;
         }
         velocity_ += acceleration_ * elapsed;
         bullet_.move(velocity_ * elapsed);
     }
 }
 
-void Bullet::draw(sf::RenderTarget &window)
-{
-    sf::Time elapsed = clock_.restart();
-    if(explode_)
-    {
-        if(explode_->getStatus())
-        {
-            explode_->draw(elapsed.asSeconds(), bullet_.getPosition() - sf::Vector2f{(float)explodeSize_, (float)explodeSize_}, window);
-        }
-        else
-        {
-            status_ = BulletState::InActive;
-            isDestructed_ = true;
-        }
-    }
-    else
-    {
-        move(elapsed.asSeconds());
-        window.draw(bullet_);
-    }
-}
-
 void Bullet::getCollison(WorldObject &object)
 {
-    if(status_ == BulletState::Active)
+    if(status_)
     {
         if(object.type_ == ObjectType::Tank)
         {
@@ -70,31 +57,51 @@ void Bullet::getCollison(WorldObject &object)
         else if(object.type_ == ObjectType::Land)
         {
             auto land = dynamic_cast<Land *>(&object);
-            if(land != nullptr && (bullet_.getPosition().y + bullet_.getRadius() >= land -> getLandHeight(bullet_.getPosition().x)))
+            if(land != nullptr && (bullet_.getPosition().y + bullet_.getRadius() >= land -> getHeight(bullet_.getPosition().x)))
             {
                 explode();
             }
         }
     }
-}
-
-void Bullet::reset()
-{
-    isDestructed_ = false;
-}
-
-void Bullet::explode()
-{
-    status_ = BulletState::Explode;
-    if(explodeSound_.getStatus() != sf::Music::Playing)
+    else if(players_ > 0)
     {
-        explodeSound_.play();
+        if(object.type_ == ObjectType::Tank)
+        {
+            auto tank = dynamic_cast<Tank *>(&object);
+            if(tank != nullptr)
+            {
+                if(intersects(bullet_, tank -> getTankShape()))
+                {
+                    tank->setPlayerHealth(tank->getPlayerHealth() - 25);
+                }
+                players_--;
+            }
+        }
     }
-    explode_ = make_unique<Animation>(ExplosionTextureSrc, sf::IntRect(0, 0, 60, 60), 60, 30, false, 1.0);
-    Application::getGame().destroyLand(bullet_.getPosition().x, bullet_.getPosition().y, explodeSize_);
 }
 
-BulletState Bullet::getStatus()
+void Bullet::draw(sf::RenderTarget &window)
+{
+    sf::Time elapsed = clock_.restart();
+    if(explode_)
+    {
+        if(explode_->getStatus())
+        {
+            explode_->draw(elapsed.asSeconds(), bullet_.getPosition() - sf::Vector2f((float)explodeSize_, (float)explodeSize_), window);
+        }
+        else
+        {
+            Application::getGame().decCounter();
+            isDestructed_ = true;
+        }
+    }
+    else
+    {
+        window.draw(bullet_);
+    }
+}
+
+bool Bullet::getStatus()
 {
     return status_;
 }
@@ -107,6 +114,19 @@ void Bullet::setAcceleration(const sf::Vector2f &acceleration)
 void Bullet::setVelocity(const sf::Vector2f &velocity)
 {
     velocity_ = velocity;
+}
+
+void Bullet::explode()
+{
+    status_ = false;
+    bullet_.setOrigin(explodeSize_, explodeSize_);
+    bullet_.setRadius(explodeSize_);
+    if(explodeSound_.getStatus() != sf::Music::Playing)
+    {
+        explodeSound_.play();
+    }
+    explode_ = make_unique<Animation>(ExplosionTextureSrc, sf::IntRect(0, 0, 60, 60), 60, 30, false, 1.0);
+    Application::getGame().destroyLand(bullet_.getPosition().x, bullet_.getPosition().y, explodeSize_);
 }
 
 bool Bullet::intersects(const sf::CircleShape &bullet, const sf::RectangleShape &Tank)

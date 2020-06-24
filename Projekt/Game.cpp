@@ -21,13 +21,14 @@ Game::Game()
     fireworksSound_.setBuffer(fireworksBuffer_);
     fireworksSound_.setVolume(5);
     srand(time(NULL));
+    world = make_unique<World>();
 }
 
 void Game::run()
 {
-    land = dynamic_cast<Land *>(world.addObject(ObjectType::Land));
-    world.addObject(ObjectType::Tank);
-    world.addObject(ObjectType::Tank);
+    land = dynamic_cast<Land *>(world->addObject(ObjectType::Land));
+    world->addObject(ObjectType::Tank);
+    world->addObject(ObjectType::Tank);
 
     GameInterface_ = make_unique<Interface>();
     menu_ = make_unique<Menu>();
@@ -47,7 +48,7 @@ void Game::initialize(const GameState &gameState)
     }
     else if(gameState == GameState::Play)
     {
-        world.resetAll();
+        world->resetAll();
         GameInterface_->reset();
         playGameMusic(menu_->getGameSettings(GameSetting::GameMusic));
         playMenuMusic(false);
@@ -58,32 +59,35 @@ void Game::initialize(const GameState &gameState)
 
 void Game::passEvent(sf::RenderWindow &window, sf::Event &event)
 {
-    if(gameState_ == GameState::Menu)
+    if(window.isOpen())
     {
-        if(menu_->getMenuStatus())
+        if(gameState_ == GameState::Menu)
         {
-            controll_.menuPassEvent(event, window, menu_);
-            playMenuMusic(menu_->getGameSettings(GameSetting::MenuMusic));
-        }
-        else
-        {
-            initialize(GameState::Play);
-        }
-    }
-    else if(gameState_ == GameState::Play)
-    {
-        for(auto &object : world.objects_)
-        {
-            auto tankID = dynamic_cast<Tank *>(object.get());
-            if(tankID)
+            if(menu_->getMenuStatus())
             {
-                controll_.tankPassEvent(event, window, tankID);
+                controll_.menuPassEvent(event, window, menu_);
+                playMenuMusic(menu_->getGameSettings(GameSetting::MenuMusic));
+            }
+            else
+            {
+                initialize(GameState::Play);
             }
         }
-    }
-    else if(event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return)
-    {
-        initialize(GameState::Menu);
+        else if(gameState_ == GameState::Play)
+        {
+            for(auto &object : world->objects_)
+            {
+                auto tankID = dynamic_cast<Tank *>(object.get());
+                if(tankID)
+                {
+                    controll_.tankPassEvent(event, window, tankID);
+                }
+            }
+        }
+        else if(event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return)
+        {
+            initialize(GameState::Menu);
+        }
     }
 }
 
@@ -106,41 +110,41 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
         else
         {
             window.draw(gameBackgroundSprite_);
-            world.drawAll(window);
-            world.getCollisionAll();
+            world->drawAll(window);
+            world->getCollisionAll();
             int playerHealth[2];
-            for(auto &object : world.objects_)
+            for(auto &object : world->objects_)
             {
                 auto tankID = dynamic_cast<Tank *>(object.get());
                 if(tankID)
                 {
-                    playerHealth[tankID->playerID_ - 1] = tankID->returnHp();
+                    playerHealth[tankID->getTankID() - 1] = tankID->getPlayerHealth();
                 }
             }
             if(gameState_ == GameState::Play)
             {
                 if(playerHealth[0] > 0 && playerHealth[1] > 0)
                 {
-                    world.stepAll(elapsed.asSeconds());
-                    for(auto &object : world.objects_)
+                    world->stepAll(elapsed.asSeconds());
+                    for(auto &object : world->objects_)
                     {
                         auto tankID = dynamic_cast<Tank *>(object.get());
                         if(tankID)
                         {
                             tankID->update(elapsed.asSeconds(), window);
-                            if(tankID -> getStatus() == TankState::Switch)
+                        }
+                    }
+                    if(taskCounter == 0)
+                    {
+                        for(auto &object : world->objects_)
+                        {
+                            auto tankID = dynamic_cast<Tank *>(object.get());
+                            if(tankID)
                             {
-                                tankID -> switchStatus(window);
-                                for(auto &object2 : world.objects_)
-                                {
-                                    auto tankID2 = dynamic_cast<Tank *>(object2.get());
-                                    if(tankID2 && tankID2 != tankID)
-                                    {
-                                        tankID2 -> switchStatus(window);
-                                    }
-                                }
+                                tankID->switchStatus(window);
                             }
                         }
+                        taskCounter = 1;
                     }
                     GameInterface_ -> drawGameTime(elapsed.asSeconds(), window);
                 }

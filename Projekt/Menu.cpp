@@ -26,10 +26,10 @@ void Menu::reset(const bool &settings)
 
 void Menu::move(const MenuMove &direction)
 {
-    if(!((menuSelected_ == 0 && direction == MenuMove::Up) || (menuSelected_ == menuOptions_.size() - 1 && direction == MenuMove::Down)))
+    if(!((menuSelected_ == 0 && (int)direction < 0) || (menuSelected_ == menuOptions_.size() - 1 && (int)direction > 0)))
     {
         menuOptions_[menuSelected_].setFillColor(sf::Color::White);
-        menuSelected_ += (direction == MenuMove::Up) ? -1 : 1;
+        menuSelected_ += (int)direction;
         menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
         menuSelectSound_.play();
     }

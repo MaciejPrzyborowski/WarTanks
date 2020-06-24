@@ -22,9 +22,12 @@ void Application::run()
                 game_.passEvent(window_, event);
             }
         }
-        window_.clear();
-        game_.update(window_, elapsed);
-        window_.display();
+        if(window_.isOpen())
+        {
+            window_.clear();
+            game_.update(window_, elapsed);
+            window_.display();
+        }
     }
 }
 

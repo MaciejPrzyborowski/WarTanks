@@ -77,8 +77,8 @@ public:
     inline void destroyLand(int x, int y, int radius){return land->destroyCircle(x, y, radius);}
     inline float getLandAngleRadian(int x, int y){return land->getAngleRadian(x, y);}
     inline float getLandAngleDegree(int x, int y){return land->getAngleDegree(x, y);}
-    inline int getLandHeight(int x){ return land->getLandHeight(x); }
-    inline void addWorldObj(WorldObject *object){ world.addObject(object); }
+    inline int getLandHeight(int x){ return land->getHeight(x); }
+    inline void addWorldObj(WorldObject *object){ world->addObject(object); }
     inline void incCounter() { ++taskCounter; }
     inline void decCounter() { --taskCounter; }
 
@@ -88,7 +88,7 @@ private:
     unique_ptr<Animation> fire_; /**< Animacja strzału */
     unique_ptr<Menu> menu_; /**< Menu */
     unique_ptr<Interface> GameInterface_; /**< Interface gry */
-    World world; /**< Elementy gry */
+    unique_ptr<World> world; /**< Elementy gry */
     Land *land;
 
     Controll controll_; /**< Kontroler gracza */
