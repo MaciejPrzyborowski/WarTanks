@@ -3,9 +3,9 @@
 #include "Globals.h"
 
 /**
- * @brief Enum TypeObject
+ * @brief Rodzaj obiektu
  */
-enum class TypeObject
+enum class ObjectType
 {
     Bullet, /**< Pocisk */
     Land, /**< Teren */
@@ -18,26 +18,30 @@ enum class TypeObject
 class WorldObject
 {
 public:
+
     /**
-     * @brief Wirtualna funkcja wyświetlania elementów
+     * @brief Wirtualna funkcja do wyświetlania elementów
      * @param window - okno gry
      */
     virtual void draw(sf::RenderTarget &window) = 0;
+
     /**
-     * @brief Wirtualna funkcja step
+     * @brief Wirtualna funkcja do grawitacji elementów
      * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
      */
     virtual void step(const float &elapsed) = 0;
+
     /**
-     * @brief Wirtualna funkcja do resetowania wszystkich elementów do stanu początkowego
+     * @brief Wirtualna funkcja do resetowania elementów do stanu początkowego
      */
     virtual void reset() = 0;
+
     /**
-     * @brief Wirtualna funkcja do sprawdzania kolicji elementów w grze
+     * @brief Wirtualna funkcja do sprawdzania kolizji elementów w grze
      * @param object - element gry
      */
     virtual void getCollison(WorldObject &object) = 0;
 
-    bool isDestructed_ = false; /**< Czy dany obiekt został zniszczony */
-    TypeObject type_; /**< Typ obiektu */
+    bool isDestructed_ = false; /**< Określa czy dany obiekt został zniszczony */
+    ObjectType type_; /**< Typ obiektu */
 };

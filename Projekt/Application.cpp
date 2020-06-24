@@ -23,7 +23,7 @@ void Application::run()
             }
         }
         window_.clear();
-        game_.updateAll(window_, elapsed);
+        game_.update(window_, elapsed);
         window_.display();
     }
 }

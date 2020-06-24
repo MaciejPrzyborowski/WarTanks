@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "Application.h"
 
 Bullet::Bullet(const sf::Vector2f &position) :
     status_(BulletState::Active),
@@ -6,7 +7,7 @@ Bullet::Bullet(const sf::Vector2f &position) :
     acceleration_(0, Gravity),
     velocity_(0, 0)
 {
-    type_ = TypeObject::Bullet;
+    type_ = ObjectType::Bullet;
     isDestructed_ = false;
 
     bullet_.setRadius(4.0);
@@ -58,7 +59,7 @@ void Bullet::getCollison(WorldObject &object)
 {
     if(status_ == BulletState::Active)
     {
-        if(object.type_ == TypeObject::Tank)
+        if(object.type_ == ObjectType::Tank)
         {
             auto tank = dynamic_cast<Tank *>(&object);
             if(tank != nullptr && intersects(bullet_, tank -> getTankShape()))
@@ -66,7 +67,7 @@ void Bullet::getCollison(WorldObject &object)
                 explode();
             }
         }
-        else if(object.type_ == TypeObject::Land)
+        else if(object.type_ == ObjectType::Land)
         {
             auto land = dynamic_cast<Land *>(&object);
             if(land != nullptr && (bullet_.getPosition().y + bullet_.getRadius() >= land -> getLandHeight(bullet_.getPosition().x)))
@@ -79,7 +80,7 @@ void Bullet::getCollison(WorldObject &object)
 
 void Bullet::reset()
 {
-
+    isDestructed_ = false;
 }
 
 void Bullet::explode()
@@ -90,6 +91,7 @@ void Bullet::explode()
         explodeSound_.play();
     }
     explode_ = make_unique<Animation>(ExplosionTextureSrc, sf::IntRect(0, 0, 60, 60), 60, 30, false, 1.0);
+    Application::getGame().destroyLand(bullet_.getPosition().x, bullet_.getPosition().y, explodeSize_);
 }
 
 BulletState Bullet::getStatus()

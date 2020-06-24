@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Globals.h"
-#include "Land.h"
 #include "Interface.h"
 #include "World.h"
 
@@ -36,7 +35,7 @@ public:
      * @param texture - tekstura czołgu
      * @param land_ - teren gry
      */
-    Tank(const int playerID, const string &texture, Land &land_);
+    Tank(const int playerID, const string &texture);
 
     /**
      * @brief Resetuje parametry gracza do domyślnych.
@@ -112,8 +111,6 @@ public:
 
     int playerID_; /** < Identyfikator gracza */
 
-    Tank *enemy; /**< Przeciwnik */
-
     /**
      * @brief Zwraca punkty życia gracza.
      * @return Zwraca punkty życia gracza
@@ -183,7 +180,6 @@ public:
 
     TankMove moveDirection_;
 private:
-    Land *land; /**< Teren gry */
     unique_ptr<Interface> tankInterface_; /**< Interface gracza */
     TankState status_; /**< Status czołgu */
 

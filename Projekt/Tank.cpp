@@ -1,9 +1,8 @@
 #include "Tank.h"
 #include "Application.h"
 
-Tank::Tank(const int playerID, const string &texture, Land &land_) :
+Tank::Tank(const int playerID, const string &texture) :
     moveDirection_(TankMove::None),
-    land(&land_),
     freefall_(false),
     crosshairActive_(false),
     getEnemyCollision_(false),
@@ -16,7 +15,7 @@ Tank::Tank(const int playerID, const string &texture, Land &land_) :
     velocityFreefall_(0.0)
 {
     playerID_ = playerID;
-    type_ = TypeObject::Tank;
+    type_ = ObjectType::Tank;
     if(playerID == 1)
     {
         status_ = TankState::Active;
@@ -71,7 +70,7 @@ void Tank::reset()
     {
         StartPosition.x += 400;
     }
-    StartPosition.y = land->getLandHeight(StartPosition.x);
+    StartPosition.y = Application::getGame().getLandHeight(StartPosition.x);
     setTankPosition(StartPosition);
     cannonSprite_.setRotation(-90);
 }
@@ -106,7 +105,7 @@ void Tank::moveTank(const float &elapsed)
         {
             velocity.x *= -1;
         }
-        velocity.y = land->getLandHeight(tankSprite_.getPosition().x + velocity.x) - tankSprite_.getPosition().y;
+        velocity.y = Application::getGame().getLandHeight(tankSprite_.getPosition().x + velocity.x) - tankSprite_.getPosition().y;
         moveTankPosition(velocity);
     }
     else
@@ -165,7 +164,7 @@ void Tank::update(const float &elapsed, sf::RenderWindow &window)
 
 void Tank::getCollison(WorldObject &object)
 {
-    if(object.type_ == TypeObject::Tank)
+    if(object.type_ == ObjectType::Tank)
     {
         if(status_ == TankState::Active)
         {
@@ -186,7 +185,7 @@ void Tank::getCollison(WorldObject &object)
             }
         }
     }
-    else if(object.type_ == TypeObject::Bullet)
+    else if(object.type_ == ObjectType::Bullet)
     {
         object.getCollison(*this);
     }
@@ -208,7 +207,7 @@ void Tank::draw(sf::RenderTarget &window)
 void Tank::step(const float &elapsed)
 {
     sf::Vector2f TankPosition = tankSprite_.getPosition();
-    int landHeight = land -> getLandHeight(tankSprite_.getPosition().x);
+    int landHeight = Application::getGame().getLandHeight(tankSprite_.getPosition().x);
     if(TankPosition.y < landHeight)
     {
         freefall_ = true;
@@ -279,7 +278,7 @@ float Tank::getLandAngle(const sf::Vector2f &velocity)
 {
     sf::Sprite tempTankSprite = tankSprite_;
     tempTankSprite.move(velocity);
-    return land->getAngleDegree(tempTankSprite.getPosition().x, tempTankSprite.getPosition().y);
+    return Application::getGame().getLandAngleDegree(tempTankSprite.getPosition().x, tempTankSprite.getPosition().y);
 }
 
 void Tank::moveTankPosition(const sf::Vector2f &velocity)

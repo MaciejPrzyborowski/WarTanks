@@ -12,11 +12,11 @@ void Controll::menuPassEvent(const sf::Event &event, sf::RenderWindow &window, u
     {
         if(event.key.code == sf::Keyboard::Up)
         {
-            menu->move(-1);
+            menu->move(MenuMove::Up);
         }
         if(event.key.code == sf::Keyboard::Down)
         {
-            menu->move(1);
+            menu->move(MenuMove::Down);
         }
     }
     if(event.type == sf::Event::MouseMoved)
@@ -26,10 +26,7 @@ void Controll::menuPassEvent(const sf::Event &event, sf::RenderWindow &window, u
     if((event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return) ||
             (menu->isMouseActive() && event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonReleased))
     {
-        if(!menu->getMenuChoice())
-        {
-            window.close();
-        }
+        menu->getMenuChoice();
     }
 }
 

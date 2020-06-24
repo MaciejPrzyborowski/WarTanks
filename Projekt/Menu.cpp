@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include "Application.h"
 
 Menu::Menu() :
     isMouseActive_(false),
@@ -14,21 +15,21 @@ void Menu::reset(const bool &settings)
 {
     if(settings)
     {
-        gameSettings_[0] = false;
-        gameSettings_[1] = true;
-        gameSettings_[2] = true;
-        gameSettings_[3] = true;
+        gameSettings_[(int)GameSetting::FPS] = false;
+        gameSettings_[(int)GameSetting::GameMusic] = true;
+        gameSettings_[(int)GameSetting::MenuMusic] = true;
+        gameSettings_[(int)GameSetting::SoundMusic] = true;
     }
     isMouseActive_ = false;
     setMenu(MenuType::Main);
 }
 
-void Menu::move(const int &direction)
+void Menu::move(const MenuMove &direction)
 {
-    if(!((menuSelected_ == 0 && direction < 0) || (menuSelected_ == menuOptions_.size() - 1 && direction > 0)))
+    if(!((menuSelected_ == 0 && direction == MenuMove::Up) || (menuSelected_ == menuOptions_.size() - 1 && direction == MenuMove::Down)))
     {
         menuOptions_[menuSelected_].setFillColor(sf::Color::White);
-        menuSelected_ += direction;
+        menuSelected_ += (direction == MenuMove::Up) ? -1 : 1;
         menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
         menuSelectSound_.play();
     }
@@ -61,31 +62,31 @@ bool Menu::getMenuStatus()
     return !(menuType_ == MenuType::None);
 }
 
-bool Menu::getGameSettings(const int &setting)
+bool Menu::getGameSettings(const GameSetting &gameSetting)
 {
-    return gameSettings_[setting];
+    return gameSettings_[int(gameSetting)];
 }
 
-void Menu::setMenu(const MenuType &type)
+void Menu::setMenu(const MenuType &menuType)
 {
     menuSelected_ = 0;
     menuOptions_.clear();
     menuSelectOptions_.clear();
     menuSelectBackground_.clear();
-    menuType_ = type;
-    if(type != MenuType::None)
+    menuType_ = menuType;
+    if(menuType != MenuType::None)
     {
         float CharakterSize;
         size_t StartPosition;
         vector<string> SettingNames;
 
-        if(type == MenuType::Main)
+        if(menuType == MenuType::Main)
         {
             CharakterSize = 0.1;
             StartPosition = 3;
             SettingNames = {"Graj", "Ustawienia", "Wyjscie"};
         }
-        if(type == MenuType::Settings)
+        if(menuType == MenuType::Settings)
         {
             CharakterSize = 0.07;
             StartPosition = 2;
@@ -128,9 +129,8 @@ void Menu::setMenu(const MenuType &type)
     }
 }
 
-bool Menu::getMenuChoice()
+void Menu::getMenuChoice()
 {
-    bool isMenuActive = true;
     if(menuType_ == MenuType::Main)
     {
         switch(menuSelected_)
@@ -147,7 +147,7 @@ bool Menu::getMenuChoice()
             }
             case 2:
             {
-                isMenuActive = false;
+                Application::quit();
                 break;
             }
         }
@@ -163,12 +163,11 @@ bool Menu::getMenuChoice()
             }
             default:
             {
-                setSettings(menuSelected_);
+                setSettings((GameSetting)menuSelected_);
                 break;
             }
         }
     }
-    return isMenuActive;
 }
 
 bool Menu::getMenuMouse(const sf::Vector2f &mousePosition)
@@ -198,27 +197,32 @@ bool Menu::getMenuMouse(const sf::Vector2f &mousePosition)
     }
 }
 
-void Menu::setSettings(const int &setting)
+void Menu::setSettings(const GameSetting &gameSetting)
 {
-    gameSettings_[setting] = !gameSettings_[setting];
-    if(gameSettings_[setting])
+    gameSettings_[(int)gameSetting] = !gameSettings_[(int)gameSetting];
+    if(gameSettings_[(int)gameSetting])
     {
-        if(setting == 3)
+        if((int)gameSetting == 3)
         {
             menuSelectSound_.setVolume(1);
         }
-        menuSelectOptions_[setting].setString("TAK");
-        menuSelectOptions_[setting].setFillColor(sf::Color::Green);
+        menuSelectOptions_[(int)gameSetting].setString("TAK");
+        menuSelectOptions_[(int)gameSetting].setFillColor(sf::Color::Green);
     }
     else
     {
-        if(setting == 3)
+        if((int)gameSetting == 3)
         {
             menuSelectSound_.setVolume(0);
         }
-        menuSelectOptions_[setting].setString("NIE");
-        menuSelectOptions_[setting].setFillColor(sf::Color::Red);
+        menuSelectOptions_[(int)gameSetting].setString("NIE");
+        menuSelectOptions_[(int)gameSetting].setFillColor(sf::Color::Red);
     }
+}
+
+bool Menu::isMouseActive()
+{
+    return isMouseActive_;
 }
 
 void Menu::setMouseActive(sf::RenderWindow &window)

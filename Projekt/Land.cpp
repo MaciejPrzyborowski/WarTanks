@@ -7,7 +7,7 @@ Land::Land(const float &octaves, const float &persistence) :
     height_(WindowWidth),
     steps_()
 {
-    type_ = TypeObject::Land;
+    type_ = ObjectType::Land;
     image_.create(WindowWidth, WindowHeight, sf::Color::Transparent);
 }
 
@@ -74,11 +74,11 @@ void Land::destroyColumn(const int &x, int top, int bottom)
 
 void Land::getCollison(WorldObject &object)
 {
-    if(object.type_ == TypeObject::Tank)
+    if(object.type_ == ObjectType::Tank)
     {
         object.getCollison(*this);
     }
-    else if(object.type_ == TypeObject::Bullet)
+    else if(object.type_ == ObjectType::Bullet)
     {
         object.getCollison(*this);
     }

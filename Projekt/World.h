@@ -25,12 +25,12 @@ public:
      * @brief Dodaje obiekt do świata gry
      * @param type - typ dodawanego obiektu
      */
-    void addObject(TypeObject type);
+    WorldObject * addObject(ObjectType type);
     /**
      * @brief Dodaje obiekt do wektora obiektów gry
      * @param object - obiekt elementu gry
      */
-    void addObject(WorldObject *object);
+    WorldObject * addObject(WorldObject *object);
     /**
      * @brief Wyświetla elementy
      * @param window - okno gry
@@ -42,7 +42,7 @@ public:
      */
     void stepAll(const float &elapsed);
     /**
-     * @brief Sprawdza kolizje elementów
+     * @brief Sprawdza kolizje z innymi obiektami
      */
     void getCollisionAll();
     /**

@@ -5,14 +5,14 @@
 #include "WorldObject.h"
 
 /**
- * @brief Struktura StepLand
+ * @brief Struktura spadku terenu
  */
 struct StepLand
 {
-    int top_; /**< top_ */
-    int bottom_; /**< bottom_ */
-    float velocity_; /**< velocity_ */
-    bool active_; /**< active_ */
+    int top_; /**< Wysokość początkowa spadku terenu */
+    int bottom_; /**< Wysokość końcowa spadku terenu */
+    float velocity_; /**< Prędkość spadku terenu */
+    bool active_; /**< Status spadku terenu */
 };
 
 /**
@@ -23,13 +23,13 @@ class Land : public WorldObject, public Perlin
 public:
 
     /**
-     * @param octaves - liczba oktaw
-     * @param persistence - mnożnik do amplitudy terenu
+     * @param octaves - liczba oktaw (poziom szczegółowości hałasu)
+     * @param persistence - liczba określająca, ile każda oktawa przyczynia się do ogólnego kształu
      */
     Land(const float &octaves, const float &persistence);
 
     /**
-     * @brief Generuje teren mapy.
+     * @brief Resetuje pramatetry mapy i generuje teren.
      */
     void reset();
 
@@ -51,7 +51,7 @@ public:
 
     /**
      * @brief Sprawdza kolizje z innymi obiektami.
-     * @param object - obiekt z którym sprawdza kolizję
+     * @param object - obiekt elementu gry
      */
     void getCollison(WorldObject &object);
 
@@ -72,7 +72,7 @@ public:
      * @param x - współrzędna x
      * @param y - współrzędna y
      * @return
-     *          true - istnieje teren w punkcie (x, y)
+     *          true - istnieje teren w punkcie (x, y);
      *          false - nie istnieje teren w punkcie (x, y)
      */
     bool isSolidPixel(const int &x, const int &y);
@@ -101,14 +101,14 @@ public:
     int getLandHeight(const int &x);
 
 private:
-    bool modified_; /**< Czy teren został zmodyfikowany */
-    float size_; /**< TODO: describe */
+    bool modified_; /**< Określa czy teren został zmodyfikowany */
+    float size_; /**< Maksymalna wysokość dopasowania terenu do okna */
 
-    sf::Image image_; /**< TODO: describe */
-    sf::Sprite sprite_; /**< TODO: describe */
-    sf::Texture texture_; /**< TODO: describe */
-    std::vector<int> height_; /**< TODO: describe */
-    std::map<int, StepLand> steps_; /**< TODO: describe */
+    sf::Image image_; /**< Zdjęcie terenu */
+    sf::Sprite sprite_; /**< Teren */
+    sf::Texture texture_; /**< Tekstura terenu */
+    std::vector<int> height_; /**< Wektor wielkość terenu */
+    std::map<int, StepLand> steps_; /**< Wektor spadku terenu */
 
     /**
      * @brief Oblicza gradient używając interpolacji liniowej

@@ -10,57 +10,31 @@ World::~World()
 
 }
 
-void World::addObject(TypeObject type)
+WorldObject * World::addObject(ObjectType type)
 {
-    //// DO ZMIANY CAŁOŚĆ (TYMCZASOWE ROZWIĄZANIE DO URUCHOMIENIA KODU ////
-    if(type == TypeObject::Land)
+    if(type == ObjectType::Land)
     {
         objects_.emplace_back(make_unique<Land>(4, 0.2));
     }
-    else if(type == TypeObject::Tank)
+    else if(type == ObjectType::Tank)
     {
-        Land *land;
-        for(auto &el : objects_)
-        {
-            auto L = dynamic_cast<Land *>(el.get());
-            if(L)
-            {
-                land = L;
-            }
-        }
         if(PlayerIndex == 1)
         {
-            objects_.emplace_back(make_unique<Tank>(PlayerIndex, TankTextureSrc1, *land));
+            objects_.emplace_back(make_unique<Tank>(PlayerIndex, TankTextureSrc1));
         }
         else
         {
-            objects_.emplace_back(make_unique<Tank>(PlayerIndex, TankTextureSrc2, *land));
+            objects_.emplace_back(make_unique<Tank>(PlayerIndex, TankTextureSrc2));
         }
         PlayerIndex++;
     }
-    if(PlayerIndex == 3)
-    {
-        for(auto &el : objects_)
-        {
-            auto T = dynamic_cast<Tank *>(el.get());
-            if(T)
-            {
-                for(auto &el2 : objects_)
-                {
-                    auto T2 = dynamic_cast<Tank *>(el2.get());
-                    if(T2 != T)
-                    {
-                        T->enemy = T2;
-                    }
-                }
-            }
-        }
-    }
+    return objects_.back().get();
 }
 
-void World::addObject(WorldObject *object)
+WorldObject * World::addObject(WorldObject *object)
 {
     objects_.emplace_back(unique_ptr<WorldObject> (object));
+    return objects_.back().get();
 }
 
 void World::drawAll(sf::RenderWindow &window)
@@ -95,11 +69,6 @@ void World::resetAll()
         }
     }
 }
-
-
-
-
-
 
 void World::getCollisionAll()
 {

@@ -10,8 +10,8 @@ class Perlin
 public:
 
     /**
-     * @param octaves - liczba oktaw
-     * @param persistence - mnożnik do amplitudy terenu
+     * @param octaves - liczba oktaw (poziom szczegółowości hałasu)
+     * @param persistence - liczba określająca, ile każda oktawa przyczynia się do ogólnego kształu
      */
     Perlin(const float &octaves, const float &persistence);
 
@@ -24,9 +24,9 @@ public:
     float octaveNoise(const float &x, const float &y);
 
 private:
-    float factor_[2]; /**< TODO: describe */
-    const float octaves_; /**< TODO: describe */
-    const float persistence_; /**< TODO: describe */
+    float factor_[2]; /**< Skewing Factor (~0.366025), Unskewing Factor (~0.211325) */
+    const float octaves_; /**< Liczba oktaw (poziom szczegółowości hałasu) */
+    const float persistence_; /**< Liczba określająca, ile każda oktawa przyczynia się do ogólnego kształu */
 
     /**
      * @brief Tablica zdefiniowana przez Ken Perlin. Permutacja jest losowo ułożona z liczb od 0 do 255.
@@ -72,7 +72,7 @@ private:
     int fastFloor(const float &x);
 
     /**
-     * @param Oblicza wartość permutacji dla podanej wartości całkowitej.
+     * @brief Oblicza wartość permutacji dla podanej wartości całkowitej.
      * @param i - wartość całkowita
      * @return Wartość permutacji dla podanej wartości całkowitej
      */

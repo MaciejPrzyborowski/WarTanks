@@ -56,7 +56,7 @@ public:
      * @brief Aktualizuje na bieżąco wszystkie elementy gry.
      * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
      */
-    void updateAll(sf::RenderWindow &window, sf::Time &elapsed);
+    void update(sf::RenderWindow &window, sf::Time &elapsed);
     /**
      * @brief Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach.
      * @param isMenuMusicOn - sprawdza czy muzyka w menu jest włączona
@@ -74,18 +74,22 @@ public:
      */
     void playFireworksSound();
 
-    void addWorldObj(WorldObject *wo){ world.addObject(wo); }
+    inline void destroyLand(int x, int y, int radius){return land->destroyCircle(x, y, radius);}
+    inline float getLandAngleRadian(int x, int y){return land->getAngleRadian(x, y);}
+    inline float getLandAngleDegree(int x, int y){return land->getAngleDegree(x, y);}
+    inline int getLandHeight(int x){ return land->getLandHeight(x); }
+    inline void addWorldObj(WorldObject *object){ world.addObject(object); }
     inline void incCounter() { ++taskCounter; }
     inline void decCounter() { --taskCounter; }
 
 private:
-
     int taskCounter = 0;
     unique_ptr<Animation> fireworks_; /**< Animacja fajerwerków */
     unique_ptr<Animation> fire_; /**< Animacja strzału */
     unique_ptr<Menu> menu_; /**< Menu */
     unique_ptr<Interface> GameInterface_; /**< Interface gry */
     World world; /**< Elementy gry */
+    Land *land;
 
     Controll controll_; /**< Kontroler gracza */
     GameState gameState_; /**< Status gry */

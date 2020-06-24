@@ -25,9 +25,9 @@ Game::Game()
 
 void Game::run()
 {
-    world.addObject(TypeObject::Land);
-    world.addObject(TypeObject::Tank);
-    world.addObject(TypeObject::Tank);
+    land = dynamic_cast<Land *>(world.addObject(ObjectType::Land));
+    world.addObject(ObjectType::Tank);
+    world.addObject(ObjectType::Tank);
 
     GameInterface_ = make_unique<Interface>();
     menu_ = make_unique<Menu>();
@@ -42,14 +42,14 @@ void Game::initialize(const GameState &gameState)
     {
         menu_ -> reset(false);
         playGameMusic(false);
-        playMenuMusic(menu_->getGameSettings(2));
+        playMenuMusic(menu_->getGameSettings(GameSetting::MenuMusic));
         fireworksSound_.stop();
     }
     else if(gameState == GameState::Play)
     {
         world.resetAll();
         GameInterface_->reset();
-        playGameMusic(menu_->getGameSettings(1));
+        playGameMusic(menu_->getGameSettings(GameSetting::GameMusic));
         playMenuMusic(false);
         fireworks_ = make_unique<Animation>(FireworksEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
         fire_ = make_unique<Animation>(FireEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
@@ -63,7 +63,7 @@ void Game::passEvent(sf::RenderWindow &window, sf::Event &event)
         if(menu_->getMenuStatus())
         {
             controll_.menuPassEvent(event, window, menu_);
-            playMenuMusic(menu_->getGameSettings(2));
+            playMenuMusic(menu_->getGameSettings(GameSetting::MenuMusic));
         }
         else
         {
@@ -87,7 +87,7 @@ void Game::passEvent(sf::RenderWindow &window, sf::Event &event)
     }
 }
 
-void Game::updateAll(sf::RenderWindow &window, sf::Time &elapsed)
+void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
 {
     if(window.isOpen())
     {
@@ -168,7 +168,7 @@ void Game::updateAll(sf::RenderWindow &window, sf::Time &elapsed)
                 }
             }
         }
-        if(menu_->getGameSettings(0))
+        if(menu_->getGameSettings(GameSetting::FPS))
         {
             GameInterface_ -> drawFPS(elapsed.asSeconds(), window);
         }

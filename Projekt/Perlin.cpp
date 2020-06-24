@@ -1,6 +1,5 @@
 #include "Perlin.h"
 
-
 const int Perlin::permutation[256] =
 {
     151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142,
@@ -28,8 +27,8 @@ Perlin::Perlin(const float &octaves, const float &persistence) :
     octaves_(octaves),
     persistence_(persistence)
 {
-    factor_[0] = 0.5 * (sqrtf(3.0) - 1.0); // Skewing Factor (~0.366025)
-    factor_[1] = (3.0 - sqrtf(3.0)) / 6.0; // Unskewing Factor (~0.211325)
+    factor_[0] = 0.5 * (sqrtf(3.0) - 1.0);
+    factor_[1] = (3.0 - sqrtf(3.0)) / 6.0;
 }
 
 float Perlin::octaveNoise(const float &x, const float &y)

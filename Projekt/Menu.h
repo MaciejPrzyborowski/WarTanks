@@ -3,13 +3,33 @@
 #include "Globals.h"
 
 /**
- * @brief Enum MenuType
+ * @brief Typ menu
  */
 enum class MenuType
 {
-    None, /**< Żadne nie jest wyrane */
-    Main, /**< Memu główne */
-    Settings /**< Ustawienia */
+    None, /**< Brak menu */
+    Main, /**< Menu główne */
+    Settings /**< Menu ustawień */
+};
+
+/**
+ * @brief Kierunek zmiany wyboru menu
+ */
+enum class MenuMove
+{
+    Up, /**< W górę */
+    Down /**< W dół */
+};
+
+/**
+ * @brief Ustawienia gry
+ */
+enum class GameSetting
+{
+    FPS, /**< Licznik FPS */
+    GameMusic, /**< Muzyka w grze */
+    MenuMusic, /**< Muzyka w menu */
+    SoundMusic /**< Dźwięki w menu */
 };
 
 /**
@@ -25,20 +45,16 @@ public:
     Menu();
 
     /**
-     * @brief Resetuje układ menu do ustawień domyślnych.
+     * @brief Resetuje parametry menu do ustawień domyślnych.
      * @param settings - określa czy resetowi podlegają ustawienia gry
-     *          true - resetuje ustawienia gry do domyślnych
-     *          false - nie resetuje ustawień gry do domyślnych
      */
     void reset(const bool &settings);
 
     /**
      * @brief Zmienia aktualny wybór w menu. Funkcja przeznaczona tylko dla obsługi klawiatury.
-     * @param direction - kierunek w którą stronę ma zostać dokonana zmiana
-     *          -1 - w górę
-     *          1 - w dół
+     * @param direction - kierunek zmiany wyboru menu
      */
-    void move(const int &direction);
+    void move(const MenuMove &direction);
 
     /**
      * @brief Wyświetla aktualne menu.
@@ -48,67 +64,53 @@ public:
 
     /**
      * @brief Sprawdza ustawienia gry.
-     * @param setting - ID ustawienia gry:
-     *          0 - licznik FPS
-     *          1 - muzyka w grze
-     *          2 - muzyka w menu
-     *          3 - dźwięki w menu
+     * @param setting - Ustawienia gry
      * @return
-     *          true - ustawienie jest włączone
+     *          true - ustawienie jest włączone;
      *          false - ustawienie jest wyłączone
      */
-    bool getGameSettings(const int &setting);
+    bool getGameSettings(const GameSetting &gameSetting);
 
     /**
      * @brief Sprawdza status menu.
      * @return
-     *          true - menu jest aktywne
+     *          true - menu jest aktywne;
      *          false - menu nie jest aktywne
      */
     bool getMenuStatus();
 
     /**
      * @brief Ustawia dane w menu.
-     * @param type - typ menu:
-     *          None - brak menu
-     *          Main - menu główne
-     *          Settings - menu ustawień
+     * @param menuType - ustawienia gry
      */
-    void setMenu(const MenuType &type);
+    void setMenu(const MenuType &menuType);
 
     /**
      * @brief Obsługuje wybór elementu z menu.
-     * @return
-     *          true - menu jest aktywne
-     *          false - menu zostało zamknięte
      */
-    bool getMenuChoice();
+    void getMenuChoice();
 
     /**
      * @brief Sprawdza czy myszka znajduje się aktualnie na wybranym elemencie. Funkcja dodatkowo ustawia element menu, na którym znajduje się myszka, jako aktywny.
      * @return
-     *          true - myszka znajduje się na wybranym elemencie
+     *          true - myszka znajduje się na wybranym elemencie;
      *          false - myszka nie znajduje się na wybranym elemencie
      */
     bool getMenuMouse(const sf::Vector2f &mousePosition);
 
     /**
      * @brief Zmienia ustawienia gry.
-     * @param setting - ID ustawienia gry:
-     *          0 - licznik FPS
-     *          1 - muzyka w grze
-     *          2 - muzyka w menu
-     *          3 - dźwięki w menu
+     * @param setting - ustawienia gry
      */
-    void setSettings(const int &setting);
+    void setSettings(const GameSetting &gameSetting);
 
     /**
      * @brief Sprawdza czy gracz poruszył myszką w menu.
      * @return
-     *          true - gracz poruszył myszką
+     *          true - gracz poruszył myszką;
      *          false - gracz nie poruszył myszką
      */
-    inline bool isMouseActive(){return isMouseActive_;};
+    bool isMouseActive();
 
     /**
      * @brief Jeżeli gracz najedzie myszką na opcje wyboru w menu to ustawi myszkę na aktywną
@@ -121,13 +123,13 @@ private:
     sf::Sound menuSelectSound_; /**< Dźwięk wyboru danej opcji */
     sf::SoundBuffer menuSelectSoundBuffer_; /**< Bufer dźwięku wyboru danej opcji */
 
-    MenuType menuType_; /**< Typ wybranego menu */
+    MenuType menuType_; /**< Typ aktualnego menu */
     size_t menuSelected_; /**< Indeks wybranej opcji */
 
-    bool isMouseActive_; /**< Czy myszka jest aktywna */
-    bool gameSettings_[4]; /**< Odpowiada za zmianę ustawień */
+    bool isMouseActive_; /**< Określa czy myszka najeżdza na wybraną obcję */
+    bool gameSettings_[4]; /**< Określa status ustawień gry */
 
     vector<sf::Text> menuOptions_; /**< Wektor z opcjami w głównym menu */
     vector<sf::Text> menuSelectOptions_; /**< Wektor z opcjami w ustawieniach */
-    vector<sf::RectangleShape> menuSelectBackground_; /**< Podświetlenie wybranej opcji w ustawieniach */
+    vector<sf::RectangleShape> menuSelectBackground_; /**< Tło wybranej opcji w ustawieniach */
 };
