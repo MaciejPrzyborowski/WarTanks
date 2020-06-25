@@ -15,7 +15,6 @@ SOURCES += \
         Animation.cpp \
         Application.cpp \
         Bullet.cpp \
-        Controll.cpp \
         Game.cpp \
         Interface.cpp \
         World.cpp \
@@ -29,7 +28,6 @@ HEADERS += \
     Animation.h \
     Application.h \
     Bullet.h \
-    Controll.h \
     Game.h \
     Globals.h \
     Land.h \

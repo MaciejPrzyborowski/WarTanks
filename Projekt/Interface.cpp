@@ -1,7 +1,7 @@
 #include "Interface.h"
+#include "Application.h"
 
 Interface::Interface() :
-    winnerID_(Winner::None),
     totalTime_(0.0),
     backToMenuTime_(0.0)
 {
@@ -14,7 +14,6 @@ Interface::Interface() :
 }
 
 Interface::Interface(const int &id) :
-    winnerID_(Winner::None),
     totalTime_(0.0),
     backToMenuTime_(0.0)
 {
@@ -43,7 +42,6 @@ Interface::Interface(const int &id) :
 
 void Interface::reset()
 {
-    winnerID_ = Winner::None;
     backToMenuTime_ = 0.0;
     totalTime_ = 0.0;
 }
@@ -106,23 +104,18 @@ void Interface::drawTurn(const int &id, const float &timeLeft, sf::RenderTarget 
     window.draw(turnTimeLeft_);
 }
 
-void Interface::setWinner(const Winner winner)
-{
-    winnerID_ = winner;
-}
-
 void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
 {
     if((backToMenuTime_ += elapsed) >= 2.0)
     {
         window.draw(backToMenu_);
     }
-    if(winnerID_ == Winner::Red)
+    if(Application::getGame().winnerID_ == Winner::Red)
     {
         gameEndText_.setOutlineColor(sf::Color::Red);
         gameEndText_.setString("Czerwony wygrywa!");
     }
-    else if(winnerID_ == Winner::Blue)
+    else if(Application::getGame().winnerID_ == Winner::Blue)
     {
         gameEndText_.setOutlineColor(sf::Color(0, 100, 255));
         gameEndText_.setString("Niebieski wygrywa!");

@@ -10,6 +10,7 @@
 
 #define Gravity 180
 #define MaxAngle 75
+#define MaxPlayers 2
 #define WindowFPS 120
 #define WindowWidth 800
 #define WindowHeight 600

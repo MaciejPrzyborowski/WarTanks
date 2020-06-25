@@ -3,16 +3,6 @@
 #include "Globals.h"
 
 /**
- * @brief Enum Winner
- */
-enum class Winner
-{
-    None = -1, /**< Nikt nie wygrał */
-    Red, /**< Wygrał gracz czerwony */
-    Blue /**< Wygrał gracz niebieski */
-};
-
-/**
  * @brief Klasa Interface
  */
 class Interface
@@ -86,8 +76,6 @@ public:
      */
     void drawTurn(const int &id, const float &timeLeft, sf::RenderTarget &window);
 
-    void setWinner(const Winner winner);
-
     /**
      * @brief Ustawia styl dla obiektu klasy sf::Text.
      * @param size - rozmiar czcionki
@@ -121,7 +109,6 @@ private:
     sf::Text hpText_; /**< Napis "HP" do wyświetlenia */
     sf::Text turn_; /**< Napis informujący, którego gracza jest teraz kolej */
     sf::Text turnTimeLeft_; /**< Napis z pozostałym czasem tury danego gracza */
-    Winner winnerID_; /**< Wynik gry */
 
     float totalTime_; /**< Całkowity czas gry */
     float backToMenuTime_; /**< Określa po jakim czasie, po zakończeniu gry ma się pojawić napis "Kliknij enter aby wrócić do menu" */

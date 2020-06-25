@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Tank.h"
-#include "Menu.h"
 #include "Globals.h"
-#include "Interface.h"
-#include "Animation.h"
 #include "World.h"
-#include "Controll.h"
+#include "Interface.h"
+
+#include "Menu.h"
+#include "Animation.h"
 
 /**
  * @brief Enum GameState
@@ -17,6 +16,14 @@ enum class GameState
     Play, /**< Gra */
     EndWinner, /**< Wygrał jeden z graczy */
     EndDraw /**< Remis */
+};
+
+enum class Winner
+{
+    None,
+    Red,
+    Blue,
+    Draw
 };
 
 /**
@@ -60,18 +67,18 @@ public:
      * @brief Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach.
      * @param isMenuMusicOn - sprawdza czy muzyka w menu jest włączona
      */
-    void playMenuMusic(const bool &isMenuMusicOn);
+    void playMenuMusic(const bool &status);
 
     /**
      * @brief Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach.
      * @param isGameMusicOn - sprawdza czy muzyka w grze jest włączona
      */
-    void playGameMusic(const bool &isGameMusicOn);
+    void playGameMusic(const bool &status);
 
     /**
      * @brief Włącza dźwięk fajerwerków na koniec gry.
      */
-    void playFireworksSound();
+    void playFireworksSound(const bool &status);
 
     /**
      * @brief Niszczy teren w kształcie okręgu.
@@ -119,17 +126,17 @@ public:
      * @brief Zmniejsza licznik zadań do wykonania
      */
     inline void decCounter() { --taskCounter; }
+    Winner winnerID_;
 
 private:
     int taskCounter = 0; /**< Licznik zadań */
     unique_ptr<Animation> fireworks_; /**< Animacja fajerwerków */
     unique_ptr<Animation> fire_; /**< Animacja strzału */
     unique_ptr<Menu> menu_; /**< Menu */
-    unique_ptr<Interface> GameInterface_; /**< Interface gry */
+    unique_ptr<Interface> gameInterface_; /**< Interface gry */
     unique_ptr<World> world; /**< Elementy gry */
     unique_ptr<Land>::pointer land; /**< Teren gry */
 
-    Controll controll_; /**< Kontroler gracza */
     GameState gameState_; /**< Status gry */
 
     sf::Vector2f winner_, loser_; /**< Wektor z pozycją wygranego, przegranego */

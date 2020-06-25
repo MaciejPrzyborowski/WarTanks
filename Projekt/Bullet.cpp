@@ -6,7 +6,7 @@
 Bullet::Bullet(const sf::Vector2f &position) :
     explode_(nullptr),
     status_(true),
-    players_(2),
+    players_(MaxPlayers),
     explodeSize_(30),
     acceleration_(0, Gravity),
     velocity_(0, 0)
