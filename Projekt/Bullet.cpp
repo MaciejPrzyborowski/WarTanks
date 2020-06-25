@@ -83,11 +83,14 @@ void Bullet::getCollison(WorldObject &object)
 void Bullet::draw(sf::RenderTarget &window)
 {
     sf::Time elapsed = clock_.restart();
-    if(explode_)
+    if(explode_ != nullptr)
     {
-        if(explode_->getStatus())
+        if(explode_ -> getStatus())
         {
-            explode_->draw(elapsed.asSeconds(), bullet_.getPosition() - sf::Vector2f((float)explodeSize_, (float)explodeSize_), window);
+           if(explode_ -> changeAnimation(elapsed.asSeconds()))
+           {
+               explode_ -> draw(window);
+           }
         }
         else
         {
@@ -126,6 +129,7 @@ void Bullet::explode()
         explodeSound_.play();
     }
     explode_ = make_unique<Animation>(ExplosionTextureSrc, sf::IntRect(0, 0, 60, 60), 60, 30, false, 1.0);
+    explode_ -> changePosition(bullet_.getPosition() - sf::Vector2f((float)explodeSize_, (float)explodeSize_));
     Application::getGame().destroyLand(bullet_.getPosition().x, bullet_.getPosition().y, explodeSize_);
 }
 

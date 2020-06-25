@@ -129,7 +129,7 @@ public:
      * @brief Określa identyfikator czołgu.
      * @return Zwraca identyfikator czołgu
      */
-    int getTankID();
+    int getPlayerID();
 
     /**
      * @brief Zwraca status gracza.

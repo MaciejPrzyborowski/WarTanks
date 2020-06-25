@@ -115,90 +115,6 @@ void Tank::moveShootPower(const ShootPowerMove &direction)
     }
 }
 
-void Tank::switchCursorVisibility(sf::RenderWindow &window)
-{
-    if(canCannonMove())
-    {
-        crosshairActive_ = !crosshairActive_;
-        window.setMouseCursorVisible(!crosshairActive_);
-    }
-}
-
-void Tank::update(const float &elapsed, sf::RenderWindow &window)
-{
-    tankInterface_ -> drawHealth(health_, window);
-    if(status_ == TankState::Active)
-    {
-        if((timeLeft_ -= elapsed) <= 0)
-        {
-            status_ = TankState::Waiting;
-            Application::getGame().decCounter();
-        }
-        else
-        {
-            moveCannon(window);
-        }
-    }
-    if(status_ != TankState::InActive)
-    {
-        tankInterface_ -> drawShootPower(shootPower_, window);
-        tankInterface_ -> drawTurn(playerID_, timeLeft_, window);
-        tankInterface_ -> drawAngle(360 - cannonSprite_.getRotation(), window);
-    }
-}
-
-void Tank::getCollison(WorldObject &object)
-{
-    if(object.type_ == ObjectType::Tank)
-    {
-        if(status_ == TankState::Active)
-        {
-            auto Enemy = dynamic_cast<Tank *>(&object);
-            if(Enemy != nullptr)
-            {
-                sf::Sprite tempTankSprite = tankSprite_;
-                tempTankSprite.move(velocity);
-                tempTankSprite.setRotation(getTankAngle(velocity));
-                if(tempTankSprite.getGlobalBounds().intersects(Enemy -> tankSprite_.getGlobalBounds()))
-                {
-                    getCollision_ = true;
-                }
-                else
-                {
-                    getCollision_ = false;
-                }
-            }
-        }
-    }
-    else if(object.type_ == ObjectType::Bullet)
-    {
-        object.getCollison(*this);
-    }
-}
-
-void Tank::draw(sf::RenderTarget &window)
-{
-    window.draw(cannonSprite_);
-    window.draw(tankSprite_);
-    if(status_ == TankState::Active)
-    {
-        if(crosshairActive_)
-        {
-            window.draw(crosshairSprite_);
-        }
-    }
-}
-
-void Tank::setMoveDirection(const TankMove &direction)
-{
-    moveDirection_ = direction;
-}
-
-void Tank::setPlayerHealth(const int &health)
-{
-    health_ = health;
-}
-
 void Tank::step(const float &elapsed)
 {
     sf::Vector2f TankPosition = tankSprite_.getPosition();
@@ -243,9 +159,88 @@ void Tank::step(const float &elapsed)
     }
 }
 
-TankState Tank::getStatus()
+void Tank::getCollison(WorldObject &object)
 {
-    return status_;
+    if(object.type_ == ObjectType::Tank)
+    {
+        if(status_ == TankState::Active)
+        {
+            auto Enemy = dynamic_cast<Tank *>(&object);
+            if(Enemy != nullptr)
+            {
+                sf::Sprite tempTankSprite = tankSprite_;
+                tempTankSprite.move(velocity);
+                tempTankSprite.setRotation(getTankAngle(velocity));
+                if(tempTankSprite.getGlobalBounds().intersects(Enemy -> tankSprite_.getGlobalBounds()))
+                {
+                    getCollision_ = true;
+                }
+                else
+                {
+                    getCollision_ = false;
+                }
+            }
+        }
+    }
+    else if(object.type_ == ObjectType::Bullet)
+    {
+        object.getCollison(*this);
+    }
+}
+
+void Tank::update(const float &elapsed, sf::RenderWindow &window)
+{
+    tankInterface_ -> drawHealth(health_, window);
+    if(status_ == TankState::Active)
+    {
+        if((timeLeft_ -= elapsed) <= 0)
+        {
+            status_ = TankState::Waiting;
+            Application::getGame().decCounter();
+        }
+        else
+        {
+            moveCannon(window);
+        }
+    }
+    if(status_ != TankState::InActive)
+    {
+        tankInterface_ -> drawShootPower(shootPower_, window);
+        tankInterface_ -> drawTurn(playerID_, timeLeft_, window);
+        tankInterface_ -> drawAngle(360 - cannonSprite_.getRotation(), window);
+    }
+}
+
+void Tank::draw(sf::RenderTarget &window)
+{
+    window.draw(cannonSprite_);
+    window.draw(tankSprite_);
+    if(status_ == TankState::Active)
+    {
+        if(crosshairActive_)
+        {
+            window.draw(crosshairSprite_);
+        }
+    }
+}
+
+void Tank::setMoveDirection(const TankMove &direction)
+{
+    moveDirection_ = direction;
+}
+
+void Tank::setPlayerHealth(const int &health)
+{
+    health_ = health;
+}
+
+void Tank::switchCursorVisibility(sf::RenderWindow &window)
+{
+    if(canCannonMove())
+    {
+        crosshairActive_ = !crosshairActive_;
+        window.setMouseCursorVisible(!crosshairActive_);
+    }
 }
 
 void Tank::switchStatus(sf::RenderWindow &window)
@@ -266,6 +261,33 @@ void Tank::switchStatus(sf::RenderWindow &window)
         crosshairActive_ = false;
         window.setMouseCursorVisible(true);
     }
+}
+
+int Tank::getPlayerHealth()
+{
+    return health_;
+}
+
+int Tank::getPlayerID()
+{
+    return playerID_;
+}
+
+TankState Tank::getStatus()
+{
+    return status_;
+}
+
+sf::Vector2f Tank::getTankPosition()
+{
+    return tankSprite_.getPosition();
+}
+
+sf::RectangleShape Tank::getTankShape()
+{
+    sf::RectangleShape TankShape(sf::Vector2f(tankSprite_.getLocalBounds().width, tankSprite_.getLocalBounds().height));
+    TankShape.setPosition(tankSprite_.getPosition().x, tankSprite_.getPosition().y - tankSprite_.getLocalBounds().height / 2);
+    return TankShape;
 }
 
 bool Tank::canCannonMove()
@@ -292,26 +314,4 @@ float Tank::getTankAngle(const sf::Vector2f &velocity)
     sf::Sprite tempTankSprite = tankSprite_;
     tempTankSprite.move(velocity);
     return Application::getGame().getLandAngleDegree(tempTankSprite.getPosition().x, tempTankSprite.getPosition().y);
-}
-
-sf::RectangleShape Tank::getTankShape()
-{
-    sf::RectangleShape TankShape(sf::Vector2f(tankSprite_.getLocalBounds().width, tankSprite_.getLocalBounds().height));
-    TankShape.setPosition(tankSprite_.getPosition().x, tankSprite_.getPosition().y - tankSprite_.getLocalBounds().height / 2);
-    return TankShape;
-}
-
-int Tank::getPlayerHealth()
-{
-    return health_;
-}
-
-int Tank::getTankID()
-{
-    return playerID_;
-}
-
-sf::Vector2f Tank::getTankPosition()
-{
-    return tankSprite_.getPosition();
 }
