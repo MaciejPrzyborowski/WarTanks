@@ -1,21 +1,9 @@
 #include "World.h"
 
-World::World()
+World::World() :
+    objects_(),
+    PlayerIndex(0)
 {
-
-}
-
-WorldObject * World::addObject(ObjectType type)
-{
-    if(type == ObjectType::Land)
-    {
-        objects_.emplace_back(make_unique<Land>(4, 0.2));
-    }
-    else if(type == ObjectType::Tank)
-    {
-        objects_.emplace_back(make_unique<Tank>(PlayerIndex++));
-    }
-    return objects_.back().get();
 }
 
 WorldObject * World::addObject(WorldObject *object)
@@ -24,14 +12,24 @@ WorldObject * World::addObject(WorldObject *object)
     return objects_.back().get();
 }
 
-void World::drawAll(sf::RenderWindow &window)
+WorldObject * World::addObject(const ObjectType &objectType)
+{
+    if(objectType == ObjectType::Land)
+    {
+        objects_.emplace_back(make_unique<Land>(4, 0.2));
+    }
+    else if(objectType == ObjectType::Tank)
+    {
+        objects_.emplace_back(make_unique<Tank>(++PlayerIndex));
+    }
+    return objects_.back().get();
+}
+
+void World::resetAll()
 {
     for(auto object = objects_.begin(); object != objects_.end(); object++)
     {
-        if(!(*object)->isDestructed_)
-        {
-            (*object)->draw(window);
-        }
+        (*object)->reset();
     }
 }
 
@@ -42,17 +40,6 @@ void World::stepAll(const float &elapsed)
         if(!(*object)->isDestructed_)
         {
             (*object)->step(elapsed);
-        }
-    }
-}
-
-void World::resetAll()
-{
-    for(auto object = objects_.begin(); object != objects_.end(); object++)
-    {
-        if(!(*object)->isDestructed_)
-        {
-            (*object)->reset();
         }
     }
 }
@@ -75,6 +62,17 @@ void World::getCollisionAll()
                 }
             }
             object++;
+        }
+    }
+}
+
+void World::drawAll(sf::RenderWindow &window)
+{
+    for(auto object = objects_.begin(); object != objects_.end(); object++)
+    {
+        if(!(*object)->isDestructed_)
+        {
+            (*object)->draw(window);
         }
     }
 }
