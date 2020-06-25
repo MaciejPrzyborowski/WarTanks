@@ -12,8 +12,7 @@ class Controll
 {
 public:
     /**
-     * @brief
-     *
+     * @brief Konstruktor klasy Controll
      */
     Controll();
 

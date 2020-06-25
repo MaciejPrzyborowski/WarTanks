@@ -10,6 +10,7 @@ class Animation
 {
 public:
     /**
+     * @brief Konstruktor klasy Animation
      * @param fileName - nazwa pliku graficznego z kolejnymi klatkami animacji
      * @param position - określa który element z pliku graficznego trzeba wyciąć
      * @param stepPosition - określa co ile pikseli ma się zmieniać dana klatka animacji

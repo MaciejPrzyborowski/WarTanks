@@ -14,11 +14,11 @@ class World
 {
 public:
     /**
-     * @brief
+     * @brief Konstruktor klasy World
      */
     World();
     /**
-     * @brief
+     * @brief Destruktor klasy
      */
     ~World() = default;
     /**

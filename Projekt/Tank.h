@@ -41,6 +41,7 @@ class Tank : public WorldObject
 public:
 
     /**
+     * @brief Konstruktor klasy Tank
      * @param playerID - ID gracza
      */
     Tank(const int playerID);

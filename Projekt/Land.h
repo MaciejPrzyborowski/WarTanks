@@ -23,6 +23,7 @@ class Land : public WorldObject, public Perlin
 public:
 
     /**
+     * @brief Konstruktor klasy Land
      * @param octaves - liczba oktaw (poziom szczegółowości hałasu)
      * @param persistence - liczba określająca, ile każda oktawa przyczynia się do ogólnego kształu
      */

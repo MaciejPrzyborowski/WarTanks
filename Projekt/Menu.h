@@ -39,8 +39,7 @@ class Menu
 {
 public:
     /**
-     * @brief
-     *
+     * @brief Konstruktor klasy Menu
      */
     Menu();
 

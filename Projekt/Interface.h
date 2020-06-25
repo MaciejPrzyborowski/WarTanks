@@ -3,16 +3,6 @@
 #include "Globals.h"
 
 /**
- * @brief Enum Winner
- */
-enum class Winner
-{
-    None, /**< Nikt nie wygrał */
-    Red, /**< Wygrał gracz czerwony */
-    Blue /**< Wygrał gracz niebieski */
-};
-
-/**
  * @brief Klasa Interface
  */
 class Interface
@@ -20,8 +10,7 @@ class Interface
 public:
 
     /**
-     * @brief
-     *
+     * @brief Konstruktor klasy Interface
      */
     Interface();
 
@@ -55,8 +44,10 @@ public:
      * @brief Wyświetla napis, który gracz wygrał grę. Dodatkowo po 2 sekundach wyswietla napis "Kliknij enter aby wrócić do menu".
      * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
      * @param window - okno gry
+     * @param hp1 - poziom życia gracza (ID 1)
+     * @param hp2 - poziom życia gracza (ID 2)
      */
-    void drawGameEnd(const float &elapsed, sf::RenderTarget &window);
+    void drawGameEnd(const float &elapsed, sf::RenderTarget &window, const int &hp1, const int &hp2);
 
     /**
      * @brief Wyświetla aktualny czas gry.
@@ -86,19 +77,6 @@ public:
      * @param window - okno gry
      */
     void drawTurn(const int &id, const float &timeLeft, sf::RenderTarget &window);
-
-    /**
-     * @brief Sprawdza, który z graczy wygrał grę.
-     * @param health - wektor poziomów życia graczy
-     *         [0] - poziom życia pierwszego gracza
-     *         [1] - poziom życia drugiego gracza
-     * @param tankPosition1 - pozycja pierwszego gracza
-     * @param tankPosition2 - pozycja drugiego gracza
-     * @return wektor pozycji dwóch graczy dopasowana do animacji końcowych
-     *         [0] - współrzędne wygranej pozycji
-     *         [1] - współrzędne przegranej pozycji
-     */
-    vector<sf::Vector2f> checkWinner(const int *health, const sf::Vector2f &tankPosition1, const sf::Vector2f &tankPosition2);
 
     /**
      * @brief Ustawia styl dla obiektu klasy sf::Text.
@@ -133,7 +111,6 @@ private:
     sf::Text hpText_; /**< Napis "HP" do wyświetlenia */
     sf::Text turn_; /**< Napis informujący, którego gracza jest teraz kolej */
     sf::Text turnTimeLeft_; /**< Napis z pozostałym czasem tury danego gracza */
-    Winner winnerID_; /**< Wynik gry */
 
     float totalTime_; /**< Całkowity czas gry */
     float backToMenuTime_; /**< Określa po jakim czasie, po zakończeniu gry ma się pojawić napis "Kliknij enter aby wrócić do menu" */

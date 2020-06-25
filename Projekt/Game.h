@@ -26,8 +26,7 @@ class Game
 {
 public:
     /**
-     * @brief
-     *
+     * @brief Konstruktor klasy Game
      */
     Game();
 
@@ -74,22 +73,61 @@ public:
      */
     void playFireworksSound();
 
+    /**
+     * @brief Niszczy teren w kształcie okręgu.
+     * @param x - współrzędna x
+     * @param y - współrzędna y
+     * @param radius - promień okręgu do zniszczenia
+     */
     inline void destroyLand(int x, int y, int radius){return land->destroyCircle(x, y, radius);}
+
+    /**
+     * @brief Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x, y), następnie w całym kwadracie sumuje odległość od (x, y) dla istniejącego terenu.
+     * @param x - współrzędna x
+     * @param y - współrzędna y
+     * @return Kąt nachylenia powierzchni w punkcie (x, y) w radianach
+     */
     inline float getLandAngleRadian(int x, int y){return land->getAngleRadian(x, y);}
+
+    /**
+     * @brief Oblicza kąt nachylenia powierzchni w punkcie (x, y).
+     * @param x - współrzędna x
+     * @param y - współrzędna y
+     * @return Kąt nachylenia powierzchni w punkcie (x, y) w stopniach
+     */
     inline float getLandAngleDegree(int x, int y){return land->getAngleDegree(x, y);}
+
+    /**
+     * @brief Oblicza wysokość terenu w punkcie x.
+     * @param x - współrzędna x
+     * @return Wysokość terenu w punkcie x
+     */
     inline int getLandHeight(int x){ return land->getHeight(x); }
+
+    /**
+     * @brief Dodaje nowy obiekt do gry.
+     * @param object - obiekt, który ma zostać dodany do gry
+     */
     inline void addWorldObj(WorldObject *object){ world->addObject(object); }
+
+    /**
+     * @brief Zwiększa licznik zadań do wykonania.
+     */
     inline void incCounter() { ++taskCounter; }
+
+    /**
+     * @brief Zmniejsza licznik zadań do wykonania
+     */
     inline void decCounter() { --taskCounter; }
 
 private:
-    int taskCounter = 0;
+    int taskCounter = 0; /**< Licznik zadań */
     unique_ptr<Animation> fireworks_; /**< Animacja fajerwerków */
     unique_ptr<Animation> fire_; /**< Animacja strzału */
     unique_ptr<Menu> menu_; /**< Menu */
     unique_ptr<Interface> GameInterface_; /**< Interface gry */
     unique_ptr<World> world; /**< Elementy gry */
-    Land *land;
+    unique_ptr<Land>::pointer land; /**< Teren gry */
 
     Controll controll_; /**< Kontroler gracza */
     GameState gameState_; /**< Status gry */

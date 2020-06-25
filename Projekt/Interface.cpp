@@ -41,7 +41,6 @@ Interface::Interface(const int &id) :
 
 void Interface::reset()
 {
-    winnerID_ = Winner::None;
     backToMenuTime_ = 0.0;
     totalTime_ = 0.0;
 }
@@ -104,18 +103,18 @@ void Interface::drawTurn(const int &id, const float &timeLeft, sf::RenderTarget 
     window.draw(turnTimeLeft_);
 }
 
-void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
+void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window, const int &hp1, const int &hp2)
 {
     if((backToMenuTime_ += elapsed) >= 2.0)
     {
         window.draw(backToMenu_);
     }
-    if(winnerID_ == Winner::Red)
+    if(hp1 > 0)
     {
         gameEndText_.setOutlineColor(sf::Color::Red);
         gameEndText_.setString("Czerwony wygrywa!");
     }
-    else if(winnerID_ == Winner::Blue)
+    else if(hp2 > 0)
     {
         gameEndText_.setOutlineColor(sf::Color(0, 100, 255));
         gameEndText_.setString("Niebieski wygrywa!");
@@ -128,22 +127,6 @@ void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
     }
     gameEndText_.setPosition(sf::Vector2f((WindowWidth - gameEndText_.getLocalBounds().width)/2, 100));
     window.draw(gameEndText_);
-}
-
-vector<sf::Vector2f> Interface::checkWinner(const int *health, const sf::Vector2f &tankPosition1, const sf::Vector2f &tankPosition2)
-{
-    vector<sf::Vector2f> position;
-    if(health[0] > 0)
-    {
-        winnerID_ = Winner::Red;
-    }
-    else
-    {
-        winnerID_ = Winner::Blue;
-    }
-    position.emplace_back((health[0] > 0 ? tankPosition1 : tankPosition2) - sf::Vector2f(50.0, 120.0));
-    position.emplace_back((health[0] > 0 ? tankPosition2 : tankPosition1) - sf::Vector2f(50.0, 90.0));
-    return position;
 }
 
 sf::Text Interface::setTextStyle(const int &size, const int &thickness, const string &contents, const sf::Vector2f &position, const sf::Color &fillColor, const sf::Color &borderColor)

@@ -12,6 +12,7 @@ class Bullet : public WorldObject
 public:
 
     /**
+     * @brief Konstruktor klasy Bullet
      * @param position - początkowa pozycja pocisku
      */
     Bullet(const sf::Vector2f &position);

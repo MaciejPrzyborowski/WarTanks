@@ -10,6 +10,7 @@ class Perlin
 public:
 
     /**
+     * @brief Konstruktor klasy Perlin
      * @param octaves - liczba oktaw (poziom szczegółowości hałasu)
      * @param persistence - liczba określająca, ile każda oktawa przyczynia się do ogólnego kształu
      */

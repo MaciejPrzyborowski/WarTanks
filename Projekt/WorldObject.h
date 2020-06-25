@@ -20,6 +20,11 @@ class WorldObject
 public:
 
     /**
+     * @brief Wirtualny destruktor klasy WorldObject
+     */
+    virtual ~WorldObject(){};
+
+    /**
      * @brief Wirtualna funkcja do wyświetlania elementów
      * @param window - okno gry
      */

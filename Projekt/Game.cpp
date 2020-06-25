@@ -21,11 +21,11 @@ Game::Game()
     fireworksSound_.setBuffer(fireworksBuffer_);
     fireworksSound_.setVolume(5);
     srand(time(NULL));
-    world = make_unique<World>();
 }
 
 void Game::run()
 {
+    world = make_unique<World>();
     land = dynamic_cast<Land *>(world->addObject(ObjectType::Land));
     world->addObject(ObjectType::Tank);
     world->addObject(ObjectType::Tank);
@@ -113,12 +113,15 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
             world->drawAll(window);
             world->getCollisionAll();
             int playerHealth[2];
+            sf::Vector2f playerPostion[2];
+
             for(auto &object : world->objects_)
             {
                 auto tankID = dynamic_cast<Tank *>(object.get());
                 if(tankID)
                 {
                     playerHealth[tankID->getTankID() - 1] = tankID->getPlayerHealth();
+                    playerPostion[tankID->getTankID() - 1] = tankID->getTankPosition();
                 }
             }
             if(gameState_ == GameState::Play)
@@ -151,9 +154,6 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
                 else if(playerHealth[0] > 0 || playerHealth[1] > 0)
                 {
                     initialize(GameState::EndWinner);
-                    //vector<sf::Vector2f> position = GameInterface_ -> checkWinner(playerHealth, player1_->returnPosition(), player2_->returnPosition());
-                    //winner_ = position[0];
-                    //loser_ = position[1];
                 }
                 else
                 {
@@ -162,13 +162,22 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
             }
             else
             {
-                GameInterface_ -> drawGameEnd(elapsed.asSeconds(), window);
+                GameInterface_ -> drawGameEnd(elapsed.asSeconds(), window, playerHealth[0], playerHealth[1]);
                 if(gameState_ == GameState::EndWinner)
                 {
                     playGameMusic(false);
                     playFireworksSound();
-                    fireworks_ -> draw(elapsed.asSeconds(), winner_, window);
-                    fire_ -> draw(elapsed.asSeconds(), loser_, window);
+                    if(playerHealth[0] <= 0)
+                    {
+                        fireworks_ -> draw(elapsed.asSeconds(), sf::Vector2f(playerPostion[1].x - 50, playerPostion[1].y - 100), window);
+                        fire_ -> draw(elapsed.asSeconds(), sf::Vector2f(playerPostion[0].x - 50, playerPostion[0].y - 80), window);
+                    }
+
+                    else if(playerHealth[1] <=0)
+                    {
+                        fireworks_ -> draw(elapsed.asSeconds(), sf::Vector2f(playerPostion[0].x - 50, playerPostion[0].y - 100), window);
+                        fire_ -> draw(elapsed.asSeconds(), sf::Vector2f(playerPostion[1].x - 50, playerPostion[1].y - 80), window);
+                    }
                 }
             }
         }
