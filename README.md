@@ -77,6 +77,7 @@ Maciej Przyborowski:
       - zmiana tury graczy
             - obsługa czasu tury dla gracza
             - zmiana tury gdy skończy się czas lub wybuchnie pocisk
+      - zmiana architektury gry
 ```            
 Mateusz Kozłowski
 ```
@@ -128,8 +129,8 @@ Wspólnie:
       - opisy funkcji
 ```
 
-![menu](Zdjęcia/mainMenu.png)
-![ustawienia](Zdjęcia/settingsMenu.png)
-![gra](Zdjęcia/game.png)
-![koniec1](Zdjęcia/endGame1.png)
-![koniec2](Zdjęcia/endGame2.png)
+![menu](images/mainMenu.png)
+![ustawienia](images/settingsMenu.png)
+![gra](images/game.png)
+![koniec1](images/endGame1.png)
+![koniec2](images/endGame2.png)
