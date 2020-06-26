@@ -88,12 +88,6 @@ public:
      */
     void setSelectVolume(const float &volume);
 
-    /**
-     * @brief Ustawia aktualny wybór elementu z menu przez myszkę.
-     * @param window - okno gry
-     */
-    void setMouseActive(sf::RenderWindow &window);
-
 private:
 
     sf::Font font_; /**< Czcionka */
