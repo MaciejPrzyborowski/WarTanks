@@ -1,0 +1,4 @@
+<map id="Land::step" name="Land::step">
+<area shape="rect" id="node1" title="Obsługuje grawitacje terenu." alt="" coords="5,5,88,32"/>
+<area shape="rect" id="node2" href="$class_land.html#a40560dc163402d09dae0766c79aec5cf" title="Oblicza wysokość terenu w punkcie x." alt="" coords="136,5,249,32"/>
+</map>

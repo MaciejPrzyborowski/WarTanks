@@ -1,0 +1,7 @@
+<map id="World::drawAll" name="World::drawAll">
+<area shape="rect" id="node1" title=" " alt="" coords="553,5,660,32"/>
+<area shape="rect" id="node2" href="$class_game.html#a6d92a1476f2da91b0ebeda93a1db5dda" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="387,5,505,32"/>
+<area shape="rect" id="node3" href="$class_game.html#a79df6376b332d63c9eca0dcee30305c3" title="Funkcja zawierająca główną pętlę gry." alt="" coords="235,5,339,32"/>
+<area shape="rect" id="node4" href="$class_game.html#a1ab78f5ed0d5ea879157357cf2fb2afa" title="Odpala grę." alt="" coords="104,5,187,32"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,5,56,32"/>
+</map>

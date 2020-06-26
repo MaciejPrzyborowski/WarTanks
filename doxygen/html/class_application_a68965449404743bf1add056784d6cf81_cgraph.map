@@ -1,0 +1,19 @@
+<map id="Application::run" name="Application::run">
+<area shape="rect" id="node1" title="Odpala grę." alt="" coords="5,157,117,184"/>
+<area shape="rect" id="node2" href="$class_game.html#a57610ad9a54706c9e26bcea96715d8e2" title="Obsługuje zdarzenia wykonywane przez gracza." alt="" coords="165,107,291,133"/>
+<area shape="rect" id="node9" href="$class_game.html#a1ab78f5ed0d5ea879157357cf2fb2afa" title="Odpala grę." alt="" coords="187,157,269,184"/>
+<area shape="rect" id="node10" href="$class_game.html#a452f017ab7d46aeba5842ea3456121d8" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="176,259,280,285"/>
+<area shape="rect" id="node3" href="$class_game.html#a231e4d66ba003e86510322376bbe68a0" title="W zależności od statusu gry ustawia funkcję potrzebne do poprawnego uruchomienia menu lub gry." alt="" coords="374,157,486,184"/>
+<area shape="rect" id="node5" href="$class_game.html#aa9cf3ddd751aafe7310fce064d42b3f6" title="Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="571,107,727,133"/>
+<area shape="rect" id="node6" href="$class_controll.html#a984c6b1ec15f32ba3cf6e5fb36f1d660" title="Obsługuje zdarzenia wykonane przez gracza w menu. Obsługiwana jest klawiatura oraz myszka gracza." alt="" coords="346,107,514,133"/>
+<area shape="rect" id="node7" href="$class_controll.html#af228128b4ea54273178bebab865f4dda" title="Obsługuje zdarzenia wykonane przez gracza w grze. Obsługiwana jest klawiatura oraz myszka gracza." alt="" coords="349,5,511,32"/>
+<area shape="rect" id="node4" href="$class_game.html#a1cb0d578ca0918619486c25fec6e637b" title="Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="569,259,728,285"/>
+<area shape="rect" id="node8" href="$class_tank.html#a15ed812961a07fdf87cd5bba00bb4c56" title="Ustawia kierunek przemieszczenia czołgu." alt="" coords="570,5,727,32"/>
+<area shape="rect" id="node11" href="$class_tank.html#a1ebf452f77736ab9b2fed17a64646760" title="Określa poziom życia gracza." alt="" coords="355,208,505,235"/>
+<area shape="rect" id="node12" href="$class_game.html#a83e9cea6609bc2dd8c064938e77c7dfa" title="Włącza dźwięk fajerwerków na koniec gry." alt="" coords="339,259,521,285"/>
+<area shape="rect" id="node13" href="$class_tank.html#a272a3636e350ebfe77f12252459fa390" title="Zmienia status gracza." alt="" coords="363,309,497,336"/>
+<area shape="rect" id="node14" href="$class_tank.html#ad1ee6f741dec6c4a50501841577ed104" title="Aktualizuje dane gracza." alt="" coords="381,411,479,437"/>
+<area shape="rect" id="node15" href="$class_game.html#af0914e8e8b16223d222c2e7ead5c111e" title="Zmniejsza licznik zadań do wykonania." alt="" coords="583,360,714,387"/>
+<area shape="rect" id="node16" href="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f" title=" " alt="" coords="575,411,722,437"/>
+<area shape="rect" id="node17" href="$class_tank.html#a4ecfdd3f3eac718b5608566bdd6a5409" title="Zmienia kąt nachylenia lufy." alt="" coords="583,461,715,488"/>
+</map>

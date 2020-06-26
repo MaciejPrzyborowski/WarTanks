@@ -1,0 +1,10 @@
+<map id="Land::isSolidPixel" name="Land::isSolidPixel">
+<area shape="rect" id="node1" title="Sprawdza czy istnieje teren w punkcie (x, y)." alt="" coords="668,31,795,57"/>
+<area shape="rect" id="node2" href="$class_land.html#a3a01fa0ff6946ed99f1e49dae367d13f" title="Usuwa kolumnę terenu w punkcie x dla y o początku &#45; top, końcu &#45; bottom." alt="" coords="473,5,618,32"/>
+<area shape="rect" id="node5" href="$class_land.html#a8fc780b2d81f6176a3add3244690409f" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..." alt="" coords="471,56,620,83"/>
+<area shape="rect" id="node3" href="$class_land.html#a873615d69e0c62899100d7194adfb7f7" title="Usuwa teren w kształcie koła o środku w punkcie (x, y) i promieniu r." alt="" coords="263,5,398,32"/>
+<area shape="rect" id="node4" href="$class_game.html#ac34682def8351efac93e37585fa29c71" title="Niszczy teren w kształcie okręgu." alt="" coords="30,5,166,32"/>
+<area shape="rect" id="node6" href="$class_land.html#a4ff12277063d532b74afa5c5a383db30" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="255,56,406,83"/>
+<area shape="rect" id="node8" href="$class_game.html#ad0aeaed374e63bbd043edc80dfe7e432" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..." alt="" coords="239,107,423,133"/>
+<area shape="rect" id="node7" href="$class_game.html#abb9a936013837edd347f0d4d57131d14" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="5,56,191,83"/>
+</map>

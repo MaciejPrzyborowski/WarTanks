@@ -1,0 +1,4 @@
+<map id="Tank::setCursorVisibility" name="Tank::setCursorVisibility">
+<area shape="rect" id="node1" title="Wyłącza widocznośc kursora gdy gracz zmienia nachylenie lufy." alt="" coords="5,5,168,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a932ea7ef63f992786e162483cce8ee76" title="Sprawdza czy gracz może zmienić położenie lufy." alt="" coords="216,5,369,32"/>
+</map>

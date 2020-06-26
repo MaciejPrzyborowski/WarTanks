@@ -1,0 +1,4 @@
+<map id="Bullet::getCollison" name="Bullet::getCollison">
+<area shape="rect" id="node1" title="Sprawdza kolizje z innymi obiektami." alt="" coords="5,5,132,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a32e8dfba22ec0fdda4d59e99bf208c04" title="Ustawia poziom życia gracza." alt="" coords="180,5,331,32"/>
+</map>

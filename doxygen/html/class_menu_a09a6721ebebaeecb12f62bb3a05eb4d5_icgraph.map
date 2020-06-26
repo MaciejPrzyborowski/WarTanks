@@ -1,0 +1,4 @@
+<map id="Menu::setSettings" name="Menu::setSettings">
+<area shape="rect" id="node1" title="Zmienia ustawienia gry." alt="" coords="205,5,333,32"/>
+<area shape="rect" id="node2" href="$class_menu.html#a73a22bd37c91396b506ee7641a70dfd8" title="Obsługuje wybór elementu z menu." alt="" coords="5,5,157,32"/>
+</map>

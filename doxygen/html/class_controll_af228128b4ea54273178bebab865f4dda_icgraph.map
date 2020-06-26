@@ -1,0 +1,6 @@
+<map id="Controll::tankPassEvent" name="Controll::tankPassEvent">
+<area shape="rect" id="node1" title="Obsługuje zdarzenia wykonane przez gracza w grze. Obsługiwana jest klawiatura oraz myszka gracza." alt="" coords="437,5,599,32"/>
+<area shape="rect" id="node2" href="$class_game.html#a57610ad9a54706c9e26bcea96715d8e2" title="Obsługuje zdarzenia wykonywane przez gracza." alt="" coords="264,5,389,32"/>
+<area shape="rect" id="node3" href="$class_application.html#a68965449404743bf1add056784d6cf81" title="Odpala grę." alt="" coords="104,5,216,32"/>
+<area shape="rect" id="node4" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,5,56,32"/>
+</map>

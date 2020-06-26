@@ -1,0 +1,6 @@
+<map id="Tank::reset" name="Tank::reset">
+<area shape="rect" id="node1" title="Resetuje parametry czołgu do ustawień domyślnych." alt="" coords="5,31,92,57"/>
+<area shape="rect" id="node2" href="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f" title=" " alt="" coords="141,5,287,32"/>
+<area shape="rect" id="node3" href="$class_game.html#a0be219c8b9c815b670e5d7c5ced2f1de" title="Oblicza wysokość terenu w punkcie x." alt="" coords="140,56,288,83"/>
+<area shape="rect" id="node4" href="$class_land.html#a40560dc163402d09dae0766c79aec5cf" title="Oblicza wysokość terenu w punkcie x." alt="" coords="336,56,449,83"/>
+</map>

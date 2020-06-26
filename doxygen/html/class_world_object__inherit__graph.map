@@ -1,0 +1,6 @@
+<map id="WorldObject" name="WorldObject">
+<area shape="rect" id="node1" title="Klasa WorldObject." alt="" coords="63,5,157,32"/>
+<area shape="rect" id="node2" href="$class_bullet.html" title="Klasa Bullet." alt="" coords="5,80,60,107"/>
+<area shape="rect" id="node3" href="$class_land.html" title="Klasa Land." alt="" coords="85,80,135,107"/>
+<area shape="rect" id="node4" href="$class_tank.html" title="Klasa Tank." alt="" coords="159,80,210,107"/>
+</map>

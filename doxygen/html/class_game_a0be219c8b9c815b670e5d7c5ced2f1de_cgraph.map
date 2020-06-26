@@ -1,0 +1,4 @@
+<map id="Game::getLandHeight" name="Game::getLandHeight">
+<area shape="rect" id="node1" title="Oblicza wysokość terenu w punkcie x." alt="" coords="5,5,153,32"/>
+<area shape="rect" id="node2" href="$class_land.html#a40560dc163402d09dae0766c79aec5cf" title="Oblicza wysokość terenu w punkcie x." alt="" coords="201,5,315,32"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Perlin::octaveNoise" name="Perlin::octaveNoise">
+<area shape="rect" id="node1" title="Sumuje wartości szumów Perlina w punkcie [x, y] dla kolejnych oktaw. Do każdej oktawy zostanie dodana..." alt="" coords="140,5,273,32"/>
+<area shape="rect" id="node2" href="$class_land.html#a02779ff6ab7263a2f79afbdfbc471225" title="Resetuje parametry mapy i generuje teren." alt="" coords="5,5,92,32"/>
+</map>

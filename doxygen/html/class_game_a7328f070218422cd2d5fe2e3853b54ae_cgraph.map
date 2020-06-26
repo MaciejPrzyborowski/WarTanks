@@ -1,0 +1,9 @@
+<map id="Game::passEvent" name="Game::passEvent">
+<area shape="rect" id="node1" title="Obsługuje zdarzenia wykonywane przez gracza." alt="" coords="5,132,131,159"/>
+<area shape="rect" id="node2" href="$class_game.html#a231e4d66ba003e86510322376bbe68a0" title="W zależności od statusu gry ustawia funkcję potrzebne do poprawnego uruchomienia menu lub gry." alt="" coords="207,56,319,83"/>
+<area shape="rect" id="node4" href="$class_game.html#aa9cf3ddd751aafe7310fce064d42b3f6" title="Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="396,107,552,133"/>
+<area shape="rect" id="node6" href="$class_controll.html#a984c6b1ec15f32ba3cf6e5fb36f1d660" title="Obsługuje zdarzenia wykonane przez gracza w menu. Obsługiwana jest klawiatura oraz myszka gracza." alt="" coords="179,157,347,184"/>
+<area shape="rect" id="node7" href="$class_controll.html#af228128b4ea54273178bebab865f4dda" title="Obsługuje zdarzenia wykonane przez gracza w grze. Obsługiwana jest klawiatura oraz myszka gracza." alt="" coords="182,208,343,235"/>
+<area shape="rect" id="node3" href="$class_game.html#a1cb0d578ca0918619486c25fec6e637b" title="Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="395,5,553,32"/>
+<area shape="rect" id="node5" href="$class_world.html#a4b42487e8bb05e21efb1c0d4c5a95ab4" title="Resetuje wszystkie elementy do stanu początkowego." alt="" coords="420,56,528,83"/>
+</map>

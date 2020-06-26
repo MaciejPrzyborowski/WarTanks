@@ -1,0 +1,5 @@
+<map id="Menu::setMenu" name="Menu::setMenu">
+<area shape="rect" id="node1" title="Ustawia dane w menu." alt="" coords="205,31,317,57"/>
+<area shape="rect" id="node2" href="$class_menu.html#ad7326db286be66a1ddf5bd949b4a73c1" title="Obsługuje wybór elementu z menu." alt="" coords="5,5,157,32"/>
+<area shape="rect" id="node3" href="$class_menu.html#acc0ac1d86c817a462478c652330bf16f" title="Resetuje parametry menu do ustawień domyślnych." alt="" coords="36,56,127,83"/>
+</map>

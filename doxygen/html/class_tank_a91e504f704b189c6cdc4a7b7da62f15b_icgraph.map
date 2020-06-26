@@ -1,0 +1,4 @@
+<map id="Tank::shootReset" name="Tank::shootReset">
+<area shape="rect" id="node1" title="Usuwa pocisk i zadaje obrażenia trafionym graczom." alt="" coords="139,5,263,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a433fdba9496108e1cd3fee930ccd3c51" title="Wyświetla czołg i jego elementy." alt="" coords="5,5,91,32"/>
+</map>

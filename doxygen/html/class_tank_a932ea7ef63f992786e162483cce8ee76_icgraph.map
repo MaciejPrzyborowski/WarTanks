@@ -1,0 +1,4 @@
+<map id="Tank::canCannonMove" name="Tank::canCannonMove">
+<area shape="rect" id="node1" title="Sprawdza czy gracz może zmienić położenie lufy." alt="" coords="216,5,369,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#af7f745c137c15aaec5fa9a48369bdf4c" title="Wyłącza widocznośc kursora gdy gracz zmienia nachylenie lufy." alt="" coords="5,5,168,32"/>
+</map>

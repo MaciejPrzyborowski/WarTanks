@@ -1,0 +1,5 @@
+<map id="Tank::draw" name="Tank::draw">
+<area shape="rect" id="node1" title="Wyświetla czołg i jego elementy." alt="" coords="5,31,91,57"/>
+<area shape="rect" id="node2" href="$class_tank.html#a8bdddb035b486a241a14b5c2da6fad8a" title="Zwraca status gracza." alt="" coords="143,5,258,32"/>
+<area shape="rect" id="node3" href="$class_tank.html#a91e504f704b189c6cdc4a7b7da62f15b" title="Usuwa pocisk i zadaje obrażenia trafionym graczom." alt="" coords="139,56,263,83"/>
+</map>

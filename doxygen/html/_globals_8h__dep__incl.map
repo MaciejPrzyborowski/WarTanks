@@ -1,0 +1,27 @@
+<map id="Globals.h" name="Globals.h">
+<area shape="rect" id="node1" title=" " alt="" coords="466,5,543,32"/>
+<area shape="rect" id="node2" href="$_animation_8h.html" title=" " alt="" coords="124,80,215,107"/>
+<area shape="rect" id="node4" href="$_bullet_8h.html" title=" " alt="" coords="224,155,291,181"/>
+<area shape="rect" id="node5" href="$_world_8h.html" title=" " alt="" coords="359,229,426,256"/>
+<area shape="rect" id="node6" href="$_tank_8h.html" title=" " alt="" coords="266,304,327,331"/>
+<area shape="rect" id="node7" href="$_game_8h.html" title=" " alt="" coords="489,379,557,405"/>
+<area shape="rect" id="node8" href="$_application_8h.html" title=" " alt="" coords="600,453,697,480"/>
+<area shape="rect" id="node18" href="$_interface_8h.html" title=" " alt="" coords="558,229,640,256"/>
+<area shape="rect" id="node20" href="$_world_object_8h.html" title=" " alt="" coords="290,80,396,107"/>
+<area shape="rect" id="node21" href="$_land_8h.html" title=" " alt="" coords="372,155,434,181"/>
+<area shape="rect" id="node23" href="$_perlin_8h.html" title=" " alt="" coords="471,80,538,107"/>
+<area shape="rect" id="node25" href="$_menu_8h.html" title=" " alt="" coords="814,229,880,256"/>
+<area shape="rect" id="node3" href="$_animation_8cpp.html" title=" " alt="" coords="26,155,132,181"/>
+<area shape="rect" id="node10" href="$_bullet_8cpp.html" title=" " alt="" coords="215,528,295,555"/>
+<area shape="rect" id="node16" href="$_controll_8h.html" title=" " alt="" coords="780,304,858,331"/>
+<area shape="rect" id="node17" href="$_world_8cpp.html" title=" " alt="" coords="352,304,433,331"/>
+<area shape="rect" id="node14" href="$_tank_8cpp.html" title=" " alt="" coords="347,528,422,555"/>
+<area shape="rect" id="node15" href="$_game_8cpp.html" title=" " alt="" coords="482,453,564,480"/>
+<area shape="rect" id="node9" href="$_application_8cpp.html" title=" " alt="" coords="594,528,705,555"/>
+<area shape="rect" id="node11" href="$_controll_8cpp.html" title=" " alt="" coords="732,528,823,555"/>
+<area shape="rect" id="node12" href="$main_8cpp.html" title=" " alt="" coords="495,528,570,555"/>
+<area shape="rect" id="node13" href="$_menu_8cpp.html" title=" " alt="" coords="849,528,928,555"/>
+<area shape="rect" id="node19" href="$_interface_8cpp.html" title=" " alt="" coords="559,304,655,331"/>
+<area shape="rect" id="node22" href="$_land_8cpp.html" title=" " alt="" coords="450,229,524,256"/>
+<area shape="rect" id="node24" href="$_perlin_8cpp.html" title=" " alt="" coords="458,155,538,181"/>
+</map>

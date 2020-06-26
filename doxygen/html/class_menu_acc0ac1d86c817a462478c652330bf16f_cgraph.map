@@ -1,0 +1,4 @@
+<map id="Menu::reset" name="Menu::reset">
+<area shape="rect" id="node1" title="Resetuje parametry menu do ustawień domyślnych." alt="" coords="5,5,96,32"/>
+<area shape="rect" id="node2" href="$class_menu.html#a3bf3f48877c4b6e71dcacd9f66b2049b" title="Ustawia dane w menu." alt="" coords="144,5,256,32"/>
+</map>

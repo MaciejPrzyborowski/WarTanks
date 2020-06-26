@@ -1,0 +1,4 @@
+<map id="Bullet::move" name="Bullet::move">
+<area shape="rect" id="node1" title="Przesuwa pocisk o wektor velocity_ zgodnie z upływem czasu." alt="" coords="144,5,237,32"/>
+<area shape="rect" id="node2" href="$class_bullet.html#aad00eecd1b2a2b3b5914c9fe94e4845e" title="Wywołuje funkcję przesunięcia i wyświetlenia pocisku oraz jego wybuchu." alt="" coords="5,5,96,32"/>
+</map>

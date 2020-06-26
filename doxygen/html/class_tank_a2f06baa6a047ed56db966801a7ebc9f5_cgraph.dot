@@ -1,0 +1,12 @@
+digraph "Tank::reset"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Tank::reset",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Resetuje parametry czołgu do ustawień domyślnych."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Application::getGame",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f",tooltip="Zwraca obiekt klasy Game."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Game::getLandHeight",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_game.html#ac2fd041f553a3e63f9c6b6cb6d6aba52",tooltip="Oblicza wysokość terenu w punkcie x."];
+}

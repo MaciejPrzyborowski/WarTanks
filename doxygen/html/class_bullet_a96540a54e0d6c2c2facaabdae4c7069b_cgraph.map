@@ -1,0 +1,5 @@
+<map id="Bullet::step" name="Bullet::step">
+<area shape="rect" id="node1" title="Przesuwa pocisk o wektor velocity_ zgodnie z upływem czasu." alt="" coords="5,31,93,57"/>
+<area shape="rect" id="node2" href="$class_game.html#af0914e8e8b16223d222c2e7ead5c111e" title="Zmniejsza licznik zadań do wykonania." alt="" coords="149,5,280,32"/>
+<area shape="rect" id="node3" href="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f" title=" " alt="" coords="141,56,288,83"/>
+</map>

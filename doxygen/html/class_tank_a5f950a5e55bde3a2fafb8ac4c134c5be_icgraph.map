@@ -1,0 +1,4 @@
+<map id="Tank::getTankShape" name="Tank::getTankShape">
+<area shape="rect" id="node1" title="Oblicza prawidłową figurę czołgu." alt="" coords="144,5,285,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a71c8dad3ef865248067915158babbd92" title="Tworzy pocisk w miejscu aktualnej pozycji celownika. Pocisk jest wystrzeliwany z mocą shootPower_ wym..." alt="" coords="5,5,96,32"/>
+</map>

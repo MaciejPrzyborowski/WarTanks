@@ -1,0 +1,7 @@
+<map id="Tank::moveCannon" name="Tank::moveCannon">
+<area shape="rect" id="node1" title="Zmienia kąt nachylenia lufy." alt="" coords="561,5,693,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#ad1ee6f741dec6c4a50501841577ed104" title="Aktualizuje dane gracza." alt="" coords="416,5,513,32"/>
+<area shape="rect" id="node3" href="$class_game.html#a452f017ab7d46aeba5842ea3456121d8" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="264,5,368,32"/>
+<area shape="rect" id="node4" href="$class_application.html#a68965449404743bf1add056784d6cf81" title="Odpala grę." alt="" coords="104,5,216,32"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,5,56,32"/>
+</map>

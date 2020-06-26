@@ -1,0 +1,16 @@
+digraph "Land::isSolidPixel"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="RL";
+  Node1 [label="Land::isSolidPixel",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Sprawdza czy istnieje teren w punkcie (x, y)."];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Land::destroyColumn",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_land.html#a3a01fa0ff6946ed99f1e49dae367d13f",tooltip="Usuwa kolumnę terenu w punkcie x dla y o początku - top, końcu - bottom."];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Land::destroyCircle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_land.html#a873615d69e0c62899100d7194adfb7f7",tooltip="Usuwa teren w kształcie koła o środku w punkcie (x, y) i promieniu r."];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Land::getAngleRadian",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_land.html#a8fc780b2d81f6176a3add3244690409f",tooltip="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..."];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Land::getAngleDegree",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_land.html#a4ff12277063d532b74afa5c5a383db30",tooltip="Oblicza kąt nachylenia powierzchni w punkcie (x, y)."];
+}

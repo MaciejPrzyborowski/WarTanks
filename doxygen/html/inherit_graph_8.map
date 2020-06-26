@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_perlin.html" title="Klasa Perlin." alt="" coords="25,5,80,32"/>
+<area shape="rect" id="node2" href="$class_land.html" title="Klasa Land." alt="" coords="150,5,201,32"/>
+<area shape="rect" id="node3" href="$class_world_object.html" title="Klasa WorldObject." alt="" coords="5,56,100,83"/>
+<area shape="rect" id="node4" href="$class_bullet.html" title="Klasa Bullet." alt="" coords="148,56,203,83"/>
+<area shape="rect" id="node5" href="$class_tank.html" title="Klasa Tank." alt="" coords="150,107,201,133"/>
+</map>

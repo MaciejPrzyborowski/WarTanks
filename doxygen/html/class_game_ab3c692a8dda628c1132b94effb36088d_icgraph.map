@@ -1,0 +1,4 @@
+<map id="Game::addWorldObj" name="Game::addWorldObj">
+<area shape="rect" id="node1" title="Dodaje nowy obiekt do gry." alt="" coords="144,5,284,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a71c8dad3ef865248067915158babbd92" title="Tworzy pocisk w miejscu aktualnej pozycji celownika." alt="" coords="5,5,96,32"/>
+</map>

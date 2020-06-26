@@ -1,0 +1,9 @@
+<map id="Bullet::move" name="Bullet::move">
+<area shape="rect" id="node1" title="Przesuwa pocisk o wektor velocity_ zgodnie z upływem czasu." alt="" coords="5,56,99,83"/>
+<area shape="rect" id="node2" href="$class_bullet.html#a9497575221a4fc63ee275834bd0fee24" title="Wykonuje eksplozję w miejscu kolizji." alt="" coords="147,5,255,32"/>
+<area shape="rect" id="node5" href="$class_land.html#a7fba204c105453e8ad2bc6b2a7f0d6f9" title="Oblicza wysokość terenu w punkcie x." alt="" coords="679,95,820,121"/>
+<area shape="rect" id="node7" href="$class_bullet.html#af293557fe6a31841118fdc1e1c8d91cb" title="Sprawdza czy pocisk uderzył w gracza." alt="" coords="310,56,430,83"/>
+<area shape="rect" id="node3" href="$class_land.html#a873615d69e0c62899100d7194adfb7f7" title="Usuwa teren w kształcie koła o środku w punkcie (x, y) i promieniu r." alt="" coords="303,5,437,32"/>
+<area shape="rect" id="node4" href="$class_land.html#a3a01fa0ff6946ed99f1e49dae367d13f" title="Usuwa kolumnę terenu w punkcie x dla y o początku &#45; top, końcu &#45; bottom." alt="" coords="485,19,631,45"/>
+<area shape="rect" id="node6" href="$class_land.html#a37f5b6d19d2a4cc910b9c4dcc63138dc" title="Sprawdza czy istnieje teren w punkcie (x, y)." alt="" coords="686,19,813,45"/>
+</map>

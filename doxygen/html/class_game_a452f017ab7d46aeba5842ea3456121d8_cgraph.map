@@ -1,0 +1,13 @@
+<map id="Game::update" name="Game::update">
+<area shape="rect" id="node1" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="5,132,109,159"/>
+<area shape="rect" id="node2" href="$class_tank.html#a1ebf452f77736ab9b2fed17a64646760" title="Określa poziom życia gracza." alt="" coords="173,5,324,32"/>
+<area shape="rect" id="node3" href="$class_game.html#a231e4d66ba003e86510322376bbe68a0" title="W zależności od statusu gry ustawia funkcję potrzebne do poprawnego uruchomienia menu lub gry." alt="" coords="193,107,305,133"/>
+<area shape="rect" id="node4" href="$class_game.html#a1cb0d578ca0918619486c25fec6e637b" title="Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="388,56,547,83"/>
+<area shape="rect" id="node6" href="$class_game.html#a83e9cea6609bc2dd8c064938e77c7dfa" title="Włącza dźwięk fajerwerków na koniec gry." alt="" coords="157,157,340,184"/>
+<area shape="rect" id="node7" href="$class_tank.html#a272a3636e350ebfe77f12252459fa390" title="Zmienia status gracza." alt="" coords="182,208,315,235"/>
+<area shape="rect" id="node8" href="$class_tank.html#ad1ee6f741dec6c4a50501841577ed104" title="Aktualizuje dane gracza." alt="" coords="200,259,297,285"/>
+<area shape="rect" id="node5" href="$class_game.html#aa9cf3ddd751aafe7310fce064d42b3f6" title="Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="389,107,545,133"/>
+<area shape="rect" id="node9" href="$class_game.html#af0914e8e8b16223d222c2e7ead5c111e" title="Zmniejsza licznik zadań do wykonania." alt="" coords="402,208,533,235"/>
+<area shape="rect" id="node10" href="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f" title=" " alt="" coords="394,259,541,285"/>
+<area shape="rect" id="node11" href="$class_tank.html#a4ecfdd3f3eac718b5608566bdd6a5409" title="Zmienia kąt nachylenia lufy." alt="" coords="401,309,533,336"/>
+</map>

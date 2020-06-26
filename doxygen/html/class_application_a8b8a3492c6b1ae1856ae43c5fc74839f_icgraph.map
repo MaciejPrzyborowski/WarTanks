@@ -1,0 +1,12 @@
+<map id="Application::getGame" name="Application::getGame">
+<area shape="rect" id="node1" title=" " alt="" coords="561,132,708,159"/>
+<area shape="rect" id="node2" href="$class_bullet.html#aad00eecd1b2a2b3b5914c9fe94e4845e" title="Wyświetla pocisk oraz jego wybuch." alt="" coords="419,5,510,32"/>
+<area shape="rect" id="node3" href="$class_tank.html#a2f06baa6a047ed56db966801a7ebc9f5" title="Resetuje parametry czołgu do ustawień domyślnych." alt="" coords="421,56,508,83"/>
+<area shape="rect" id="node4" href="$class_tank.html#a71c8dad3ef865248067915158babbd92" title="Tworzy pocisk w miejscu aktualnej pozycji celownika." alt="" coords="419,107,510,133"/>
+<area shape="rect" id="node5" href="$class_bullet.html#a96540a54e0d6c2c2facaabdae4c7069b" title="Przesuwa pocisk o wektor velocity_ zgodnie z upływem czasu." alt="" coords="421,157,509,184"/>
+<area shape="rect" id="node6" href="$class_tank.html#abb1ee4575302230c45c53d6b008e5ebf" title="Obsługuje grawitacje i przemieszczenie gracza." alt="" coords="423,208,506,235"/>
+<area shape="rect" id="node7" href="$class_tank.html#ad1ee6f741dec6c4a50501841577ed104" title="Aktualizuje dane gracza." alt="" coords="416,259,513,285"/>
+<area shape="rect" id="node8" href="$class_game.html#a452f017ab7d46aeba5842ea3456121d8" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="264,259,368,285"/>
+<area shape="rect" id="node9" href="$class_application.html#a68965449404743bf1add056784d6cf81" title="Odpala grę." alt="" coords="104,259,216,285"/>
+<area shape="rect" id="node10" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,259,56,285"/>
+</map>

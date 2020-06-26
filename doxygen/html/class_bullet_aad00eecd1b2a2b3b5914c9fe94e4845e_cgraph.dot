@@ -1,0 +1,14 @@
+digraph "Bullet::draw"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="Bullet::draw",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Wyświetla pocisk oraz jego wybuch."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Game::decCounter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_game.html#af0914e8e8b16223d222c2e7ead5c111e",tooltip="Zmniejsza licznik zadań do wykonania."];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Application::getGame",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f",tooltip="Zwraca obiekt klasy Game."];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Bullet::getStatus",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_bullet.html#a00c2b7dac54a0cb2a217dd5a787588f0",tooltip="Sprawdza czy pocisk wybuchł"];
+}

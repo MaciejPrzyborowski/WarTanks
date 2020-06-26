@@ -1,0 +1,10 @@
+<map id="Tank::moveTank" name="Tank::moveTank">
+<area shape="rect" id="node1" title="Obsługuje przemieszczenie czołgu." alt="" coords="5,31,121,57"/>
+<area shape="rect" id="node2" href="$class_land.html#a7fba204c105453e8ad2bc6b2a7f0d6f9" title="Oblicza wysokość terenu w punkcie x." alt="" coords="180,5,321,32"/>
+<area shape="rect" id="node3" href="$class_tank.html#a2335ad3cf078dc54cd6debd274cc11e0" title="Przesuwa pozycję czołgu oraz jego lufy." alt="" coords="169,56,332,83"/>
+<area shape="rect" id="node4" href="$class_tank.html#af49a2deefa20a9e7261956512a19581a" title="Sprawdza czy czołg może przemieścić się o wektor [x, y]." alt="" coords="380,31,517,57"/>
+<area shape="rect" id="node5" href="$class_tank.html#a59cbdcb69015560f9b14535f5e391b36" title="Oblicza nachylenie terenu po przemieszczeniu się o wektor prędkości [x, y]." alt="" coords="565,56,703,83"/>
+<area shape="rect" id="node6" href="$class_land.html#a4ff12277063d532b74afa5c5a383db30" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="751,56,901,83"/>
+<area shape="rect" id="node7" href="$class_land.html#a8fc780b2d81f6176a3add3244690409f" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..." alt="" coords="949,56,1099,83"/>
+<area shape="rect" id="node8" href="$class_land.html#a37f5b6d19d2a4cc910b9c4dcc63138dc" title="Sprawdza czy istnieje teren w punkcie (x, y)." alt="" coords="1147,56,1273,83"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="Land::getAngleDegree" name="Land::getAngleDegree">
+<area shape="rect" id="node1" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="239,5,389,32"/>
+<area shape="rect" id="node2" href="$class_game.html#abb9a936013837edd347f0d4d57131d14" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="5,5,191,32"/>
+</map>

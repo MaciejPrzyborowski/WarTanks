@@ -1,0 +1,6 @@
+<map id="Tank::getPlayerHealth" name="Tank::getPlayerHealth">
+<area shape="rect" id="node1" title="Określa poziom życia gracza." alt="" coords="416,5,567,32"/>
+<area shape="rect" id="node2" href="$class_game.html#a452f017ab7d46aeba5842ea3456121d8" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="264,5,368,32"/>
+<area shape="rect" id="node3" href="$class_application.html#a68965449404743bf1add056784d6cf81" title="Odpala grę." alt="" coords="104,5,216,32"/>
+<area shape="rect" id="node4" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,5,56,32"/>
+</map>

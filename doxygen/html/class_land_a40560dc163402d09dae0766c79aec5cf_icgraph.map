@@ -1,0 +1,10 @@
+<map id="Land::getHeight" name="Land::getHeight">
+<area shape="rect" id="node1" title="Oblicza wysokość terenu w punkcie x." alt="" coords="568,56,681,83"/>
+<area shape="rect" id="node2" href="$class_land.html#a3a01fa0ff6946ed99f1e49dae367d13f" title="Usuwa kolumnę terenu w punkcie x dla y o początku &#45; top, końcu &#45; bottom." alt="" coords="373,5,519,32"/>
+<area shape="rect" id="node5" href="$class_game.html#a0be219c8b9c815b670e5d7c5ced2f1de" title="Oblicza wysokość terenu w punkcie x." alt="" coords="372,56,520,83"/>
+<area shape="rect" id="node8" href="$class_land.html#a915038895308631f53f8361a9f2b7a91" title="Obsługuje grawitacje terenu." alt="" coords="405,107,487,133"/>
+<area shape="rect" id="node3" href="$class_land.html#a873615d69e0c62899100d7194adfb7f7" title="Usuwa teren w kształcie koła o środku w punkcie (x, y) i promieniu r." alt="" coords="189,5,324,32"/>
+<area shape="rect" id="node4" href="$class_game.html#ac34682def8351efac93e37585fa29c71" title="Niszczy teren w kształcie okręgu." alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node6" href="$class_tank.html#a2f06baa6a047ed56db966801a7ebc9f5" title="Resetuje parametry czołgu do ustawień domyślnych." alt="" coords="213,56,300,83"/>
+<area shape="rect" id="node7" href="$class_tank.html#abb1ee4575302230c45c53d6b008e5ebf" title="Obsługuje grawitacje i przemieszczenie gracza." alt="" coords="215,107,298,133"/>
+</map>

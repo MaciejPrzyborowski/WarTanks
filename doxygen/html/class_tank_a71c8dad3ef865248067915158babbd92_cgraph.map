@@ -1,0 +1,5 @@
+<map id="Tank::shoot" name="Tank::shoot">
+<area shape="rect" id="node1" title="Tworzy pocisk w miejscu aktualnej pozycji celownika." alt="" coords="5,31,96,57"/>
+<area shape="rect" id="node2" href="$class_game.html#ab3c692a8dda628c1132b94effb36088d" title="Dodaje nowy obiekt do gry." alt="" coords="147,5,287,32"/>
+<area shape="rect" id="node3" href="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f" title=" " alt="" coords="144,56,291,83"/>
+</map>

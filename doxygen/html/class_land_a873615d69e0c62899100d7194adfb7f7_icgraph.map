@@ -1,0 +1,4 @@
+<map id="Land::destroyCircle" name="Land::destroyCircle">
+<area shape="rect" id="node1" title="Usuwa teren w kształcie koła o środku w punkcie (x, y) i promieniu r." alt="" coords="189,5,324,32"/>
+<area shape="rect" id="node2" href="$class_game.html#ac34682def8351efac93e37585fa29c71" title="Niszczy teren w kształcie okręgu." alt="" coords="5,5,141,32"/>
+</map>

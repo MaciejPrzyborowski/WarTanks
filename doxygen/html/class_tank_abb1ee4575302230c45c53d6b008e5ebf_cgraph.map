@@ -1,0 +1,6 @@
+<map id="Tank::step" name="Tank::step">
+<area shape="rect" id="node1" title="Obsługuje grawitacje i przemieszczenie gracza." alt="" coords="5,31,88,57"/>
+<area shape="rect" id="node2" href="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f" title=" " alt="" coords="137,5,283,32"/>
+<area shape="rect" id="node3" href="$class_game.html#a0be219c8b9c815b670e5d7c5ced2f1de" title="Oblicza wysokość terenu w punkcie x." alt="" coords="136,56,284,83"/>
+<area shape="rect" id="node4" href="$class_land.html#a40560dc163402d09dae0766c79aec5cf" title="Oblicza wysokość terenu w punkcie x." alt="" coords="332,56,445,83"/>
+</map>

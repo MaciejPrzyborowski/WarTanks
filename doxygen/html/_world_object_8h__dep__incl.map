@@ -1,0 +1,19 @@
+<map id="WorldObject.h" name="WorldObject.h">
+<area shape="rect" id="node1" title=" " alt="" coords="153,5,258,32"/>
+<area shape="rect" id="node2" href="$_world_8h.html" title=" " alt="" coords="243,155,309,181"/>
+<area shape="rect" id="node15" href="$_land_8h.html" title=" " alt="" coords="68,80,129,107"/>
+<area shape="rect" id="node17" href="$_bullet_8h.html" title=" " alt="" coords="172,80,239,107"/>
+<area shape="rect" id="node3" href="$_tank_8h.html" title=" " alt="" coords="208,229,269,256"/>
+<area shape="rect" id="node4" href="$_game_8h.html" title=" " alt="" coords="323,304,391,331"/>
+<area shape="rect" id="node13" href="$_controll_8h.html" title=" " alt="" coords="451,229,528,256"/>
+<area shape="rect" id="node14" href="$_world_8cpp.html" title=" " alt="" coords="345,229,426,256"/>
+<area shape="rect" id="node7" href="$_bullet_8cpp.html" title=" " alt="" coords="99,453,179,480"/>
+<area shape="rect" id="node11" href="$_tank_8cpp.html" title=" " alt="" coords="203,453,277,480"/>
+<area shape="rect" id="node5" href="$_application_8h.html" title=" " alt="" coords="309,379,406,405"/>
+<area shape="rect" id="node12" href="$_game_8cpp.html" title=" " alt="" coords="431,379,513,405"/>
+<area shape="rect" id="node6" href="$_application_8cpp.html" title=" " alt="" coords="302,453,413,480"/>
+<area shape="rect" id="node8" href="$_controll_8cpp.html" title=" " alt="" coords="640,453,731,480"/>
+<area shape="rect" id="node9" href="$main_8cpp.html" title=" " alt="" coords="437,453,512,480"/>
+<area shape="rect" id="node10" href="$_menu_8cpp.html" title=" " alt="" coords="537,453,615,480"/>
+<area shape="rect" id="node16" href="$_land_8cpp.html" title=" " alt="" coords="43,155,117,181"/>
+</map>

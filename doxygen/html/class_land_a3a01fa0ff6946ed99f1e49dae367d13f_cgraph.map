@@ -1,0 +1,5 @@
+<map id="Land::destroyColumn" name="Land::destroyColumn">
+<area shape="rect" id="node1" title="Usuwa kolumnę terenu w punkcie x dla y o początku &#45; top, końcu &#45; bottom." alt="" coords="5,31,151,57"/>
+<area shape="rect" id="node2" href="$class_land.html#a40560dc163402d09dae0766c79aec5cf" title="Oblicza wysokość terenu w punkcie x." alt="" coords="205,5,319,32"/>
+<area shape="rect" id="node3" href="$class_land.html#a37f5b6d19d2a4cc910b9c4dcc63138dc" title="Sprawdza czy istnieje teren w punkcie (x, y)." alt="" coords="199,56,325,83"/>
+</map>

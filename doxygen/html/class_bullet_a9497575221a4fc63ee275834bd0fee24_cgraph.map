@@ -1,0 +1,8 @@
+<map id="Bullet::explode" name="Bullet::explode">
+<area shape="rect" id="node1" title="Wykonuje eksplozję w miejscu kolizji." alt="" coords="5,56,113,83"/>
+<area shape="rect" id="node2" href="$class_land.html#a873615d69e0c62899100d7194adfb7f7" title="Usuwa teren w kształcie koła o środku w punkcie (x, y) i promieniu r." alt="" coords="161,31,296,57"/>
+<area shape="rect" id="node6" href="$class_bullet.html#af293557fe6a31841118fdc1e1c8d91cb" title="Sprawdza czy pocisk uderzył w gracza." alt="" coords="169,81,289,108"/>
+<area shape="rect" id="node3" href="$class_land.html#a3a01fa0ff6946ed99f1e49dae367d13f" title="Usuwa kolumnę terenu w punkcie x dla y o początku &#45; top, końcu &#45; bottom." alt="" coords="344,31,489,57"/>
+<area shape="rect" id="node4" href="$class_land.html#a7fba204c105453e8ad2bc6b2a7f0d6f9" title="Oblicza wysokość terenu w punkcie x." alt="" coords="537,5,679,32"/>
+<area shape="rect" id="node5" href="$class_land.html#a37f5b6d19d2a4cc910b9c4dcc63138dc" title="Sprawdza czy istnieje teren w punkcie (x, y)." alt="" coords="545,56,671,83"/>
+</map>

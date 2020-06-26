@@ -1,0 +1,4 @@
+<map id="Tank::setPlayerHealth" name="Tank::setPlayerHealth">
+<area shape="rect" id="node1" title="Ustawia poziom życia gracza." alt="" coords="180,5,331,32"/>
+<area shape="rect" id="node2" href="$class_bullet.html#a127e5bae71bd8263cb70fea88fdf44ed" title="Sprawdza kolizje z innymi obiektami." alt="" coords="5,5,132,32"/>
+</map>

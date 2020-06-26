@@ -1,0 +1,4 @@
+<map id="Land::reset" name="Land::reset">
+<area shape="rect" id="node1" title="Resetuje parametry mapy i generuje teren." alt="" coords="5,5,92,32"/>
+<area shape="rect" id="node2" href="$class_perlin.html#a0ac3a7c4570f949624e6290887d78fc3" title="Sumuje wartości szumów Perlina w punkcie [x, y] dla kolejnych oktaw. Do każdej oktawy zostanie dodana..." alt="" coords="140,5,273,32"/>
+</map>

@@ -1,0 +1,10 @@
+<map id="Tank::canTankMove" name="Tank::canTankMove">
+<area shape="rect" id="node1" title="Sprawdza czy czołg może przemieścić się o wektor [x, y]." alt="" coords="1073,5,1211,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a2335ad3cf078dc54cd6debd274cc11e0" title="Przesuwa pozycję czołgu oraz jego lufy." alt="" coords="863,5,1025,32"/>
+<area shape="rect" id="node3" href="$class_tank.html#a1fc2db1d3f0168abd1e34ebaa9f283b4" title="Obsługuje przemieszczenie czołgu." alt="" coords="699,5,815,32"/>
+<area shape="rect" id="node4" href="$class_tank.html#ad1ee6f741dec6c4a50501841577ed104" title="Aktualizuje dane gracza." alt="" coords="553,5,651,32"/>
+<area shape="rect" id="node5" href="$class_game.html#a6d92a1476f2da91b0ebeda93a1db5dda" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="387,5,505,32"/>
+<area shape="rect" id="node6" href="$class_game.html#a79df6376b332d63c9eca0dcee30305c3" title="Funkcja zawierająca główną pętlę gry." alt="" coords="235,5,339,32"/>
+<area shape="rect" id="node7" href="$class_game.html#a1ab78f5ed0d5ea879157357cf2fb2afa" title="Odpala grę." alt="" coords="104,5,187,32"/>
+<area shape="rect" id="node8" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,5,56,32"/>
+</map>

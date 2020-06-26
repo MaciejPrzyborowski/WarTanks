@@ -1,0 +1,22 @@
+<map id="Game::updateAll" name="Game::updateAll">
+<area shape="rect" id="node1" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="5,183,124,209"/>
+<area shape="rect" id="node2" href="$class_world.html#a045b16d8c97425fb0b97fcdb8328e308" title="Wyświetla elementy." alt="" coords="210,5,317,32"/>
+<area shape="rect" id="node3" href="$class_world.html#a1d792eb9eaf7d1d48567c43a3f1e157b" title="Sprawdza kolizje elementów." alt="" coords="190,56,337,83"/>
+<area shape="rect" id="node4" href="$class_game.html#a231e4d66ba003e86510322376bbe68a0" title="W zależności od statusu gry ustawia funkcję potrzebne do poprawnego uruchomienia menu lub gry." alt="" coords="207,157,319,184"/>
+<area shape="rect" id="node5" href="$class_game.html#a1cb0d578ca0918619486c25fec6e637b" title="Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="403,107,561,133"/>
+<area shape="rect" id="node8" href="$class_game.html#a83e9cea6609bc2dd8c064938e77c7dfa" title="Włącza dźwięk fajerwerków na koniec gry." alt="" coords="172,208,355,235"/>
+<area shape="rect" id="node9" href="$class_tank.html#aed235a9da91e112b6cb295d06d8771c0" title="Zwraca punkty życia gracza." alt="" coords="210,259,317,285"/>
+<area shape="rect" id="node10" href="$class_world.html#a5b8466238f5861b8baa9a395a1821adb" title="stepAll" alt="" coords="211,309,315,336"/>
+<area shape="rect" id="node11" href="$class_tank.html#ad1ee6f741dec6c4a50501841577ed104" title="Aktualizuje dane gracza." alt="" coords="215,360,312,387"/>
+<area shape="rect" id="node6" href="$class_game.html#aa9cf3ddd751aafe7310fce064d42b3f6" title="Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="404,157,560,184"/>
+<area shape="rect" id="node7" href="$class_world.html#a4b42487e8bb05e21efb1c0d4c5a95ab4" title="Resetuje wszystkie elementy do stanu początkowego." alt="" coords="428,208,536,235"/>
+<area shape="rect" id="node12" href="$class_tank.html#a4ecfdd3f3eac718b5608566bdd6a5409" title="Zmienia kąt nachylenia lufy." alt="" coords="416,335,548,361"/>
+<area shape="rect" id="node13" href="$class_tank.html#a1fc2db1d3f0168abd1e34ebaa9f283b4" title="Obsługuje przemieszczenie czołgu." alt="" coords="424,385,540,412"/>
+<area shape="rect" id="node14" href="$class_land.html#a7fba204c105453e8ad2bc6b2a7f0d6f9" title="Oblicza wysokość terenu w punkcie x." alt="" coords="620,360,761,387"/>
+<area shape="rect" id="node15" href="$class_tank.html#a2335ad3cf078dc54cd6debd274cc11e0" title="Przesuwa pozycję czołgu oraz jego lufy." alt="" coords="609,411,772,437"/>
+<area shape="rect" id="node16" href="$class_tank.html#af49a2deefa20a9e7261956512a19581a" title="Sprawdza czy czołg może przemieścić się o wektor [x, y]." alt="" coords="820,385,957,412"/>
+<area shape="rect" id="node17" href="$class_tank.html#a59cbdcb69015560f9b14535f5e391b36" title="Oblicza nachylenie terenu po przemieszczeniu się o wektor prędkości [x, y]." alt="" coords="1005,411,1143,437"/>
+<area shape="rect" id="node18" href="$class_land.html#a4ff12277063d532b74afa5c5a383db30" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="1191,411,1341,437"/>
+<area shape="rect" id="node19" href="$class_land.html#a8fc780b2d81f6176a3add3244690409f" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..." alt="" coords="1389,411,1539,437"/>
+<area shape="rect" id="node20" href="$class_land.html#a37f5b6d19d2a4cc910b9c4dcc63138dc" title="Sprawdza czy istnieje teren w punkcie (x, y)." alt="" coords="1587,411,1713,437"/>
+</map>

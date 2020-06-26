@@ -1,0 +1,26 @@
+<map id="Game::update" name="Game::update">
+<area shape="rect" id="node1" title="Funkcja zawierająca główną pętlę gry." alt="" coords="5,183,109,210"/>
+<area shape="rect" id="node2" href="$class_game.html#a7328f070218422cd2d5fe2e3853b54ae" title="Obsługuje zdarzenia wykonywane przez gracza." alt="" coords="157,82,283,109"/>
+<area shape="rect" id="node9" href="$class_game.html#a6d92a1476f2da91b0ebeda93a1db5dda" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="161,285,279,311"/>
+<area shape="rect" id="node3" href="$class_game.html#a231e4d66ba003e86510322376bbe68a0" title="W zależności od statusu gry ustawia funkcję potrzebne do poprawnego uruchomienia menu lub gry." alt="" coords="366,133,478,159"/>
+<area shape="rect" id="node5" href="$class_game.html#aa9cf3ddd751aafe7310fce064d42b3f6" title="Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="563,31,719,58"/>
+<area shape="rect" id="node7" href="$class_controll.html#a984c6b1ec15f32ba3cf6e5fb36f1d660" title="Obsługuje zdarzenia wykonane przez gracza w menu. Obsługiwana jest klawiatura oraz myszka gracza." alt="" coords="338,31,506,58"/>
+<area shape="rect" id="node8" href="$class_controll.html#af228128b4ea54273178bebab865f4dda" title="Obsługuje zdarzenia wykonane przez gracza w grze. Obsługiwana jest klawiatura oraz myszka gracza." alt="" coords="341,82,503,109"/>
+<area shape="rect" id="node4" href="$class_game.html#a1cb0d578ca0918619486c25fec6e637b" title="Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="561,183,720,210"/>
+<area shape="rect" id="node6" href="$class_world.html#a4b42487e8bb05e21efb1c0d4c5a95ab4" title="Resetuje wszystkie elementy do stanu początkowego." alt="" coords="587,133,695,159"/>
+<area shape="rect" id="node10" href="$class_world.html#a045b16d8c97425fb0b97fcdb8328e308" title="Wyświetla elementy." alt="" coords="369,234,475,261"/>
+<area shape="rect" id="node11" href="$class_world.html#a1d792eb9eaf7d1d48567c43a3f1e157b" title="Sprawdza kolizje elementów." alt="" coords="349,285,495,311"/>
+<area shape="rect" id="node12" href="$class_game.html#a83e9cea6609bc2dd8c064938e77c7dfa" title="Włącza dźwięk fajerwerków na koniec gry." alt="" coords="331,335,513,362"/>
+<area shape="rect" id="node13" href="$class_tank.html#aed235a9da91e112b6cb295d06d8771c0" title="Zwraca punkty życia gracza." alt="" coords="369,386,475,413"/>
+<area shape="rect" id="node14" href="$class_world.html#a5b8466238f5861b8baa9a395a1821adb" title="stepAll" alt="" coords="370,437,474,463"/>
+<area shape="rect" id="node15" href="$class_tank.html#ad1ee6f741dec6c4a50501841577ed104" title="Aktualizuje dane gracza." alt="" coords="373,487,471,514"/>
+<area shape="rect" id="node16" href="$class_tank.html#a4ecfdd3f3eac718b5608566bdd6a5409" title="Zmienia kąt nachylenia lufy." alt="" coords="575,462,707,489"/>
+<area shape="rect" id="node17" href="$class_tank.html#a1fc2db1d3f0168abd1e34ebaa9f283b4" title="Obsługuje przemieszczenie czołgu." alt="" coords="583,513,699,539"/>
+<area shape="rect" id="node18" href="$class_land.html#a7fba204c105453e8ad2bc6b2a7f0d6f9" title="Oblicza wysokość terenu w punkcie x." alt="" coords="779,487,920,514"/>
+<area shape="rect" id="node19" href="$class_tank.html#a2335ad3cf078dc54cd6debd274cc11e0" title="Przesuwa pozycję czołgu oraz jego lufy." alt="" coords="768,538,931,565"/>
+<area shape="rect" id="node20" href="$class_tank.html#af49a2deefa20a9e7261956512a19581a" title="Sprawdza czy czołg może przemieścić się o wektor [x, y]." alt="" coords="979,513,1116,539"/>
+<area shape="rect" id="node21" href="$class_tank.html#a59cbdcb69015560f9b14535f5e391b36" title="Oblicza nachylenie terenu po przemieszczeniu się o wektor prędkości [x, y]." alt="" coords="1164,538,1301,565"/>
+<area shape="rect" id="node22" href="$class_land.html#a4ff12277063d532b74afa5c5a383db30" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="1349,538,1500,565"/>
+<area shape="rect" id="node23" href="$class_land.html#a8fc780b2d81f6176a3add3244690409f" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..." alt="" coords="1548,538,1697,565"/>
+<area shape="rect" id="node24" href="$class_land.html#a37f5b6d19d2a4cc910b9c4dcc63138dc" title="Sprawdza czy istnieje teren w punkcie (x, y)." alt="" coords="1745,538,1872,565"/>
+</map>

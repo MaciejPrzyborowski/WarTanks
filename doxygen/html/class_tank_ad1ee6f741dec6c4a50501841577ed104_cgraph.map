@@ -1,0 +1,6 @@
+<map id="Tank::update" name="Tank::update">
+<area shape="rect" id="node1" title="Aktualizuje dane gracza." alt="" coords="5,56,103,83"/>
+<area shape="rect" id="node2" href="$class_game.html#af0914e8e8b16223d222c2e7ead5c111e" title="Zmniejsza licznik zadań do wykonania." alt="" coords="159,5,289,32"/>
+<area shape="rect" id="node3" href="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f" title=" " alt="" coords="151,56,297,83"/>
+<area shape="rect" id="node4" href="$class_tank.html#a4ecfdd3f3eac718b5608566bdd6a5409" title="Zmienia kąt nachylenia lufy." alt="" coords="158,107,290,133"/>
+</map>

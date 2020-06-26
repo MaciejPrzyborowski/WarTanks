@@ -1,0 +1,4 @@
+<map id="Animation::changeAnimation" name="Animation::changeAnimation">
+<area shape="rect" id="node1" title="Zmienia pozycję obrazka o wartość stepPosition_ tworząc jego animację." alt="" coords="168,5,356,32"/>
+<area shape="rect" id="node2" href="$class_animation.html#a4a6913e4ae2bbb6bf2d420d0d01a08d4" title="Wyświetla animację w punkcie position(x,y)." alt="" coords="5,5,120,32"/>
+</map>

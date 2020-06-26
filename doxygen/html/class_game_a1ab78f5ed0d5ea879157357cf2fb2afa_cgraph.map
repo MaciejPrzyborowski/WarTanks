@@ -1,0 +1,6 @@
+<map id="Game::run" name="Game::run">
+<area shape="rect" id="node1" title="Odpala grę." alt="" coords="5,31,88,57"/>
+<area shape="rect" id="node2" href="$class_game.html#a231e4d66ba003e86510322376bbe68a0" title="W zależności od statusu gry ustawia funkcję potrzebne do poprawnego uruchomienia menu lub gry." alt="" coords="136,31,248,57"/>
+<area shape="rect" id="node3" href="$class_game.html#a1cb0d578ca0918619486c25fec6e637b" title="Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="296,5,455,32"/>
+<area shape="rect" id="node4" href="$class_game.html#aa9cf3ddd751aafe7310fce064d42b3f6" title="Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="297,56,453,83"/>
+</map>

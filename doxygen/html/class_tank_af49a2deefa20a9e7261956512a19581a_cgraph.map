@@ -1,0 +1,7 @@
+<map id="Tank::canTankMove" name="Tank::canTankMove">
+<area shape="rect" id="node1" title="Sprawdza czy czołg może przemieścić się o wektor [x, y]." alt="" coords="5,5,143,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a59cbdcb69015560f9b14535f5e391b36" title="Oblicza nachylenie terenu po przemieszczeniu się o wektor prędkości [x, y]." alt="" coords="191,5,328,32"/>
+<area shape="rect" id="node3" href="$class_land.html#a4ff12277063d532b74afa5c5a383db30" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="376,5,527,32"/>
+<area shape="rect" id="node4" href="$class_land.html#a8fc780b2d81f6176a3add3244690409f" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..." alt="" coords="575,5,724,32"/>
+<area shape="rect" id="node5" href="$class_land.html#a37f5b6d19d2a4cc910b9c4dcc63138dc" title="Sprawdza czy istnieje teren w punkcie (x, y)." alt="" coords="772,5,899,32"/>
+</map>

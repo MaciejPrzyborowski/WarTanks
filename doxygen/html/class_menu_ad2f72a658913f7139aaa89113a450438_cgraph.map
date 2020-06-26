@@ -1,0 +1,5 @@
+<map id="Menu::setMouseActive" name="Menu::setMouseActive">
+<area shape="rect" id="node1" title="Jeżeli gracz najedzie myszką na opcje wyboru w menu to ustawi myszkę na aktywną" alt="" coords="5,5,160,32"/>
+<area shape="rect" id="node2" href="$class_menu.html#aa7be7c755b54b3a4ca31b723e3789404" title="Sprawdza czy myszka znajduje się aktualnie na wybranym elemencie. Funkcja dodatkowo ustawia element m..." alt="" coords="208,5,359,32"/>
+<area shape="rect" id="node3" href="$class_menu.html#a37c6c322fc4012e7d6c397838afe9d9b" title="Sprawdza czy gracz poruszył myszką w menu." alt="" coords="407,5,553,32"/>
+</map>

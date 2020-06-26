@@ -1,0 +1,4 @@
+<map id="Tank::setTankPosition" name="Tank::setTankPosition">
+<area shape="rect" id="node1" title="Ustawia pozycję czołgu oraz jego lufy." alt="" coords="140,5,291,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a2f06baa6a047ed56db966801a7ebc9f5" title="Resetuje parametry gracza do domyślnych." alt="" coords="5,5,92,32"/>
+</map>

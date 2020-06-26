@@ -1,0 +1,5 @@
+<map id="Game::getLandHeight" name="Game::getLandHeight">
+<area shape="rect" id="node1" title="Oblicza wysokość terenu w punkcie x." alt="" coords="140,31,288,57"/>
+<area shape="rect" id="node2" href="$class_tank.html#a2f06baa6a047ed56db966801a7ebc9f5" title="Resetuje parametry czołgu do ustawień domyślnych." alt="" coords="5,5,92,32"/>
+<area shape="rect" id="node3" href="$class_tank.html#abb1ee4575302230c45c53d6b008e5ebf" title="Obsługuje grawitacje i przemieszczenie gracza." alt="" coords="7,56,90,83"/>
+</map>

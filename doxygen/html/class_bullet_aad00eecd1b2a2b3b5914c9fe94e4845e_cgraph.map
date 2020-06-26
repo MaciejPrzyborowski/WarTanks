@@ -1,0 +1,5 @@
+<map id="Bullet::draw" name="Bullet::draw">
+<area shape="rect" id="node1" title="Wyświetla pocisk oraz jego wybuch." alt="" coords="5,31,96,57"/>
+<area shape="rect" id="node2" href="$class_game.html#af0914e8e8b16223d222c2e7ead5c111e" title="Zmniejsza licznik zadań do wykonania." alt="" coords="152,5,283,32"/>
+<area shape="rect" id="node3" href="$class_application.html#a8b8a3492c6b1ae1856ae43c5fc74839f" title=" " alt="" coords="144,56,291,83"/>
+</map>

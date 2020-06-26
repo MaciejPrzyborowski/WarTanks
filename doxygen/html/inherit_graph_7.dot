@@ -1,0 +1,16 @@
+digraph "Graphical Class Hierarchy"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node7 [label="Perlin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_perlin.html",tooltip="Klasa Perlin."];
+  Node7 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Land",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_land.html",tooltip="Klasa Land."];
+  Node0 [label="WorldObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_world_object.html",tooltip="Klasa WorldObject."];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Bullet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_bullet.html",tooltip="Klasa Bullet."];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Tank",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$class_tank.html",tooltip="Klasa Tank."];
+}

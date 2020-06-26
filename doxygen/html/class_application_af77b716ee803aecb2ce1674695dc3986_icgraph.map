@@ -1,0 +1,4 @@
+<map id="Application::quit" name="Application::quit">
+<area shape="rect" id="node1" title="Zamyka okno." alt="" coords="205,5,320,32"/>
+<area shape="rect" id="node2" href="$class_menu.html#ad7326db286be66a1ddf5bd949b4a73c1" title="Obsługuje wybór elementu z menu." alt="" coords="5,5,157,32"/>
+</map>

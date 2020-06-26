@@ -1,0 +1,9 @@
+<map id="Game::playMenuMusic" name="Game::playMenuMusic">
+<area shape="rect" id="node1" title="Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach." alt="" coords="597,31,753,57"/>
+<area shape="rect" id="node2" href="$class_game.html#a231e4d66ba003e86510322376bbe68a0" title="W zależności od statusu gry ustawia funkcję potrzebne do poprawnego uruchomienia menu lub gry." alt="" coords="437,56,549,83"/>
+<area shape="rect" id="node3" href="$class_game.html#a57610ad9a54706c9e26bcea96715d8e2" title="Obsługuje zdarzenia wykonywane przez gracza." alt="" coords="264,5,389,32"/>
+<area shape="rect" id="node6" href="$class_game.html#a1ab78f5ed0d5ea879157357cf2fb2afa" title="Odpala grę." alt="" coords="285,56,368,83"/>
+<area shape="rect" id="node7" href="$class_game.html#a452f017ab7d46aeba5842ea3456121d8" title="Aktualizuje na bieżąco wszystkie elementy gry." alt="" coords="275,107,379,133"/>
+<area shape="rect" id="node4" href="$class_application.html#a68965449404743bf1add056784d6cf81" title="Odpala grę." alt="" coords="104,56,216,83"/>
+<area shape="rect" id="node5" href="$main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4" title=" " alt="" coords="5,56,56,83"/>
+</map>

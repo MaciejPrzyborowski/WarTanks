@@ -1,0 +1,6 @@
+<map id="Land::getAngleRadian" name="Land::getAngleRadian">
+<area shape="rect" id="node1" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..." alt="" coords="471,31,620,57"/>
+<area shape="rect" id="node2" href="$class_land.html#a4ff12277063d532b74afa5c5a383db30" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="255,5,406,32"/>
+<area shape="rect" id="node4" href="$class_game.html#ad0aeaed374e63bbd043edc80dfe7e432" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y). Tworzy kwadrat o boku 3 o środku w punkcie (x,..." alt="" coords="239,56,423,83"/>
+<area shape="rect" id="node3" href="$class_game.html#abb9a936013837edd347f0d4d57131d14" title="Oblicza kąt nachylenia powierzchni w punkcie (x, y)." alt="" coords="5,5,191,32"/>
+</map>

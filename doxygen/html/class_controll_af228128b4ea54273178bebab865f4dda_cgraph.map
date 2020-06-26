@@ -1,0 +1,4 @@
+<map id="Controll::tankPassEvent" name="Controll::tankPassEvent">
+<area shape="rect" id="node1" title="Obsługuje zdarzenia wykonane przez gracza w grze. Obsługiwana jest klawiatura oraz myszka gracza." alt="" coords="5,5,167,32"/>
+<area shape="rect" id="node2" href="$class_tank.html#a15ed812961a07fdf87cd5bba00bb4c56" title="Ustawia kierunek przemieszczenia czołgu." alt="" coords="215,5,372,32"/>
+</map>
