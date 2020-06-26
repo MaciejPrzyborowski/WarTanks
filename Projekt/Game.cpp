@@ -1,30 +1,24 @@
 #include "Game.h"
 
 Game::Game() :
-    winnerID_(WinnerType::None),
     taskCounter(0),
+    gameSettings_{false, true, true, true},
+    winnerID_(WinnerType::None),
     fireworks_(nullptr),
     fire_(nullptr),
-    menu_(nullptr),
     gameInterface_(nullptr),
+    menu_(nullptr),
     world(nullptr),
     land(nullptr)
 {
-    gameBackgroundTexture_.loadFromFile(GameBackgroundTextureSrc);
-    gameBackgroundSprite_.setTexture(gameBackgroundTexture_);
-    gameBackgroundSprite_.setScale((float)WindowWidth/gameBackgroundTexture_.getSize().x, (float)WindowHeight/gameBackgroundTexture_.getSize().y);
-    menuBackgroundTexture_.loadFromFile(MenuBackgroundTextureSrc);
-    menuBackgroundSprite_.setTexture(menuBackgroundTexture_);
-    menuBackgroundSprite_.setScale((float)WindowWidth / menuBackgroundTexture_.getSize().x, (float)WindowHeight / menuBackgroundTexture_.getSize().y);
+    backgroundTexture_.loadFromFile(GameBackgroundTextureSrc);
+    backgroundSprite_.setTexture(backgroundTexture_);
+    backgroundSprite_.setScale((float)WindowWidth/backgroundTexture_.getSize().x, (float)WindowHeight/backgroundTexture_.getSize().y);
 
-    menuMusicBuffer_.loadFromFile(MenuMusicSrc);
-    menuMusic_.setBuffer(menuMusicBuffer_);
-    menuMusic_.setVolume(5);
-    menuMusic_.setLoop(true);
-    gameBuffer_.loadFromFile(GameMusicSrc);
-    gameMusic_.setBuffer(gameBuffer_);
-    gameMusic_.setVolume(30);
-    gameMusic_.setLoop(true);
+    musicBuffer_.loadFromFile(GameMusicSrc);
+    music_.setBuffer(musicBuffer_);
+    music_.setVolume(30);
+    music_.setLoop(true);
     fireworksBuffer_.loadFromFile(FireWorksSoundSrc);
     fireworksSound_.setBuffer(fireworksBuffer_);
     fireworksSound_.setVolume(5);
@@ -51,11 +45,10 @@ void Game::initialize(const GameState &gameState)
     if(gameState == GameState::Menu)
     {
         winnerID_ = WinnerType::None;
-        menu_ -> reset(false);
+        menu_ -> reset();
 
         playGameMusic(false);
         playFireworksSound(false);
-        playMenuMusic(menu_ -> getGameSettings(GameSetting::MenuMusic));
     }
     else if(gameState == GameState::Play)
     {
@@ -63,19 +56,17 @@ void Game::initialize(const GameState &gameState)
         world -> resetAll();
         gameInterface_ -> reset();
 
-        playMenuMusic(false);
         playFireworksSound(false);
-        playGameMusic(menu_ -> getGameSettings(GameSetting::GameMusic));
+        playGameMusic(getSettings(GameSetting::GameMusic));
     }
     else if(gameState == GameState::EndWinner)
     {
-        playMenuMusic(false);
         playGameMusic(false);
         playFireworksSound(true);
 
         fireworks_ = make_unique<Animation>(FireworksEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
         fire_ = make_unique<Animation>(FireEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
-        for(const auto &object : world -> objects_)
+        for(const auto &object : *(world -> getObjects()))
         {
             auto tank = dynamic_cast<Tank *>(object.get());
             if(tank != nullptr)
@@ -99,7 +90,7 @@ void Game::passEvent(sf::RenderWindow &window, sf::Event &event)
     {
         if(gameState_ == GameState::Menu)
         {
-            if(menu_ -> getMenuStatus())
+            if(menu_ -> getStatus())
             {
                 if(event.type == sf::Event::KeyPressed)
                 {
@@ -114,19 +105,18 @@ void Game::passEvent(sf::RenderWindow &window, sf::Event &event)
                 }
                 if(event.type == sf::Event::MouseMoved)
                 {
-                    menu_ -> setMouseActive(window);
+                    menu_ -> getMouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
                 }
                 if((event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return) ||
-                        (menu_ -> isMouseActive() && event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonReleased))
+                        (menu_ -> getMouseStatus() && event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonReleased))
                 {
-                    menu_ -> getMenuChoice();
+                    menu_ -> getChoice();
                 }
-                playMenuMusic(menu_ -> getGameSettings(GameSetting::MenuMusic));
             }
         }
         else if(gameState_ == GameState::Play)
         {
-            for(auto &object : world -> objects_)
+            for(auto &object : *(world -> getObjects()))
             {
                 auto tankID = dynamic_cast<Tank *>(object.get());
                 if(tankID != nullptr)
@@ -181,25 +171,20 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
     {
         if(gameState_ == GameState::Menu)
         {
-            if(menu_ -> getMenuStatus())
+            if(menu_ -> getStatus())
             {
-                window.draw(menuBackgroundSprite_);
                 menu_ -> draw(window);
-            }
-            else
-            {
-                initialize(GameState::Play);
             }
         }
         else
         {
-            window.draw(gameBackgroundSprite_);
+            window.draw(backgroundSprite_);
             world -> drawAll(window);
             if(gameState_ == GameState::Play)
             {
                 world -> getCollisionAll();
                 world -> stepAll(elapsed.asSeconds());
-                for(const auto &object : world -> objects_)
+                for(const auto &object : *(world -> getObjects()))
                 {
                     auto tank = dynamic_cast<Tank *>(object.get());
                     if(tank != nullptr)
@@ -209,7 +194,7 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
                 }
                 if(!taskCounter)
                 {
-                    for(const auto &object : world -> objects_)
+                    for(const auto &object : *(world -> getObjects()))
                     {
                         auto tank = dynamic_cast<Tank *>(object.get());
                         if(tank != nullptr)
@@ -222,7 +207,7 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
                     }
                     if(winnerID_ == WinnerType::None)
                     {
-                        for(const auto &object : world -> objects_)
+                        for(const auto &object : *(world -> getObjects()))
                         {
                             auto tank = dynamic_cast<Tank *>(object.get());
                             if(tank != nullptr)
@@ -256,22 +241,39 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
                 gameInterface_ -> drawGameEnd(elapsed.asSeconds(), window);
             }
         }
-        if(menu_ -> getGameSettings(GameSetting::FPS))
+        if(getSettings(GameSetting::FPS))
         {
             gameInterface_ -> drawFPS(elapsed.asSeconds(), window);
         }
     }
 }
 
-void Game::playMenuMusic(const bool &status)
+bool Game::getSettings(const GameSetting &gameSetting)
 {
-    if(!status)
+    return gameSettings_[int(gameSetting)];
+}
+
+void Game::setSettings(const GameSetting &gameSetting)
+{
+    gameSettings_[(int)gameSetting] = !gameSettings_[(int)gameSetting];
+    if(gameSettings_[(int)gameSetting])
     {
-        menuMusic_.stop();
+        if(gameSetting == GameSetting::MenuMusic)
+        {
+            menu_ -> playMusic(true);
+        }
+        else if(gameSetting == GameSetting::SoundMusic)
+        {
+            menu_ -> setSelectVolume(1);
+        }
     }
-    else if(gameMusic_.getStatus() != sf::Music::Playing)
+    else if(gameSetting == GameSetting::MenuMusic)
     {
-        menuMusic_.play();
+        menu_ -> playMusic(false);
+    }
+    else if(gameSetting == GameSetting::SoundMusic)
+    {
+        menu_ -> setSelectVolume(0);
     }
 }
 
@@ -279,11 +281,11 @@ void Game::playGameMusic(const bool &status)
 {
     if(!status)
     {
-        gameMusic_.stop();
+        music_.stop();
     }
-    else if(gameMusic_.getStatus() != sf::Music::Playing)
+    else if(music_.getStatus() != sf::Music::Playing)
     {
-        gameMusic_.play();
+        music_.play();
     }
 }
 

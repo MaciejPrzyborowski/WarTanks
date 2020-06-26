@@ -1,8 +1,8 @@
 #include "World.h"
 
 World::World() :
-    objects_(),
-    PlayerIndex(0)
+    PlayerIndex(0),
+    objects_()
 {
 }
 
@@ -23,6 +23,11 @@ WorldObject * World::addObject(const ObjectType &objectType)
         objects_.emplace_back(make_unique<Tank>(++PlayerIndex));
     }
     return objects_.back().get();
+}
+
+vector<unique_ptr<WorldObject> > * World::getObjects()
+{
+    return &objects_;
 }
 
 void World::resetAll()

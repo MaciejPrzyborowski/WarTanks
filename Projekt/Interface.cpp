@@ -53,7 +53,7 @@ void Interface::reset()
 
 void Interface::drawAngle(const float &angle, sf::RenderTarget &window)
 {
-    angle_.setPosition(sf::Vector2f((WindowWidth - angle_.getLocalBounds().width)/2, 65));
+    angle_.setPosition(sf::Vector2f((WindowWidth - angle_.getLocalBounds().width) / 2, 65));
     angle_.setString("Kat lufy: " + to_string((int)(angle)));
     window.draw(angle_);
 }
@@ -70,12 +70,12 @@ void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
     {
         window.draw(backToMenu_);
     }
-    if(Application::getGame().winnerID_ == WinnerType::Red)
+    if(Application::getGame().getWinnerID() == WinnerType::Red)
     {
         gameEndText_.setOutlineColor(sf::Color::Red);
         gameEndText_.setString("Czerwony wygrywa!");
     }
-    else if(Application::getGame().winnerID_ == WinnerType::Blue)
+    else if(Application::getGame().getWinnerID() == WinnerType::Blue)
     {
         gameEndText_.setOutlineColor(sf::Color(0, 100, 255));
         gameEndText_.setString("Niebieski wygrywa!");
@@ -86,7 +86,7 @@ void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
         gameEndText_.setString("Remis!");
         gameEndText_.setPosition(325, 100);
     }
-    gameEndText_.setPosition(sf::Vector2f((WindowWidth - gameEndText_.getLocalBounds().width)/2, 100));
+    gameEndText_.setPosition(sf::Vector2f((WindowWidth - gameEndText_.getLocalBounds().width) / 2, 100));
     window.draw(gameEndText_);
 }
 

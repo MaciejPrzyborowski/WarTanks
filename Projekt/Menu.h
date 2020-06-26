@@ -22,17 +22,6 @@ enum class MenuMove
 };
 
 /**
- * @brief Ustawienia gry
- */
-enum class GameSetting
-{
-    FPS, /**< Licznik FPS */
-    GameMusic, /**< Muzyka w grze */
-    MenuMusic, /**< Muzyka w menu */
-    SoundMusic /**< Dźwięki w menu */
-};
-
-/**
  * @brief Klasa Menu
  */
 class Menu
@@ -46,9 +35,8 @@ public:
 
     /**
      * @brief Resetuje parametry menu do ustawień domyślnych.
-     * @param settings - określa czy resetowi podlegają ustawienia gry
      */
-    void reset(const bool &settings);
+    void reset();
 
     /**
      * @brief Zmienia aktualny wybór w menu. Funkcja przeznaczona tylko dla obsługi klawiatury.
@@ -63,57 +51,45 @@ public:
     void draw(sf::RenderTarget &window);
 
     /**
-     * @brief Sprawdza ustawienia gry.
-     * @param setting - Ustawienia gry
-     * @return
-     *          true - ustawienie jest włączone;
-     *          false - ustawienie jest wyłączone
-     */
-    bool getGameSettings(const GameSetting &gameSetting);
-
-    /**
      * @brief Sprawdza status menu.
      * @return
      *          true - menu jest aktywne;
      *          false - menu nie jest aktywne
      */
-    bool getMenuStatus();
+    bool getStatus();
 
     /**
-     * @brief Ustawia dane w menu.
-     * @param menuType - ustawienia gry
+     * @brief Sprawdza czy myszka znajduje się na aktualnie wybranym elemencie.
+     * @return
+     *        true - myszka znajduje się na aktualnie wybranym elemencie;
+     *        false - myszka nie znajduje się na aktualnie wybranym elemencie
      */
-    void setMenu(const MenuType &menuType);
+    bool getMouseStatus();
 
     /**
      * @brief Obsługuje wybór elementu z menu.
      */
-    void getMenuChoice();
+    void getChoice();
 
     /**
-     * @brief Sprawdza czy myszka znajduje się aktualnie na wybranym elemencie. Funkcja dodatkowo ustawia element menu, na którym znajduje się myszka, jako aktywny.
-     * @return
-     *          true - myszka znajduje się na wybranym elemencie;
-     *          false - myszka nie znajduje się na wybranym elemencie
+     * @brief Ustawia element menu, na którym znajduje się myszka, jako aktywny.
      */
-    bool getMenuMouse(const sf::Vector2f &mousePosition);
+    void getMouse(const sf::Vector2f &mousePosition);
 
     /**
-     * @brief Zmienia ustawienia gry.
-     * @param setting - ustawienia gry
+     * @brief Włącza lub wyłącza muzykę w menu.
+     * @param status - określa czy ma włączyć czy wyłączyć muzykę
      */
-    void setSettings(const GameSetting &gameSetting);
+    void playMusic(const bool &status);
 
     /**
-     * @brief Sprawdza czy gracz poruszył myszką w menu.
-     * @return
-     *          true - gracz poruszył myszką;
-     *          false - gracz nie poruszył myszką
+     * @brief Ustawia głośność dźwięku wyboru elementu z menu
+     * @param volume - wartość głośności
      */
-    bool isMouseActive();
+    void setSelectVolume(const float &volume);
 
     /**
-     * @brief Jeżeli gracz najedzie myszką na opcje wyboru w menu to ustawi myszkę na aktywną
+     * @brief Ustawia aktualny wybór elementu z menu przez myszkę.
      * @param window - okno gry
      */
     void setMouseActive(sf::RenderWindow &window);
@@ -121,16 +97,26 @@ public:
 private:
 
     sf::Font font_; /**< Czcionka */
-    sf::Sound menuSelectSound_; /**< Dźwięk wyboru danej opcji */
-    sf::SoundBuffer menuSelectSoundBuffer_; /**< Bufer dźwięku wyboru danej opcji */
+    sf::Sound music_; /**< Muzyka w menu */
+    sf::Sound selectSound_; /**< Dźwięk wyboru danej opcji */
+    sf::Sprite backgroundSprite_; /**< Tło menu */
+    sf::Texture backgroundTexture_; /**< Tekstura tła menu */
+    sf::SoundBuffer musicBuffer_; /**< Bufer muzyki w menu */
+    sf::SoundBuffer selectSoundBuffer_; /**< Bufer dźwięku wyboru danej opcji */
 
-    MenuType menuType_; /**< Typ aktualnego menu */
-    size_t menuSelected_; /**< Indeks wybranej opcji */
+    MenuType type_; /**< Typ aktualnego menu */
+    size_t selected_; /**< Indeks wybranej opcji */
 
     bool isMouseActive_; /**< Określa czy myszka najeżdza na wybraną obcję */
-    bool gameSettings_[4]; /**< Określa status ustawień gry */
 
-    vector<sf::Text> menuOptions_; /**< Wektor z opcjami w głównym menu */
-    vector<sf::Text> menuSelectOptions_; /**< Wektor z opcjami w ustawieniach */
-    vector<sf::RectangleShape> menuSelectBackground_; /**< Tło wybranej opcji w ustawieniach */
+    vector<sf::Text> options_; /**< Wektor z opcjami w głównym menu */
+    vector<sf::Text> selectOptions_; /**< Wektor z opcjami w ustawieniach */
+    vector<sf::RectangleShape> selectBackground_; /**< Tło wybranej opcji w ustawieniach */
+
+    /**
+     * @brief Ustawia dane w menu.
+     * @param menuType - ustawienia gry
+     * @param resetMenuSelect - określa czy ma resetować aktualny wybór w menu
+     */
+    void initialize(const MenuType &type, const bool &resetSelect = true);
 };

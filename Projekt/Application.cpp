@@ -2,9 +2,12 @@
 
 void Application::run()
 {
+    sf::Image icon;
+    icon.loadFromFile(ApplicationIcon);
     window_.create(sf::VideoMode(WindowWidth, WindowHeight), NazwaGry);
     window_.setFramerateLimit(WindowFPS);
     window_.setActive(true);
+    window_.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     game_.run();
     sf::Clock clock;
     while(window_.isOpen())

@@ -2,91 +2,45 @@
 #include "Application.h"
 
 Menu::Menu() :
-    isMouseActive_(false),
-    gameSettings_{false, true, true, true}
+    isMouseActive_(false)
 {
     font_.loadFromFile(GameFontSrc);
-    menuSelectSoundBuffer_.loadFromFile(SelectMenuSoundSrc);
-    menuSelectSound_.setBuffer(menuSelectSoundBuffer_);
-    menuSelectSound_.setVolume(1);
+    backgroundTexture_.loadFromFile(MenuBackgroundTextureSrc);
+    backgroundSprite_.setTexture(backgroundTexture_);
+    backgroundSprite_.setScale((float)WindowWidth / backgroundTexture_.getSize().x, (float)WindowHeight / backgroundTexture_.getSize().y);
+
+    selectSoundBuffer_.loadFromFile(SelectMenuSoundSrc);
+    selectSound_.setBuffer(selectSoundBuffer_);
+    selectSound_.setVolume(1);
+    musicBuffer_.loadFromFile(MenuMusicSrc);
+    music_.setBuffer(musicBuffer_);
+    music_.setVolume(5);
+    music_.setLoop(true);
 }
 
-void Menu::reset(const bool &settings)
+void Menu::initialize(const MenuType &type, const bool &resetSelect)
 {
-    if(settings)
+    if(resetSelect)
     {
-        gameSettings_[(int)GameSetting::FPS] = false;
-        gameSettings_[(int)GameSetting::GameMusic] = true;
-        gameSettings_[(int)GameSetting::MenuMusic] = true;
-        gameSettings_[(int)GameSetting::SoundMusic] = true;
+        selected_ = 0;
     }
-    isMouseActive_ = false;
-    setMenu(MenuType::Main);
-}
-
-void Menu::move(const MenuMove &direction)
-{
-    if(!((menuSelected_ == 0 && (int)direction < 0) || (menuSelected_ == menuOptions_.size() - 1 && (int)direction > 0)))
-    {
-        menuOptions_[menuSelected_].setFillColor(sf::Color::White);
-        menuSelected_ += (int)direction;
-        menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
-        menuSelectSound_.play();
-    }
-}
-
-void Menu::draw(sf::RenderTarget &window)
-{
-    if(menuOptions_.size() > 0)
-    {
-        for(auto &el: menuOptions_)
-        {
-            window.draw(el);
-        }
-    }
-    if(menuSelectOptions_.size() > 0)
-    {
-        for(auto &el: menuSelectOptions_)
-        {
-            window.draw(el);
-        }
-        if(menuSelectBackground_.size() > menuSelected_)
-        {
-            window.draw(menuSelectBackground_[menuSelected_]);
-        }
-    }
-}
-
-bool Menu::getMenuStatus()
-{
-    return !(menuType_ == MenuType::None);
-}
-
-bool Menu::getGameSettings(const GameSetting &gameSetting)
-{
-    return gameSettings_[int(gameSetting)];
-}
-
-void Menu::setMenu(const MenuType &menuType)
-{
-    menuSelected_ = 0;
-    menuOptions_.clear();
-    menuSelectOptions_.clear();
-    menuSelectBackground_.clear();
-    menuType_ = menuType;
-    if(menuType != MenuType::None)
+    options_.clear();
+    selectOptions_.clear();
+    selectBackground_.clear();
+    type_ = type;
+    if(type != MenuType::None)
     {
         float CharakterSize;
         size_t StartPosition;
         vector<string> SettingNames;
 
-        if(menuType == MenuType::Main)
+        if(type == MenuType::Main)
         {
             CharakterSize = 0.1;
             StartPosition = 3;
             SettingNames = {"Graj", "Ustawienia", "Wyjscie"};
         }
-        if(menuType == MenuType::Settings)
+        if(type == MenuType::Settings)
         {
             CharakterSize = 0.07;
             StartPosition = 2;
@@ -94,55 +48,108 @@ void Menu::setMenu(const MenuType &menuType)
 
             for(size_t i = 0, position = StartPosition; i < SettingNames.size() - 1; i++, position += 1)
             {
-                sf::Text menuSelectOptions;
-                sf::RectangleShape menuSelectBackground;
+                sf::Text selectOptions;
+                sf::RectangleShape selectBackground;
 
-                menuSelectBackground.setPosition(0, WindowHeight * position / 10);
-                menuSelectBackground.setFillColor(sf::Color(222, 222, 222, 50));
-                menuSelectBackground.setSize(sf::Vector2f(WindowWidth, WindowHeight * 0.09));
-                menuSelectBackground_.emplace_back(menuSelectBackground);
+                selectBackground.setPosition(0, WindowHeight * position / 10);
+                selectBackground.setFillColor(sf::Color(222, 222, 222, 50));
+                selectBackground.setSize(sf::Vector2f(WindowWidth, WindowHeight * 0.09));
+                selectBackground_.emplace_back(selectBackground);
 
-                menuSelectOptions.setFont(font_);
-                menuSelectOptions.setString(gameSettings_[i] ? "TAK" : "NIE");
-                menuSelectOptions.setFillColor(i < sizeof(gameSettings_) ? gameSettings_[i] ? sf::Color::Green : sf::Color::Red : sf::Color::Transparent);
-                menuSelectOptions.setOutlineThickness(5);
-                menuSelectOptions.setOutlineColor(sf::Color::Black);
-                menuSelectOptions.setPosition(WindowWidth / 1.25, WindowHeight * position / 10);
-                menuSelectOptions.setCharacterSize(WindowHeight * CharakterSize);
-                menuSelectOptions_.emplace_back(menuSelectOptions);
+                selectOptions.setFont(font_);
+                selectOptions.setString(Application::getGame().getSettings((GameSetting)i) ? "TAK" : "NIE");
+                selectOptions.setFillColor(i < sizeof(GameSetting) ? Application::getGame().getSettings((GameSetting)i) ? sf::Color::Green : sf::Color::Red : sf::Color::Transparent);
+                selectOptions.setOutlineThickness(5);
+                selectOptions.setOutlineColor(sf::Color::Black);
+                selectOptions.setPosition(WindowWidth / 1.25, WindowHeight * position / 10);
+                selectOptions.setCharacterSize(WindowHeight * CharakterSize);
+                selectOptions_.emplace_back(selectOptions);
             }
         }
         for(size_t i = 0, position = StartPosition; i < SettingNames.size(); i++, position += 1)
         {
-            sf::Text menuOption;
-
-            menuOption.setFont(font_);
-            menuOption.setString(SettingNames[i]);
-            menuOption.setFillColor(sf::Color::White);
-            menuOption.setOutlineThickness(5);
-            menuOption.setOutlineColor(sf::Color::Black);
-            menuOption.setPosition(WindowWidth / 20, WindowHeight * position / 10);
-            menuOption.setCharacterSize(WindowHeight * CharakterSize);
-            menuOptions_.emplace_back(menuOption);
+            sf::Text option;
+            option.setFont(font_);
+            option.setString(SettingNames[i]);
+            option.setFillColor(sf::Color::White);
+            option.setOutlineThickness(5);
+            option.setOutlineColor(sf::Color::Black);
+            option.setPosition(WindowWidth / 20, WindowHeight * position / 10);
+            option.setCharacterSize(WindowHeight * CharakterSize);
+            options_.emplace_back(option);
         }
-        menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
+        options_[selected_].setFillColor(sf::Color(150, 150, 150));
     }
 }
 
-void Menu::getMenuChoice()
+void Menu::reset()
 {
-    if(menuType_ == MenuType::Main)
+    isMouseActive_ = false;
+    initialize(MenuType::Main);
+    playMusic(Application::getGame().getSettings(GameSetting::MenuMusic));
+}
+
+void Menu::move(const MenuMove &direction)
+{
+    if(!((selected_ == 0 && (int)direction < 0) || (selected_ == options_.size() - 1 && (int)direction > 0)))
     {
-        switch(menuSelected_)
+        options_[selected_].setFillColor(sf::Color::White);
+        selected_ += (int)direction;
+        options_[selected_].setFillColor(sf::Color(150, 150, 150));
+        selectSound_.play();
+    }
+}
+
+void Menu::draw(sf::RenderTarget &window)
+{
+    window.draw(backgroundSprite_);
+    if(options_.size() > 0)
+    {
+        for(auto &el: options_)
+        {
+            window.draw(el);
+        }
+    }
+    if(selectOptions_.size() > 0)
+    {
+        for(auto &el: selectOptions_)
+        {
+            window.draw(el);
+        }
+        if(selectBackground_.size() > selected_)
+        {
+            window.draw(selectBackground_[selected_]);
+        }
+    }
+}
+
+bool Menu::getStatus()
+{
+    return !(type_ == MenuType::None);
+}
+
+bool Menu::getMouseStatus()
+{
+    return isMouseActive_;
+}
+
+void Menu::getChoice()
+{
+    if(type_ == MenuType::Main)
+    {
+        switch(selected_)
         {
             case 0:
             {
-                setMenu(MenuType::None);
+                initialize(MenuType::None);
+
+                playMusic(false);
+                Application::getGame().initialize(GameState::Play);
                 break;
             }
             case 1:
             {
-                setMenu(MenuType::Settings);
+                initialize(MenuType::Settings);
                 break;
             }
             case 2:
@@ -152,80 +159,65 @@ void Menu::getMenuChoice()
             }
         }
     }
-    else if(menuType_ == MenuType::Settings)
+    else if(type_ == MenuType::Settings)
     {
-        switch(menuSelected_)
+        switch(selected_)
         {
             case 4:
             {
-                setMenu(MenuType::Main);
+                initialize(MenuType::Main);
                 break;
             }
             default:
             {
-                setSettings((GameSetting)menuSelected_);
+                Application::getGame().setSettings((GameSetting)selected_);
+                initialize(MenuType::Settings, false);
                 break;
             }
         }
     }
 }
 
-bool Menu::getMenuMouse(const sf::Vector2f &mousePosition)
+void Menu::getMouse(const sf::Vector2f &mousePosition)
 {
-    if(menuOptions_[menuSelected_].getGlobalBounds().contains(mousePosition))
+    bool isMouseActive = false;
+    if(options_[selected_].getGlobalBounds().contains(mousePosition))
     {
-        return true;
+        isMouseActive = true;
     }
     else
     {
-        bool isMouseActive = false;
-        for(size_t i = 0; i < menuOptions_.size(); i++)
+        for(size_t i = 0; i < options_.size(); i++)
         {
-            if(menuOptions_[i].getGlobalBounds().contains(mousePosition))
+            if(options_[i].getGlobalBounds().contains(mousePosition))
             {
-                if(menuSelected_ != i)
+                if(selected_ != i)
                 {
-                    menuSelectSound_.play();
-                    menuOptions_[menuSelected_].setFillColor(sf::Color::White);
-                    menuSelected_ = i;
-                    menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
+                    selectSound_.play();
+                    options_[selected_].setFillColor(sf::Color::White);
+                    selected_ = i;
+                    options_[selected_].setFillColor(sf::Color(150, 150, 150));
                 }
                 isMouseActive = true;
             }
         }
-        return isMouseActive;
     }
+    isMouseActive_ = isMouseActive;
 }
 
-void Menu::setSettings(const GameSetting &gameSetting)
+void Menu::playMusic(const bool &status)
 {
-    gameSettings_[(int)gameSetting] = !gameSettings_[(int)gameSetting];
-    if(gameSettings_[(int)gameSetting])
+    if(!status)
     {
-        if((int)gameSetting == 3)
-        {
-            menuSelectSound_.setVolume(1);
-        }
-        menuSelectOptions_[(int)gameSetting].setString("TAK");
-        menuSelectOptions_[(int)gameSetting].setFillColor(sf::Color::Green);
+        music_.stop();
     }
-    else
+    else if(music_.getStatus() != sf::Music::Playing)
     {
-        if((int)gameSetting == 3)
-        {
-            menuSelectSound_.setVolume(0);
-        }
-        menuSelectOptions_[(int)gameSetting].setString("NIE");
-        menuSelectOptions_[(int)gameSetting].setFillColor(sf::Color::Red);
+        music_.play();
     }
 }
 
-bool Menu::isMouseActive()
+void Menu::setSelectVolume(const float &volume)
 {
-    return isMouseActive_;
-}
-
-void Menu::setMouseActive(sf::RenderWindow &window)
-{
-    isMouseActive_ = getMenuMouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+    selectSound_.setVolume(volume);
 }

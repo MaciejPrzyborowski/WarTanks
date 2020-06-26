@@ -25,16 +25,24 @@ public:
     ~World() = default;
 
     /**
-     * @brief Dodaje obiekt do wektora obiektów gry
+     * @brief Dodaje nowy obiekt do gry
      * @param object - obiekt elementu gry
+     * @return Wskaźnik stworzonego obiektu
      */
     WorldObject * addObject(WorldObject *object);
 
     /**
-     * @brief Dodaje obiekt do świata gry
+     * @brief Dodaje nowy obiekt do gry
      * @param objectType - typ dodawanego obiektu
+     * @return Wskaźnik stworzonego obiektu
      */
     WorldObject * addObject(const ObjectType &objectType);
+
+    /**
+     * @brief Określa obiekty w grze
+     * @return Zwraca wskaźnik do wszystkich obiektów w grze
+     */
+    vector<unique_ptr<WorldObject>> * getObjects();
 
     /**
      * @brief Resetuje wszystkie elementy do stanu początkowego
@@ -58,9 +66,8 @@ public:
      */
     void drawAll(sf::RenderWindow &window);
 
-    vector<unique_ptr<WorldObject>> objects_; /**< Wektor obiektów w grze */
-
 private:
 
     int PlayerIndex = 0; /**< Aktualny indeks gracza */
+    vector<unique_ptr<WorldObject>> objects_; /**< Wektor obiektów w grze */
 };
