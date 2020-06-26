@@ -24,7 +24,7 @@
 #define FireWorksSoundSrc "fireworksSound.wav"
 
 #define GameFontSrc "game_font.ttf"
-#define ApplicationIcon "tank1.png"
+#define ApplicationIcon "ikona.png"
 #define TankTextureSrc1 "tank1.png"
 #define TankTextureSrc2 "tank2.png"
 #define BarrelTextureSrc "barrel.png"

@@ -3,6 +3,9 @@
 #include "Globals.h"
 #include "Game.h"
 
+/**
+ * @brief Klasa Application
+ */
 class Application
 {
 public:
@@ -24,11 +27,13 @@ public:
 
     /**
      * @brief Zwraca okno aplikacji
+     * @return Zwraca wskaźnik do okna aplikacji
      */
     static sf::RenderWindow & getWindow();
 
     /**
-     * @return Zwraca obiekt klasy Game
+     * @brief Zwraca obiekt klasy Game
+     * @return Zwraca wskaźnik do obiektu klasy Game
      */
     static Game & getGame();
 
