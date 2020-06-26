@@ -17,53 +17,41 @@ Animation::Animation(const string &fileName, const sf::IntRect &position,
     shape_.setTextureRect(position_);
 }
 
-/**
- * Zmienia pozycję obrazka o wartość stepPosition_ tworząc jego animację
- *
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- */
-void Animation::changeAnimation(const float &elapsed)
+bool Animation::changeAnimation(const float &elapsed)
 {
     if((timeElapsed_ += elapsed) >= stepTime_)
     {
         timeElapsed_ -= stepTime_;
         position_.left += stepPosition_;
-        if(repeat_ && position_.left == (int)texture_.getSize().x)
+        if(position_.left == (int)texture_.getSize().x)
         {
-            position_.left = startPosition_.left;
-        }
-        else if(position_.left == (int)texture_.getSize().x)
-        {
-            active_ = false;
+            if(repeat_)
+            {
+                position_.left = startPosition_.left;
+            }
+            else
+            {
+                active_ = false;
+            }
         }
         shape_.setTextureRect(position_);
     }
+    return active_;
 }
 
-/**
- * Wyświetla animację w punkcie position(x, y)
- *
- * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
- * @param position - współrzędne punktu (x, y), w którym ma zostać wyświetlona animacja
- * @param window - okno gry
- */
-void Animation::draw(const float &elapsed, const sf::Vector2f &position, sf::RenderTarget &window)
+void Animation::changePosition(const sf::Vector2f &position)
 {
     shape_.setPosition(position);
+}
+
+void Animation::draw(sf::RenderTarget &window)
+{
     if(active_)
     {
-        changeAnimation(elapsed);
         window.draw(shape_);
     }
 }
 
-/**
- * Sprawdza status animacji
- *
- * @return
- *          true - animacja jest akywna
- *          false - animacja nie jest aktywna
- */
 bool Animation::getStatus()
 {
     return active_;

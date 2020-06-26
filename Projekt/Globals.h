@@ -8,6 +8,9 @@
 #include <cmath>
 #include <list>
 
+#define Gravity 180
+#define MaxAngle 75
+#define MaxPlayers 2
 #define WindowFPS 120
 #define WindowWidth 800
 #define WindowHeight 600
@@ -21,6 +24,7 @@
 #define FireWorksSoundSrc "fireworksSound.wav"
 
 #define GameFontSrc "game_font.ttf"
+#define ApplicationIcon "tank1.png"
 #define TankTextureSrc1 "tank1.png"
 #define TankTextureSrc2 "tank2.png"
 #define BarrelTextureSrc "barrel.png"
@@ -36,5 +40,3 @@
 #define DegreeToRadian(degree) (degree * (M_PI / 180.0))
 
 using namespace std;
-
-const int Gravity = 180;

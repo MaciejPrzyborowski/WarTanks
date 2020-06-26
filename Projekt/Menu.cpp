@@ -1,160 +1,33 @@
 #include "Menu.h"
+#include "Application.h"
 
 Menu::Menu() :
-    isMouseActive_(false),
-    gameSettings_{false, true, true, true}
+    isMouseActive_(false)
 {
     font_.loadFromFile(GameFontSrc);
-    menuSelectSoundBuffer_.loadFromFile(SelectMenuSoundSrc);
-    menuSelectSound_.setBuffer(menuSelectSoundBuffer_);
-    menuSelectSound_.setVolume(1);
+    backgroundTexture_.loadFromFile(MenuBackgroundTextureSrc);
+    backgroundSprite_.setTexture(backgroundTexture_);
+    backgroundSprite_.setScale((float)WindowWidth / backgroundTexture_.getSize().x, (float)WindowHeight / backgroundTexture_.getSize().y);
+
+    selectSoundBuffer_.loadFromFile(SelectMenuSoundSrc);
+    selectSound_.setBuffer(selectSoundBuffer_);
+    selectSound_.setVolume(1);
+    musicBuffer_.loadFromFile(MenuMusicSrc);
+    music_.setBuffer(musicBuffer_);
+    music_.setVolume(5);
+    music_.setLoop(true);
 }
 
-/**
- * Resetuje układ menu do ustawień domyślnych
- *
- * @param settings - określa czy resetowi podlegają ustawienia gry
- *            true - resetuje ustawienia gry do domyślnych
- *           false - nie resetuje ustawień gry do domyślnych
- */
-void Menu::reset(const bool &settings)
+void Menu::initialize(const MenuType &type, const bool &resetSelect)
 {
-    if(settings)
+    if(resetSelect)
     {
-        gameSettings_[0] = false;
-        gameSettings_[1] = true;
-        gameSettings_[2] = true;
-        gameSettings_[3] = true;
+        selected_ = 0;
     }
-    isMouseActive_ = false;
-    setMenu(MenuType::Main);
-}
-
-/**
- * Zmienia aktualny wybór w menu
- * Funkcja przeznaczona tylko dla obsługi klawiatury
- *
- * @param direction - kierunek w którą stronę ma zostać dokonana zmiana
- *               -1 - w górę
- *                1 - w dół
- */
-void Menu::move(const int &direction)
-{
-    if(!((menuSelected_ == 0 && direction < 0) || (menuSelected_ == menuOptions_.size() - 1 && direction > 0)))
-    {
-        menuOptions_[menuSelected_].setFillColor(sf::Color::White);
-        menuSelected_ += direction;
-        menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
-        menuSelectSound_.play();
-    }
-}
-
-/**
- * Obsługuje zdarzenia wykonane przez gracza
- * Obsługiwana jest klawiatura oraz myszka gracza
- *
- * @param event - obiekt wszystkich zdarzeń
- * @param window - okno gry
- */
-void Menu::passEvent(const sf::Event &event, sf::RenderWindow &window)
-{
-    if(event.type == sf::Event::KeyPressed)
-    {
-        if(event.key.code == sf::Keyboard::Up)
-        {
-            move(-1);
-        }
-        if(event.key.code == sf::Keyboard::Down)
-        {
-            move(1);
-        }
-    }
-    if(event.type == sf::Event::MouseMoved)
-    {
-        isMouseActive_ = getMenuMouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-    }
-    if((event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return) ||
-            (isMouseActive_ && event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonReleased))
-    {
-        if(!getMenuChoice())
-        {
-            window.close();
-        }
-    }
-}
-
-/**
- * Wyświetla aktualne menu
- *
- * @param window - okno gry
- */
-void Menu::draw(sf::RenderTarget &window)
-{
-    if(menuOptions_.size() > 0)
-    {
-        for(auto &el: menuOptions_)
-        {
-            window.draw(el);
-        }
-    }
-    if(menuSelectOptions_.size() > 0)
-    {
-        for(auto &el: menuSelectOptions_)
-        {
-            window.draw(el);
-        }
-        if(menuSelectBackground_.size() > menuSelected_)
-        {
-            window.draw(menuSelectBackground_[menuSelected_]);
-        }
-    }
-}
-
-/**
- * Sprawdza status menu
- *
- * @return
- *        true - menu jest aktywne
- *        false - menu nie jest aktywne
- */
-bool Menu::getMenuStatus()
-{
-    return !(menuType_ == MenuType::None);
-}
-
-/**
- * Sprawdza ustawienia gry
- *
- * @param setting - ID ustawienia gry:
- *              0 - licznik FPS
- *              1 - muzyka w grze
- *              2 - muzyka w menu
- *              3 - dźwięki w menu
- *
- * @return
- *        true - ustawienie jest włączone
- *        false - ustawienie jest wyłączone
- */
-bool Menu::getGameSettings(const int &setting)
-{
-    return gameSettings_[setting];
-}
-
-/**
- * Ustawia dane w menu
- *
- * @param type - typ menu:
- *        None - brak menu
- *        Main - menu główne
- *        Settings - menu ustawień
- */
-void Menu::setMenu(const MenuType &type)
-{
-    menuSelected_ = 0;
-    menuOptions_.clear();
-    menuSelectOptions_.clear();
-    menuSelectBackground_.clear();
-    menuType_ = type;
+    options_.clear();
+    selectOptions_.clear();
+    selectBackground_.clear();
+    type_ = type;
     if(type != MenuType::None)
     {
         float CharakterSize;
@@ -175,154 +48,176 @@ void Menu::setMenu(const MenuType &type)
 
             for(size_t i = 0, position = StartPosition; i < SettingNames.size() - 1; i++, position += 1)
             {
-                sf::Text menuSelectOptions;
-                sf::RectangleShape menuSelectBackground;
+                sf::Text selectOptions;
+                sf::RectangleShape selectBackground;
 
-                menuSelectBackground.setPosition(0, WindowHeight * position / 10);
-                menuSelectBackground.setFillColor(sf::Color(222, 222, 222, 50));
-                menuSelectBackground.setSize(sf::Vector2f(WindowWidth, WindowHeight * 0.09));
-                menuSelectBackground_.emplace_back(menuSelectBackground);
+                selectBackground.setPosition(0, WindowHeight * position / 10);
+                selectBackground.setFillColor(sf::Color(222, 222, 222, 50));
+                selectBackground.setSize(sf::Vector2f(WindowWidth, WindowHeight * 0.09));
+                selectBackground_.emplace_back(selectBackground);
 
-                menuSelectOptions.setFont(font_);
-                menuSelectOptions.setString(gameSettings_[i] ? "TAK" : "NIE");
-                menuSelectOptions.setFillColor(i < sizeof(gameSettings_) ? gameSettings_[i] ? sf::Color::Green : sf::Color::Red : sf::Color::Transparent);
-                menuSelectOptions.setOutlineThickness(5);
-                menuSelectOptions.setOutlineColor(sf::Color::Black);
-                menuSelectOptions.setPosition(WindowWidth / 1.25, WindowHeight * position / 10);
-                menuSelectOptions.setCharacterSize(WindowHeight * CharakterSize);
-                menuSelectOptions_.emplace_back(menuSelectOptions);
+                selectOptions.setFont(font_);
+                selectOptions.setString(Application::getGame().getSettings((GameSetting)i) ? "TAK" : "NIE");
+                selectOptions.setFillColor(i < sizeof(GameSetting) ? Application::getGame().getSettings((GameSetting)i) ? sf::Color::Green : sf::Color::Red : sf::Color::Transparent);
+                selectOptions.setOutlineThickness(5);
+                selectOptions.setOutlineColor(sf::Color::Black);
+                selectOptions.setPosition(WindowWidth / 1.25, WindowHeight * position / 10);
+                selectOptions.setCharacterSize(WindowHeight * CharakterSize);
+                selectOptions_.emplace_back(selectOptions);
             }
         }
         for(size_t i = 0, position = StartPosition; i < SettingNames.size(); i++, position += 1)
         {
-            sf::Text menuOption;
-
-            menuOption.setFont(font_);
-            menuOption.setString(SettingNames[i]);
-            menuOption.setFillColor(sf::Color::White);
-            menuOption.setOutlineThickness(5);
-            menuOption.setOutlineColor(sf::Color::Black);
-            menuOption.setPosition(WindowWidth / 20, WindowHeight * position / 10);
-            menuOption.setCharacterSize(WindowHeight * CharakterSize);
-            menuOptions_.emplace_back(menuOption);
+            sf::Text option;
+            option.setFont(font_);
+            option.setString(SettingNames[i]);
+            option.setFillColor(sf::Color::White);
+            option.setOutlineThickness(5);
+            option.setOutlineColor(sf::Color::Black);
+            option.setPosition(WindowWidth / 20, WindowHeight * position / 10);
+            option.setCharacterSize(WindowHeight * CharakterSize);
+            options_.emplace_back(option);
         }
-        menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
+        options_[selected_].setFillColor(sf::Color(150, 150, 150));
     }
 }
 
-/**
- * Obsługuje wybór elementu z menu
- *
- * @return
- *        true - menu jest aktywne
- *        false - menu zostało zamknięte
- */
-bool Menu::getMenuChoice()
+void Menu::reset()
 {
-    bool isMenuActive = true;
-    if(menuType_ == MenuType::Main)
+    isMouseActive_ = false;
+    initialize(MenuType::Main);
+    playMusic(Application::getGame().getSettings(GameSetting::MenuMusic));
+}
+
+void Menu::move(const MenuMove &direction)
+{
+    if(!((selected_ == 0 && (int)direction < 0) || (selected_ == options_.size() - 1 && (int)direction > 0)))
     {
-        switch(menuSelected_)
+        options_[selected_].setFillColor(sf::Color::White);
+        selected_ += (int)direction;
+        options_[selected_].setFillColor(sf::Color(150, 150, 150));
+        selectSound_.play();
+    }
+}
+
+void Menu::draw(sf::RenderTarget &window)
+{
+    window.draw(backgroundSprite_);
+    if(options_.size() > 0)
+    {
+        for(auto &el: options_)
+        {
+            window.draw(el);
+        }
+    }
+    if(selectOptions_.size() > 0)
+    {
+        for(auto &el: selectOptions_)
+        {
+            window.draw(el);
+        }
+        if(selectBackground_.size() > selected_)
+        {
+            window.draw(selectBackground_[selected_]);
+        }
+    }
+}
+
+bool Menu::getStatus()
+{
+    return !(type_ == MenuType::None);
+}
+
+bool Menu::getMouseStatus()
+{
+    return isMouseActive_;
+}
+
+void Menu::getChoice()
+{
+    if(type_ == MenuType::Main)
+    {
+        switch(selected_)
         {
             case 0:
             {
-                setMenu(MenuType::None);
+                initialize(MenuType::None);
+
+                playMusic(false);
+                Application::getGame().initialize(GameState::Play);
                 break;
             }
             case 1:
             {
-                setMenu(MenuType::Settings);
+                initialize(MenuType::Settings);
                 break;
             }
             case 2:
             {
-                isMenuActive = false;
+                Application::quit();
                 break;
             }
         }
     }
-    else if(menuType_ == MenuType::Settings)
+    else if(type_ == MenuType::Settings)
     {
-        switch(menuSelected_)
+        switch(selected_)
         {
             case 4:
             {
-                setMenu(MenuType::Main);
+                initialize(MenuType::Main);
                 break;
             }
             default:
             {
-                setSettings(menuSelected_);
+                Application::getGame().setSettings((GameSetting)selected_);
+                initialize(MenuType::Settings, false);
                 break;
             }
         }
     }
-    return isMenuActive;
 }
 
-/**
- * Sprawdza czy myszka znajduje się aktualnie na wybranym elemencie
- * Funkcja dodatkowo ustawia element menu, na którym znajduje się myszka, jako aktywny
- *
- * @return
- *        true - myszka znajduje się na wybranym elemencie
- *        false - myszka nie znajduje się na wybranym elemencie
- */
-bool Menu::getMenuMouse(const sf::Vector2f &mousePosition)
+void Menu::getMouse(const sf::Vector2f &mousePosition)
 {
-    if(menuOptions_[menuSelected_].getGlobalBounds().contains(mousePosition))
+    bool isMouseActive = false;
+    if(options_[selected_].getGlobalBounds().contains(mousePosition))
     {
-        return true;
+        isMouseActive = true;
     }
     else
     {
-        bool isMouseActive = false;
-        for(size_t i = 0; i < menuOptions_.size(); i++)
+        for(size_t i = 0; i < options_.size(); i++)
         {
-            if(menuOptions_[i].getGlobalBounds().contains(mousePosition))
+            if(options_[i].getGlobalBounds().contains(mousePosition))
             {
-                if(menuSelected_ != i)
+                if(selected_ != i)
                 {
-                    menuSelectSound_.play();
-                    menuOptions_[menuSelected_].setFillColor(sf::Color::White);
-                    menuSelected_ = i;
-                    menuOptions_[menuSelected_].setFillColor(sf::Color(150, 150, 150));
+                    selectSound_.play();
+                    options_[selected_].setFillColor(sf::Color::White);
+                    selected_ = i;
+                    options_[selected_].setFillColor(sf::Color(150, 150, 150));
                 }
                 isMouseActive = true;
             }
         }
-        return isMouseActive;
+    }
+    isMouseActive_ = isMouseActive;
+}
+
+void Menu::playMusic(const bool &status)
+{
+    if(!status)
+    {
+        music_.stop();
+    }
+    else if(music_.getStatus() != sf::Music::Playing)
+    {
+        music_.play();
     }
 }
 
-/**
- * Zmienia ustawienia gry
- *
- * @param setting - ID ustawienia gry:
- *              0 - licznik FPS
- *              1 - muzyka w grze
- *              2 - muzyka w menu
- *              3 - dźwięki w menu
- */
-void Menu::setSettings(const int &setting)
+void Menu::setSelectVolume(const float &volume)
 {
-    gameSettings_[setting] = !gameSettings_[setting];
-    if(gameSettings_[setting])
-    {
-        if(setting == 3)
-        {
-            menuSelectSound_.setVolume(1);
-        }
-        menuSelectOptions_[setting].setString("TAK");
-        menuSelectOptions_[setting].setFillColor(sf::Color::Green);
-    }
-    else
-    {
-        if(setting == 3)
-        {
-            menuSelectSound_.setVolume(0);
-        }
-        menuSelectOptions_[setting].setString("NIE");
-        menuSelectOptions_[setting].setFillColor(sf::Color::Red);
-    }
+    selectSound_.setVolume(volume);
 }

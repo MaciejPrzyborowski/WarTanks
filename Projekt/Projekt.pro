@@ -13,17 +13,20 @@ CONFIG(debug, debug|release){
 
 SOURCES += \
         Animation.cpp \
+        Application.cpp \
         Bullet.cpp \
         Game.cpp \
         Interface.cpp \
-        main.cpp \
+        World.cpp \
         Land.cpp \
         Perlin.cpp \
         Tank.cpp \
-        Menu.cpp
+        Menu.cpp \
+        main.cpp
 
 HEADERS += \
     Animation.h \
+    Application.h \
     Bullet.h \
     Game.h \
     Globals.h \
@@ -31,4 +34,6 @@ HEADERS += \
     Perlin.h \
     Tank.h \
     Menu.h \
-    Interface.h
+    Interface.h \
+    World.h \
+    WorldObject.h

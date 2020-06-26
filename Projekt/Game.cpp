@@ -1,43 +1,42 @@
 #include "Game.h"
 
-Game::Game()
+Game::Game() :
+    taskCounter(0),
+    gameSettings_{false, true, true, true},
+    winnerID_(WinnerType::None),
+    fireworks_(nullptr),
+    fire_(nullptr),
+    gameInterface_(nullptr),
+    menu_(nullptr),
+    world(nullptr),
+    land(nullptr)
 {
-    window_ = make_unique<sf::RenderWindow>(sf::VideoMode(WindowWidth, WindowHeight), NazwaGry);
-    window_->setFramerateLimit(WindowFPS);
-    window_->setActive(true);
+    backgroundTexture_.loadFromFile(GameBackgroundTextureSrc);
+    backgroundSprite_.setTexture(backgroundTexture_);
+    backgroundSprite_.setScale((float)WindowWidth/backgroundTexture_.getSize().x, (float)WindowHeight/backgroundTexture_.getSize().y);
 
-    gameBackgroundTexture_.loadFromFile(GameBackgroundTextureSrc);
-    gameBackgroundSprite_.setTexture(gameBackgroundTexture_);
-    gameBackgroundSprite_.setScale((float)WindowWidth/gameBackgroundTexture_.getSize().x, (float)WindowHeight/gameBackgroundTexture_.getSize().y);
-    menuBackgroundTexture_.loadFromFile(MenuBackgroundTextureSrc);
-    menuBackgroundSprite_.setTexture(menuBackgroundTexture_);
-    menuBackgroundSprite_.setScale((float)WindowWidth / menuBackgroundTexture_.getSize().x, (float)WindowHeight / menuBackgroundTexture_.getSize().y);
-
-    menuMusicBuffer_.loadFromFile(MenuMusicSrc);
-    menuMusic_.setBuffer(menuMusicBuffer_);
-    menuMusic_.setVolume(5);
-    menuMusic_.setLoop(true);
-    gameBuffer_.loadFromFile(GameMusicSrc);
-    gameMusic_.setBuffer(gameBuffer_);
-    gameMusic_.setVolume(30);
-    gameMusic_.setLoop(true);
+    musicBuffer_.loadFromFile(GameMusicSrc);
+    music_.setBuffer(musicBuffer_);
+    music_.setVolume(30);
+    music_.setLoop(true);
     fireworksBuffer_.loadFromFile(FireWorksSoundSrc);
     fireworksSound_.setBuffer(fireworksBuffer_);
     fireworksSound_.setVolume(5);
-    srand(time(NULL));
+    fireworksSound_.setLoop(true);
 }
 
 void Game::run()
 {
     menu_ = make_unique<Menu>();
-    land_ = make_unique<Land>(4, 0.2);
-    GameInterface_ = make_unique<Interface>();
-    player1_ = make_unique<Tank>(1, TankTextureSrc1, *land_);
-    player2_ = make_unique<Tank>(2, TankTextureSrc2, *land_);
-    player1_ -> enemy = player2_.get();
-    player2_ -> enemy = player1_.get();
+    world = make_unique<World>();
+    gameInterface_ = make_unique<Interface>();
+
+    land = dynamic_cast<Land *>(world -> addObject(ObjectType::Land));
+    for(size_t i = 0; i < MaxPlayers; i++)
+    {
+        world -> addObject(ObjectType::Tank);
+    }
     initialize(GameState::Menu);
-    update();
 }
 
 void Game::initialize(const GameState &gameState)
@@ -45,179 +44,258 @@ void Game::initialize(const GameState &gameState)
     gameState_ = gameState;
     if(gameState == GameState::Menu)
     {
-        menu_ -> reset(false);
+        winnerID_ = WinnerType::None;
+        menu_ -> reset();
+
         playGameMusic(false);
-        playMenuMusic(menu_->getGameSettings(2));
-        fireworksSound_.stop();
+        playFireworksSound(false);
     }
     else if(gameState == GameState::Play)
     {
-        land_->generate();
+        winnerID_ = WinnerType::None;
+        world -> resetAll();
+        gameInterface_ -> reset();
 
-        player1_ -> reset();
-        player2_ -> reset();
-        GameInterface_->reset();
-        playGameMusic(menu_->getGameSettings(1));
-        playMenuMusic(false);
+        playFireworksSound(false);
+        playGameMusic(getSettings(GameSetting::GameMusic));
+    }
+    else if(gameState == GameState::EndWinner)
+    {
+        playGameMusic(false);
+        playFireworksSound(true);
+
         fireworks_ = make_unique<Animation>(FireworksEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
         fire_ = make_unique<Animation>(FireEndGameAnimationSrc, sf::IntRect(0, 0, 100, 100), 100, 50, true, 1.0);
-    }
-}
-
-void Game::passEvent(const sf::Event &Event)
-{
-    if(Event.type == sf::Event::Closed)
-    {
-        window_->close();
-    }
-    else if(gameState_ == GameState::Menu)
-    {
-        if(menu_->getMenuStatus())
+        for(const auto &object : *(world -> getObjects()))
         {
-            menu_->passEvent(Event, *window_);
-            playMenuMusic(menu_->getGameSettings(2));
-        }
-        else
-        {
-            initialize(GameState::Play);
-        }
-    }
-    else if(gameState_ == GameState::Play)
-    {
-        player1_->passEvent(Event, *window_);
-        player2_->passEvent(Event, *window_);
-    }
-    else if(Event.type == sf::Event::KeyReleased && Event.key.code == sf::Keyboard::Return)
-    {
-        initialize(GameState::Menu);
-    }
-}
-
-void Game::updateAll(const sf::Time &elapsed)
-{
-    if(window_ -> isOpen())
-    {
-        window_ -> clear();
-        if(gameState_ == GameState::Menu)
-        {
-            if(menu_->getMenuStatus())
+            auto tank = dynamic_cast<Tank *>(object.get());
+            if(tank != nullptr)
             {
-                window_ -> draw(menuBackgroundSprite_);
-                menu_->draw(*window_);
-            }
-            else
-            {
-                initialize(GameState::Play);
-            }
-        }
-        else
-        {
-            window_ -> draw(gameBackgroundSprite_);
-            land_ -> draw(*window_);
-            player1_ -> draw(*window_);
-            player2_ -> draw(*window_);
-            int playerHealth[2] = {player1_ -> returnHp(), player2_ -> returnHp()};
-            if(gameState_ == GameState::Play)
-            {
-                if(playerHealth[0] > 0 && playerHealth[1] > 0)
+                if(winnerID_ == (WinnerType)tank -> getPlayerID())
                 {
-                    land_ -> step(elapsed.asSeconds());
-                    player1_ -> update(elapsed.asSeconds(), *window_);
-                    player2_ -> update(elapsed.asSeconds(), *window_);
-                    if(player1_ -> getStatus() == TankState::Switch || player2_ -> getStatus() == TankState::Switch)
-                    {
-                        player1_ -> switchStatus(*window_);
-                        player2_ -> switchStatus(*window_);
-                    }
-                    GameInterface_ -> drawGameTime(elapsed.asSeconds(), *window_);
-                }
-                else if(playerHealth[0] > 0 || playerHealth[1] > 0)
-                {
-                    initialize(GameState::EndWinner);
-                    vector<sf::Vector2f> position = GameInterface_ -> checkWinner(playerHealth, player1_->returnPosition(), player2_->returnPosition());
-                    winner_ = position[0];
-                    loser_ = position[1];
+                    fireworks_ -> changePosition(tank -> getTankPosition() - sf::Vector2f(50, 100));
                 }
                 else
                 {
-                    initialize(GameState::EndDraw);
+                    fire_ -> changePosition(tank -> getTankPosition() - sf::Vector2f(50, 80));
                 }
+            }
+        }
+    }
+}
+
+void Game::passEvent(sf::RenderWindow &window, sf::Event &event)
+{
+    if(window.isOpen())
+    {
+        if(gameState_ == GameState::Menu)
+        {
+            if(menu_ -> getStatus())
+            {
+                if(event.type == sf::Event::KeyPressed)
+                {
+                    if(event.key.code == sf::Keyboard::Up)
+                    {
+                        menu_ -> move(MenuMove::Up);
+                    }
+                    if(event.key.code == sf::Keyboard::Down)
+                    {
+                        menu_ -> move(MenuMove::Down);
+                    }
+                }
+                if(event.type == sf::Event::MouseMoved)
+                {
+                    menu_ -> getMouse(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+                }
+                if((event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return) ||
+                        (menu_ -> getMouseStatus() && event.mouseButton.button == sf::Mouse::Left && event.type == sf::Event::MouseButtonReleased))
+                {
+                    menu_ -> getChoice();
+                }
+            }
+        }
+        else if(gameState_ == GameState::Play)
+        {
+            for(auto &object : *(world -> getObjects()))
+            {
+                auto tankID = dynamic_cast<Tank *>(object.get());
+                if(tankID != nullptr)
+                {
+                    if(tankID -> getStatus() == TankState::Active)
+                    {
+                        if(event.type == sf::Event::KeyReleased && (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Right))
+                        {
+                            tankID -> setMoveDirection(TankMove::None);
+                        }
+                        if(event.type == sf::Event::KeyPressed)
+                        {
+                            if(event.key.code == sf::Keyboard::Space)
+                            {
+                                tankID -> shoot();
+                            }
+                            if(event.key.code == sf::Keyboard::Up)
+                            {
+                                tankID -> moveShootPower(ShootPowerMove::LevelUp);
+                            }
+                            if(event.key.code == sf::Keyboard::Down)
+                            {
+                                tankID -> moveShootPower(ShootPowerMove::LevelDown);
+                            }
+                            if(event.key.code == sf::Keyboard::Left)
+                            {
+                                tankID -> setMoveDirection(TankMove::Left);
+                            }
+                            if(event.key.code == sf::Keyboard::Right)
+                            {
+                                tankID -> setMoveDirection(TankMove::Right);
+                            }
+                        }
+                        if(event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+                        {
+                            tankID -> switchCursorVisibility(window);
+                        }
+                    }
+                }
+            }
+        }
+        else if(event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::Return)
+        {
+            initialize(GameState::Menu);
+        }
+    }
+}
+
+void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
+{
+    if(window.isOpen())
+    {
+        if(gameState_ == GameState::Menu)
+        {
+            if(menu_ -> getStatus())
+            {
+                menu_ -> draw(window);
+            }
+        }
+        else
+        {
+            window.draw(backgroundSprite_);
+            world -> drawAll(window);
+            if(gameState_ == GameState::Play)
+            {
+                world -> getCollisionAll();
+                world -> stepAll(elapsed.asSeconds());
+                for(const auto &object : *(world -> getObjects()))
+                {
+                    auto tank = dynamic_cast<Tank *>(object.get());
+                    if(tank != nullptr)
+                    {
+                        tank -> update(elapsed.asSeconds(), window);
+                    }
+                }
+                if(!taskCounter)
+                {
+                    for(const auto &object : *(world -> getObjects()))
+                    {
+                        auto tank = dynamic_cast<Tank *>(object.get());
+                        if(tank != nullptr)
+                        {
+                            if(tank -> getPlayerHealth() <= 0)
+                            {
+                                winnerID_ = (WinnerType)((int)winnerID_ + ((int)WinnerType::Draw - (int)tank -> getPlayerID()));
+                            }
+                        }
+                    }
+                    if(winnerID_ == WinnerType::None)
+                    {
+                        for(const auto &object : *(world -> getObjects()))
+                        {
+                            auto tank = dynamic_cast<Tank *>(object.get());
+                            if(tank != nullptr)
+                            {
+                                tank -> switchStatus(window);
+                            }
+                        }
+                        taskCounter = 1;
+                    }
+                    else if(winnerID_ == WinnerType::Draw)
+                    {
+                        initialize(GameState::EndDraw);
+                    }
+                    else
+                    {
+                        initialize(GameState::EndWinner);
+                    }
+                }
+                gameInterface_ -> drawGameTime(elapsed.asSeconds(), window);
             }
             else
             {
-                GameInterface_ -> drawGameEnd(elapsed.asSeconds(), *window_);
                 if(gameState_ == GameState::EndWinner)
                 {
-                    playGameMusic(false);
-                    playFireworksSound();
-                    fireworks_ -> draw(elapsed.asSeconds(), winner_, *window_);
-                    fire_ -> draw(elapsed.asSeconds(), loser_, *window_);
+                    if(fireworks_ -> changeAnimation(elapsed.asSeconds()) && fire_ -> changeAnimation(elapsed.asSeconds()))
+                    {
+                        fireworks_ -> draw(window);
+                        fire_ -> draw(window);
+                    }
                 }
+                gameInterface_ -> drawGameEnd(elapsed.asSeconds(), window);
             }
         }
-        if(menu_->getGameSettings(0))
+        if(getSettings(GameSetting::FPS))
         {
-            GameInterface_ -> drawFPS(elapsed.asSeconds(), *window_);
+            gameInterface_ -> drawFPS(elapsed.asSeconds(), window);
         }
-        window_ -> display();
     }
 }
 
-void Game::update()
+bool Game::getSettings(const GameSetting &gameSetting)
 {
-    sf::Clock clock;
-    while(window_->isOpen())
+    return gameSettings_[int(gameSetting)];
+}
+
+void Game::setSettings(const GameSetting &gameSetting)
+{
+    gameSettings_[(int)gameSetting] = !gameSettings_[(int)gameSetting];
+    if(gameSettings_[(int)gameSetting])
     {
-        sf::Event Event;
-        sf::Time elapsed = clock.restart();
-        while(window_->pollEvent(Event))
+        if(gameSetting == GameSetting::MenuMusic)
         {
-            passEvent(Event);
+            menu_ -> playMusic(true);
         }
-        updateAll(elapsed);
+        else if(gameSetting == GameSetting::SoundMusic)
+        {
+            menu_ -> setSelectVolume(1);
+        }
+    }
+    else if(gameSetting == GameSetting::MenuMusic)
+    {
+        menu_ -> playMusic(false);
+    }
+    else if(gameSetting == GameSetting::SoundMusic)
+    {
+        menu_ -> setSelectVolume(0);
     }
 }
 
-/**
- * Włącza muzykę w menu jeżeli opcja ta jest włączona w ustawieniach
- *
- * @param isMenuMusicOn - sprawdza czy muzyka w menu jest włączona
- */
-void Game::playMenuMusic(const bool &isMenuMusicOn)
+void Game::playGameMusic(const bool &status)
 {
-    if(isMenuMusicOn && menuMusic_.getStatus() != sf::Music::Playing)
+    if(!status)
     {
-        menuMusic_.play();
+        music_.stop();
     }
-    else if(!isMenuMusicOn)
+    else if(music_.getStatus() != sf::Music::Playing)
     {
-        menuMusic_.stop();
+        music_.play();
     }
 }
 
-/**
- * Włącza muzykę w grze jeżeli opcja ta jest włączona w ustawieniach
- *
- * @param isGameMusicOn - sprawdza czy muzyka w grze jest włączona
- */
-void Game::playGameMusic(const bool &isGameMusicOn)
+void Game::playFireworksSound(const bool &status)
 {
-    if(isGameMusicOn && gameMusic_.getStatus() != sf::Music::Playing)
+    if(!status)
     {
-        gameMusic_.play();
+        fireworksSound_.stop();
     }
-    else if(!isGameMusicOn)
-    {
-        gameMusic_.stop();
-    }
-}
-
-/**
- * Włącza dźwięk fajerwerków na koniec gry
- */
-void Game::playFireworksSound()
-{
-    if(fireworksSound_.getStatus() != sf::Music::Playing)
+    else if(fireworksSound_.getStatus() != sf::Music::Playing)
     {
         fireworksSound_.play();
     }

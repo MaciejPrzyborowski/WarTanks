@@ -1,9 +1,5 @@
 #include "Perlin.h"
 
-/**
- * Tablica zdefiniowana przez Ken Perlin
- * Permutacja jest losowo ułożona z liczb od 0 do 255
- */
 const int Perlin::permutation[256] =
 {
     151, 160, 137, 91, 90, 15, 131, 13, 201, 95, 96, 53, 194, 233, 7, 225, 140, 36, 103, 30, 69, 142,
@@ -20,9 +16,6 @@ const int Perlin::permutation[256] =
     138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180
 };
 
-/**
- * Wektory punktów środka sześcianu
- */
 const int Perlin::gradientsCube[12][3] =
 {
     {1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0},
@@ -34,19 +27,10 @@ Perlin::Perlin(const float &octaves, const float &persistence) :
     octaves_(octaves),
     persistence_(persistence)
 {
-    factor_[0] = 0.5 * (sqrtf(3.0) - 1.0); // Skewing Factor (~0.366025)
-    factor_[1] = (3.0 - sqrtf(3.0)) / 6.0; // Unskewing Factor (~0.211325)
+    factor_[0] = 0.5 * (sqrtf(3.0) - 1.0);
+    factor_[1] = (3.0 - sqrtf(3.0)) / 6.0;
 }
 
-/**
- * Sumuje wartości szumów Perlina w punkcie [x, y] dla kolejnych oktaw
- * Do każdej oktawy zostanie dodana większa częstotliwość / mniejsza amplituda
- *
- * @param x - współrzędna x
- * @param y - współrzędna y
- *
- * @return Suma wartości szumów Perlina, która jest dopasowana do wysokości okna
- */
 float Perlin::octaveNoise(const float &x, const float &y)
 {
     float total = 0;
@@ -63,14 +47,6 @@ float Perlin::octaveNoise(const float &x, const float &y)
     return (total / maxAmplitude) * (WindowHeight) / 3 + (WindowHeight) / 3;
 }
 
-/**
- * Oblicza wartość szumu Perlina w punkcie [x, y]
- *
- * @param x - współrzędna x
- * @param y - współrzędna y
- *
- * @return Wartość szumu w zakresie [-1, 1]
- */
 float Perlin::rawNoise(const float &x, const float &y)
 {
     float Noise[3];
@@ -112,15 +88,6 @@ float Perlin::rawNoise(const float &x, const float &y)
     return 70.0 * (Noise[0] + Noise[1] + Noise[2]);
 }
 
-/**
- * Oblicza wartość wkładu jednego rogu
- *
- * @param x - wartość x
- * @param y - wartość y
- * @param gradientIndex - wartość gradientu
- *
- * @return Wartość wkładu jednego rogu
- */
 float Perlin::getCornerValue(const float &x, const float &y, const int &gradientIndex)
 {
     float CornerValue = 0.5 - powf(x, 2) - powf(y, 2);
@@ -131,39 +98,16 @@ float Perlin::getCornerValue(const float &x, const float &y, const int &gradient
     return (powf(CornerValue, 4) * matrixDot(gradientsCube[gradientIndex], x, y));
 }
 
-/**
- * Oblicza wyznacznik macierzy
- *
- * @param matrix - macierz
- * @param x - wartość zmiennoprzecinkowa
- * @param y - wartość zmiennoprzecinkowa
- *
- * @return Wyznacznik macierzy w zależności od wartości x i y
- */
 float Perlin::matrixDot(const int *matrix, const float &x, const float &y)
 {
     return matrix[0] * x + matrix[1] * y;
 }
 
-/**
- * Oblicza największą wartość całkowitą liczby dla wartości zmiennoprzecinkowej
- *
- * @param x - wartość zmiennoprzecinkowa
- *
- * @return Największa wartość całkowita liczby dla wartości zmiennoprzecinkowej
- */
 int Perlin::fastFloor(const float &x)
 {
     return (x > 0.0) ? (int)x : (int)(x - 1.0);
 }
 
-/**
- * Oblicza wartość permutacji dla podanej wartości całkowitej
- *
- * @param i - wartość całkowita
- *
- * @return Wartość permutacji dla podanej wartości całkowitej
- */
 int Perlin::hash(const int &i)
 {
     return permutation[i & 255];
