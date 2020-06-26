@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game() :
-    winnerID_(Winner::None),
+    winnerID_(WinnerType::None),
     taskCounter(0),
     fireworks_(nullptr),
     fire_(nullptr),
@@ -50,7 +50,7 @@ void Game::initialize(const GameState &gameState)
     gameState_ = gameState;
     if(gameState == GameState::Menu)
     {
-        winnerID_ = Winner::None;
+        winnerID_ = WinnerType::None;
         menu_ -> reset(false);
 
         playGameMusic(false);
@@ -59,7 +59,7 @@ void Game::initialize(const GameState &gameState)
     }
     else if(gameState == GameState::Play)
     {
-        winnerID_ = Winner::None;
+        winnerID_ = WinnerType::None;
         world -> resetAll();
         gameInterface_ -> reset();
 
@@ -80,7 +80,7 @@ void Game::initialize(const GameState &gameState)
             auto tank = dynamic_cast<Tank *>(object.get());
             if(tank != nullptr)
             {
-                if(winnerID_ == (Winner)tank -> getPlayerID())
+                if(winnerID_ == (WinnerType)tank -> getPlayerID())
                 {
                     fireworks_ -> changePosition(tank -> getTankPosition() - sf::Vector2f(50, 100));
                 }
@@ -216,11 +216,11 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
                         {
                             if(tank -> getPlayerHealth() <= 0)
                             {
-                                winnerID_ = (Winner)((int)winnerID_ + ((int)Winner::Draw - (int)tank -> getPlayerID()));
+                                winnerID_ = (WinnerType)((int)winnerID_ + ((int)WinnerType::Draw - (int)tank -> getPlayerID()));
                             }
                         }
                     }
-                    if(winnerID_ == Winner::None)
+                    if(winnerID_ == WinnerType::None)
                     {
                         for(const auto &object : world -> objects_)
                         {
@@ -232,7 +232,7 @@ void Game::update(sf::RenderWindow &window, sf::Time &elapsed)
                         }
                         taskCounter = 1;
                     }
-                    else if(winnerID_ == Winner::Draw)
+                    else if(winnerID_ == WinnerType::Draw)
                     {
                         initialize(GameState::EndDraw);
                     }

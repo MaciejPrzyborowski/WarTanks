@@ -38,6 +38,7 @@ enum class GameSetting
 class Menu
 {
 public:
+
     /**
      * @brief Konstruktor klasy Menu
      */
@@ -118,6 +119,7 @@ public:
     void setMouseActive(sf::RenderWindow &window);
 
 private:
+
     sf::Font font_; /**< Czcionka */
     sf::Sound menuSelectSound_; /**< Dźwięk wyboru danej opcji */
     sf::SoundBuffer menuSelectSoundBuffer_; /**< Bufer dźwięku wyboru danej opcji */

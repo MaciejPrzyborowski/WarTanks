@@ -1,7 +1,7 @@
 #include "Tank.h"
 #include "Application.h"
 
-Tank::Tank(const int playerID) :
+Tank::Tank(const int &playerID) :
     moveDirection_(TankMove::None),
     velocity(0.0, 0.0),
     freefall_(false),

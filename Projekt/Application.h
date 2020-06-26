@@ -6,15 +6,34 @@
 class Application
 {
 public:
+
+    /**
+     * @brief Konstruktor klasy Application
+     */
     Application() = delete;
 
+    /**
+     * @brief Uruchamia okno aplikacji
+     */
     static void run();
+
+    /**
+     * @brief Zamyka okno aplikacji
+     */
     static void quit();
 
-    static sf::RenderWindow &getWindow();
-    static Game &getGame();
+    /**
+     * @brief Zwraca okno aplikacji
+     */
+    static sf::RenderWindow & getWindow();
+
+    /**
+     * @return Zwraca obiekt klasy Game
+     */
+    static Game & getGame();
 
 private:
-    static sf::RenderWindow window_;
-    static Game game_;
+
+    static sf::RenderWindow window_; /**< Okno aplikacji */
+    static Game game_; /**< Obiekt klasy Game */
 };

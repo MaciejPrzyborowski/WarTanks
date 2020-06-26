@@ -102,6 +102,7 @@ public:
     int getHeight(const int &x);
 
 private:
+
     bool modified_; /**< Określa czy teren został zmodyfikowany */
     float size_; /**< Maksymalna wysokość dopasowania terenu do okna */
 

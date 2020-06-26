@@ -61,5 +61,6 @@ public:
     vector<unique_ptr<WorldObject>> objects_; /**< Wektor obiektów w grze */
 
 private:
+
     int PlayerIndex = 0; /**< Aktualny indeks gracza */
 };

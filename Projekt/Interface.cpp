@@ -6,32 +6,37 @@ Interface::Interface() :
     backToMenuTime_(0.0)
 {
     font_.loadFromFile(GameFontSrc);
+
     backToMenu_ = setTextStyle(20, 3, "Kliknij enter aby wrocic do menu");
     backToMenu_.setPosition(sf::Vector2f((WindowWidth - backToMenu_.getLocalBounds().width) / 2, 570));
+
     fps_ = setTextStyle(15, 1, "", sf::Vector2f(2, 2));
     gameTime_ = setTextStyle(20, 2);
     gameEndText_ = setTextStyle(50, 3);
 }
 
-Interface::Interface(const int &id) :
+Interface::Interface(const int &playerID) :
     totalTime_(0.0),
     backToMenuTime_(0.0)
 {
     font_.loadFromFile(GameFontSrc);
+
     angle_ = setTextStyle(18, 2);
     hpText_ = setTextStyle(22, 1, "HP", sf::Vector2f(0, 0));
+
     shootPowerBorder_ = setRectStyle(sf::Vector2f(100, 20), 3, sf::Vector2f(350, 40));
     shootPowerFill_.setPosition(350, 40);
+
     turn_ = setTextStyle(20, 3);
     turnTimeLeft_ = setTextStyle(18, 2);
-    if(id == 1)
+    if(playerID == 1)
     {
         hpText_.setFillColor(sf::Color::Red);
         hpText_.setPosition(60, 26);
         healthPointBorder_ = setRectStyle(sf::Vector2f(100, 20), 3, sf::Vector2f(20, 30));
         healthPointFill_.setPosition(20, 30);
     }
-    else if(id == 2)
+    else if(playerID == 2)
     {
         hpText_.setFillColor(sf::Color(0, 100, 255));
         hpText_.setPosition(720, 26);
@@ -57,6 +62,32 @@ void Interface::drawFPS(const float &elapsed, sf::RenderTarget &window)
 {
     fps_.setString(to_string((int)(1 / elapsed)) + " FPS");
     window.draw(fps_);
+}
+
+void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
+{
+    if((backToMenuTime_ += elapsed) >= 2.0)
+    {
+        window.draw(backToMenu_);
+    }
+    if(Application::getGame().winnerID_ == WinnerType::Red)
+    {
+        gameEndText_.setOutlineColor(sf::Color::Red);
+        gameEndText_.setString("Czerwony wygrywa!");
+    }
+    else if(Application::getGame().winnerID_ == WinnerType::Blue)
+    {
+        gameEndText_.setOutlineColor(sf::Color(0, 100, 255));
+        gameEndText_.setString("Niebieski wygrywa!");
+    }
+    else
+    {
+        gameEndText_.setOutlineColor(sf::Color::Black);
+        gameEndText_.setString("Remis!");
+        gameEndText_.setPosition(325, 100);
+    }
+    gameEndText_.setPosition(sf::Vector2f((WindowWidth - gameEndText_.getLocalBounds().width)/2, 100));
+    window.draw(gameEndText_);
 }
 
 void Interface::drawGameTime(const float &elapsed, sf::RenderTarget &window)
@@ -104,52 +135,26 @@ void Interface::drawTurn(const int &id, const float &timeLeft, sf::RenderTarget 
     window.draw(turnTimeLeft_);
 }
 
-void Interface::drawGameEnd(const float &elapsed, sf::RenderTarget &window)
-{
-    if((backToMenuTime_ += elapsed) >= 2.0)
-    {
-        window.draw(backToMenu_);
-    }
-    if(Application::getGame().winnerID_ == Winner::Red)
-    {
-        gameEndText_.setOutlineColor(sf::Color::Red);
-        gameEndText_.setString("Czerwony wygrywa!");
-    }
-    else if(Application::getGame().winnerID_ == Winner::Blue)
-    {
-        gameEndText_.setOutlineColor(sf::Color(0, 100, 255));
-        gameEndText_.setString("Niebieski wygrywa!");
-    }
-    else
-    {
-        gameEndText_.setOutlineColor(sf::Color::Black);
-        gameEndText_.setString("Remis!");
-        gameEndText_.setPosition(325, 100);
-    }
-    gameEndText_.setPosition(sf::Vector2f((WindowWidth - gameEndText_.getLocalBounds().width)/2, 100));
-    window.draw(gameEndText_);
-}
-
 sf::Text Interface::setTextStyle(const int &size, const int &thickness, const string &contents, const sf::Vector2f &position, const sf::Color &fillColor, const sf::Color &borderColor)
 {
-    sf::Text textToSet;
-    textToSet.setFont(font_);
-    textToSet.setCharacterSize(size);
-    textToSet.setOutlineThickness(thickness);
-    textToSet.setFillColor(fillColor);
-    textToSet.setOutlineColor(borderColor);
-    textToSet.setPosition(position);
-    textToSet.setString(contents);
-    return textToSet;
+    sf::Text formattedText;
+    formattedText.setFont(font_);
+    formattedText.setCharacterSize(size);
+    formattedText.setOutlineThickness(thickness);
+    formattedText.setFillColor(fillColor);
+    formattedText.setOutlineColor(borderColor);
+    formattedText.setPosition(position);
+    formattedText.setString(contents);
+    return formattedText;
 }
 
 sf::RectangleShape Interface::setRectStyle(const sf::Vector2f &size, const int &thickness, const sf::Vector2f &position, const sf::Color &fillColor, const sf::Color &borderColor)
 {
-    sf::RectangleShape rectToSet;
-    rectToSet.setSize(size);
-    rectToSet.setOutlineThickness(thickness);
-    rectToSet.setPosition(position);
-    rectToSet.setFillColor(fillColor);
-    rectToSet.setOutlineColor(borderColor);
-    return rectToSet;
+    sf::RectangleShape formattedRect;
+    formattedRect.setSize(size);
+    formattedRect.setOutlineThickness(thickness);
+    formattedRect.setPosition(position);
+    formattedRect.setFillColor(fillColor);
+    formattedRect.setOutlineColor(borderColor);
+    return formattedRect;
 }

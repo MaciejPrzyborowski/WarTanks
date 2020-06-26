@@ -18,7 +18,7 @@ enum class GameState
     EndDraw /**< Remis */
 };
 
-enum class Winner
+enum class WinnerType
 {
     None,
     Red,
@@ -32,6 +32,7 @@ enum class Winner
 class Game
 {
 public:
+
     /**
      * @brief Konstruktor klasy Game
      */
@@ -126,9 +127,10 @@ public:
      * @brief Zmniejsza licznik zadań do wykonania
      */
     inline void decCounter() { --taskCounter; }
-    Winner winnerID_;
+    WinnerType winnerID_;
 
 private:
+
     int taskCounter = 0; /**< Licznik zadań */
     unique_ptr<Animation> fireworks_; /**< Animacja fajerwerków */
     unique_ptr<Animation> fire_; /**< Animacja strzału */

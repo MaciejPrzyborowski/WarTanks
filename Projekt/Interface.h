@@ -15,11 +15,9 @@ public:
     Interface();
 
     /**
-     * @param id - numer id gracza
-     *          1 - gracz 1, kolor czerwony
-     *          2 - gracz 2, kolor niebieski
+     * @param id - identyfikator gracza
      */
-    Interface(const int &id);
+    Interface(const int &playerID);
 
     /**
      * @brief Resetuje parametry interface do wartości domyślnych.
@@ -34,7 +32,7 @@ public:
     void drawAngle(const float &angle, sf::RenderTarget &window);
 
     /**
-     * @brief Wyświetla liczbę klatek na sekundę.
+     * @brief Wyświetla liczbę klatek na sekundę
      * @param elapsed - czas jaki upłynął od ostatniego wywołania funkcji
      * @param window - okno gry
      */
@@ -69,8 +67,8 @@ public:
     void drawShootPower(const int &shootPower, sf::RenderTarget &window);
 
     /**
-     * @brief Wyświetla napis, który gracz jest aktualnie aktywny. Nad tym napisem wświetla pozostały czas na oddanie strzału.
-     * @param id - numer id gracza
+     * @brief Wyświetla napis, który gracz jest aktualnie aktywny. Nad tym napisem wyświetlony jest pozostały czas na oddanie strzału.
+     * @param id - identyfikator gracza
      * @param timeLeft - pozostały czas na oddanie strzału
      * @param window - okno gry
      */
@@ -100,21 +98,23 @@ public:
     sf::RectangleShape setRectStyle(const sf::Vector2f &size, const int &thickness, const sf::Vector2f &position, const sf::Color &fillColor = sf::Color(0, 0, 0, 0), const sf::Color &borderColor = sf::Color(50, 50, 50));
 
 private:
+
     sf::Font font_; /**< Czcionka */
-    sf::Text angle_; /**< Kąt do wyświetlenia */
+
+    sf::Text angle_; /**< Napis zawierający kąt nachylenia lufy */
     sf::Text backToMenu_; /**< Napis pojawiający się na koniec gry, informujący aby wrócić do menu */
-    sf::Text fps_; /**< FPS do wyświetlenia */
-    sf::Text gameEndText_; /**< Napis pojawiający się na koniec gry, informujący o zwyciężcy */
-    sf::Text gameTime_; /**< Czas gry do wyświetlenia */
-    sf::Text hpText_; /**< Napis "HP" do wyświetlenia */
+    sf::Text fps_; /**< Napis zawierający ilość klatek na sekundę */
+    sf::Text gameEndText_; /**< Napis pojawiający się na koniec gry, informujący o zwycięzcy */
+    sf::Text gameTime_; /**< Napis zawierający czas gry */
+    sf::Text hpText_; /**< Napis "HP" */
     sf::Text turn_; /**< Napis informujący, którego gracza jest teraz kolej */
     sf::Text turnTimeLeft_; /**< Napis z pozostałym czasem tury danego gracza */
 
     float totalTime_; /**< Całkowity czas gry */
-    float backToMenuTime_; /**< Określa po jakim czasie, po zakończeniu gry ma się pojawić napis "Kliknij enter aby wrócić do menu" */
+    float backToMenuTime_; /**< Upłynięty czas od zakończenia gry */
 
-    sf::RectangleShape shootPowerBorder_; /**< Obramowanie paska siły strzału */
-    sf::RectangleShape shootPowerFill_; /**< Pasek siły strzału */
     sf::RectangleShape healthPointBorder_; /**< Obramowanie paska stanu HP */
     sf::RectangleShape healthPointFill_; /**< Pasek stanu HP */
+    sf::RectangleShape shootPowerBorder_; /**< Obramowanie paska siły strzału */
+    sf::RectangleShape shootPowerFill_; /**< Pasek siły strzału */
 };

@@ -25,6 +25,7 @@ public:
     float octaveNoise(const float &x, const float &y);
 
 private:
+
     float factor_[2]; /**< Skewing Factor (~0.366025), Unskewing Factor (~0.211325) */
     const float octaves_; /**< Liczba oktaw (poziom szczegółowości hałasu) */
     const float persistence_; /**< Liczba określająca, ile każda oktawa przyczynia się do ogólnego kształu */

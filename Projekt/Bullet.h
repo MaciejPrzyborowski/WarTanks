@@ -61,6 +61,7 @@ public:
     void setVelocity(const sf::Vector2f &velocity);
 
 private:
+
     sf::Clock clock_; /**< Upłynięty czas */
     unique_ptr<Animation> explode_; /**< Animacja wybuchu */
 

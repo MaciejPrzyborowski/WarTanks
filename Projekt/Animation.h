@@ -9,6 +9,7 @@
 class Animation
 {
 public:
+
     /**
      * @brief Konstruktor klasy Animation
      * @param fileName - nazwa pliku graficznego z kolejnymi klatkami animacji
@@ -49,6 +50,7 @@ public:
     bool getStatus();
 
 private:
+
     bool active_; /**< Określa czy animacja jest aktywna */
     bool repeat_; /**< Określa czy animacja ma być zapętlona */
 

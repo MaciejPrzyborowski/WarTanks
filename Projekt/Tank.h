@@ -44,7 +44,7 @@ public:
      * @brief Konstruktor klasy Tank
      * @param playerID - ID gracza
      */
-    Tank(const int playerID);
+    Tank(const int &playerID);
 
     /**
      * @brief Resetuje parametry czołgu do ustawień domyślnych.
@@ -154,6 +154,7 @@ public:
     sf::RectangleShape getTankShape();
 
 private:
+
     TankState status_; /**< Status czołgu */
     TankMove moveDirection_; /**< Kierunek przemieszczenia czołgu */
     sf::Vector2f velocity; /**< Wektor prędkości czołgu */
